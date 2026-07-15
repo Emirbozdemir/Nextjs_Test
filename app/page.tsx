@@ -1,4 +1,9 @@
+import Button from "@/components/ui/Button";
 import StatCard from "@/components/dashboard/StatCard";
+import SalesOverview from "../components/dashboard/SalesOverview";
+import RevenueCard from "@/components/dashboard/RevenueCard";
+import RecentOrders from "../components/dashboard/RecentOrders";
+
 import {
   Users,
   DollarSign,
@@ -9,16 +14,28 @@ import {
 export default function Home() {
   return (
     <section className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-slate-900">
-          Dashboard
-        </h1>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900">
+            Dashboard
+          </h1>
 
-        <p className="mt-1 text-slate-500">
-          Welcome back, Emir 👋
-        </p>
+          <p className="mt-1 text-slate-500">
+            Welcome back, Emir 👋
+          </p>
+        </div>
+
+        <div className="flex gap-3">
+          <Button>Yeni Kullanıcı</Button>
+
+          <Button variant="secondary">
+            Raporlar
+          </Button>
+        </div>
       </div>
 
+      {/* Statistics */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           title="Users"
