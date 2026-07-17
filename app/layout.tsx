@@ -31,13 +31,19 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body className="bg-slate-100">
-         <main className="flex-1 flex flex-col">
-          <Topbar />
+        <div className="flex h-screen">
+          {/* Sidebar */}
+          <Sidebar />
 
-          <div className="p-8">
-            {children}
-          </div>
-        </main>
+          {/* Main Content */}
+          <main className="flex flex-1 flex-col overflow-hidden">
+            <Topbar />
+
+            <div className="flex-1 overflow-y-auto p-8">
+              {children}
+            </div>
+          </main>
+        </div>
       </body>
     </html>
   );

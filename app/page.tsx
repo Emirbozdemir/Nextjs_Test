@@ -1,8 +1,10 @@
 import Button from "@/components/ui/Button";
 import StatCard from "@/components/dashboard/StatCard";
-import SalesOverview from "../components/dashboard/SalesOverview";
+import SalesOverview from "@/components/dashboard/SalesOverview";
 import RevenueCard from "@/components/dashboard/RevenueCard";
-import RecentOrders from "../components/dashboard/RecentOrders";
+import RecentOrders from "@/components/dashboard/RecentOrders";
+import RecentUsers from "@/components/dashboard/RecentUsers";
+import ActivityTimeline from "@/components/dashboard/ActivityTimeline";
 
 import {
   Users,
@@ -27,7 +29,9 @@ export default function Home() {
         </div>
 
         <div className="flex gap-3">
-          <Button>Yeni Kullanıcı</Button>
+          <Button>
+            Yeni Kullanıcı
+          </Button>
 
           <Button variant="secondary">
             Raporlar
@@ -35,7 +39,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Statistics */}
+      {/* Stat Cards */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           title="Users"
@@ -65,6 +69,18 @@ export default function Home() {
           icon={Star}
         />
       </div>
+
+      {/* Charts */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <SalesOverview />
+        </div>
+
+        <RevenueCard />
+      </div>
+
+      {/* Recent Orders */}
+      <RecentOrders />
     </section>
   );
 }

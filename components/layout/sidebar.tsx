@@ -1,56 +1,111 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
+
 import {
   LayoutDashboard,
   Users,
   Package,
   ShoppingCart,
   Settings,
+  BarChart3,
 } from "lucide-react";
 
 const menuItems = [
   {
     title: "Dashboard",
+    href: "/",
     icon: LayoutDashboard,
   },
   {
     title: "Users",
+    href: "/users",
     icon: Users,
   },
   {
     title: "Products",
+    href: "/products",
     icon: Package,
   },
   {
     title: "Orders",
+    href: "/orders",
     icon: ShoppingCart,
   },
   {
+    title: "Analytics",
+    href: "/analytics",
+    icon: BarChart3,
+  },
+  {
     title: "Settings",
+    href: "/settings",
     icon: Settings,
   },
 ];
 
 export default function Sidebar() {
+  const pathname = usePathname();
+
   return (
-    <aside className="w-64 h-screen bg-slate-900 text-white flex flex-col">
-      <div className="p-6 border-b border-slate-700">
-        <h1 className="text-2xl font-bold">Admin Panel</h1>
+    <aside className="flex h-screen w-72 flex-col border-r border-slate-200 bg-white">
+      {/* Logo */}
+      <div className="border-b border-slate-200 p-6">
+        <h1 className="text-2xl font-bold text-slate-900">
+          Admin<span className="text-blue-600">Pro</span>
+        </h1>
+
+        <p className="mt-1 text-sm text-slate-500">
+          Management System
+        </p>
       </div>
 
-      <nav className="flex-1 p-4">
+      {/* Menu */}
+      <nav className="flex-1 space-y-2 p-4">
         {menuItems.map((item) => {
           const Icon = item.icon;
 
           return (
-            <button
+            <Link
               key={item.title}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition cursor-pointer"
+              href={item.href}
+              className={clsx(
+                "flex items-center gap-3 rounded-xl px-4 py-3 transition-all",
+                pathname === item.href
+                  ? "bg-blue-600 text-white shadow-lg"
+                  : "text-slate-600 hover:bg-slate-100"
+              )}
             >
               <Icon size={20} />
-              <span>{item.title}</span>
-            </button>
+
+              <span className="font-medium">
+                {item.title}
+              </span>
+            </Link>
           );
         })}
       </nav>
+
+      {/* Footer */}
+      <div className="border-t border-slate-200 p-5">
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
+            EB
+          </div>
+
+          <div>
+            <p className="font-semibold text-slate-800">
+              Emir
+            </p>
+
+            <p className="text-sm text-slate-500">
+              Administrator
+            </p>
+          </div>
+        </div>
+      </div>
     </aside>
   );
 }
