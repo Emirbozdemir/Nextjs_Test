@@ -10,39 +10,33 @@ import {
   Package,
   ShoppingCart,
   Settings,
-  BarChart3,
 } from "lucide-react";
 
 const menuItems = [
   {
     title: "Dashboard",
-    href: "/",
     icon: LayoutDashboard,
+    href: "/",
   },
   {
     title: "Users",
-    href: "/users",
     icon: Users,
+    href: "/users",
   },
   {
     title: "Products",
-    href: "/products",
     icon: Package,
+    href: "/products",
   },
   {
     title: "Orders",
-    href: "/orders",
     icon: ShoppingCart,
-  },
-  {
-    title: "Analytics",
-    href: "/analytics",
-    icon: BarChart3,
+    href: "/orders",
   },
   {
     title: "Settings",
-    href: "/settings",
     icon: Settings,
+    href: "/settings",
   },
 ];
 
@@ -67,15 +61,20 @@ export default function Sidebar() {
         {menuItems.map((item) => {
           const Icon = item.icon;
 
+          const isActive =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(item.href);
+
           return (
             <Link
               key={item.title}
               href={item.href}
               className={clsx(
-                "flex items-center gap-3 rounded-xl px-4 py-3 transition-all",
-                pathname === item.href
+                "flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200",
+                isActive
                   ? "bg-blue-600 text-white shadow-lg"
-                  : "text-slate-600 hover:bg-slate-100"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
               )}
             >
               <Icon size={20} />

@@ -12,21 +12,21 @@ export default function ProductsPage() {
     <section className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">
+          <h1 className="text-3xl font-bold">
             Products
           </h1>
 
-          <p className="mt-1 text-slate-500">
+          <p className="text-slate-500">
             Manage your inventory
           </p>
         </div>
 
-        <button className="rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700">
+        <button className="rounded-xl bg-blue-600 px-5 py-3 font-medium text-white hover:bg-blue-700">
           + Add Product
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-3">
         <UserStatsCard
           title="Products"
           value="248"
