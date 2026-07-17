@@ -1,3 +1,6 @@
+"use client";
+import { useState } from "react";
+import AddUserModal from "@/components/users/AddUserModal";
 import UsersTable from "@/components/users/UsersTable";
 import UserStatsCard from "@/components/users/UserStatsCard";
 
@@ -8,7 +11,9 @@ import {
 } from "lucide-react";
 
 export default function UsersPage() {
-  return (
+    const [open, setOpen] = useState(false);
+
+    return (
     <section className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -22,9 +27,12 @@ export default function UsersPage() {
           </p>
         </div>
 
-        <button className="rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700">
-          + Add User
-        </button>
+        <button
+  onClick={() => setOpen(true)}
+  className="rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700"
+>
+  + Add User
+</button>
       </div>
 
       {/* Statistics */}
@@ -53,6 +61,10 @@ export default function UsersPage() {
 
       {/* Users Table */}
       <UsersTable />
+      <AddUserModal
+  open={open}
+  onClose={() => setOpen(false)}
+/>
     </section>
   );
 }
