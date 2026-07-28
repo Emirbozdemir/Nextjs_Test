@@ -12,13 +12,13 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const baseClasses =
-    "inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold transition-all duration-200";
+    "inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold transition-all duration-200 active:scale-[0.98]";
 
   const variants = {
     primary:
-      "bg-blue-600 text-white hover:bg-blue-700 shadow-sm",
+      "bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-200 hover:from-indigo-700 hover:to-blue-700",
     secondary:
-      "border border-slate-300 bg-white text-slate-700 hover:bg-slate-100",
+      "border border-slate-200 bg-white/80 text-slate-700 shadow-sm hover:bg-slate-50",
   };
 
   return (

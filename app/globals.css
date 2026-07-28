@@ -1,12 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f7fb;
+  --foreground: #172033;
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at top right, rgb(224 231 255 / 0.8), transparent 28rem),
+    var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: #c7d2fe;
+  color: #172033;
 }

@@ -16,7 +16,7 @@ export default function Badge({
 
   return (
     <span
-      className={`rounded-full px-3 py-1 text-xs font-semibold ${colors[color]}`}
+      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset ring-black/5 ${colors[color]}`}
     >
       {children}
     </span>

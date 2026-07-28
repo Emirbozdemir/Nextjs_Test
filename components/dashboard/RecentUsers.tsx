@@ -1,5 +1,6 @@
 import Card from "@/components/ui/Card";
 import Avatar from "@/components/ui/Avatar";
+import Link from "next/link";
 
 const users = [
   {
@@ -36,9 +37,9 @@ export default function RecentUsers() {
           Recent Users
         </h2>
 
-        <button className="rounded-lg border border-slate-200 px-3 py-1 text-sm hover:bg-slate-100 transition">
+        <Link href="/users" className="rounded-lg border border-slate-200 px-3 py-1 text-sm transition hover:bg-slate-100">
           View All
-        </button>
+        </Link>
       </div>
 
       <div className="space-y-5">
@@ -66,9 +67,9 @@ export default function RecentUsers() {
                 {user.role}
               </p>
 
-              <button className="mt-1 text-sm text-blue-600 hover:underline">
+              <Link href="/users" className="mt-1 text-sm text-blue-600 hover:underline">
                 View Profile
-              </button>
+              </Link>
             </div>
           </div>
         ))}
