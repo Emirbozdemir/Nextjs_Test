@@ -3,10 +3,7 @@ interface BadgeProps {
   color?: "green" | "yellow" | "red" | "blue";
 }
 
-export default function Badge({
-  children,
-  color = "blue",
-}: BadgeProps) {
+export default function Badge({ children, color = "blue" }: BadgeProps) {
   const colors = {
     blue: "bg-blue-100 text-blue-700",
     green: "bg-green-100 text-green-700",

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import Sidebar from "@/components/layout/sidebar";
+import Sidebar from "@/components/layout/Sidebar";
 import Topbar from "@/components/layout/Topbar";
 import LanguageProvider from "@/components/providers/LanguageProvider";
 
@@ -27,24 +27,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
-    >
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <LanguageProvider><div className="flex min-h-screen">
-          {/* Sidebar */}
-          <Sidebar />
+        <LanguageProvider>
+          <div className="flex min-h-screen">
+            {/* Sidebar */}
+            <Sidebar />
 
-          {/* Main Content */}
-          <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
-            <Topbar />
+            {/* Main Content */}
+            <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
+              <Topbar />
 
-            <div className="flex-1 overflow-y-auto p-5 sm:p-8">
-              {children}
-            </div>
-          </main>
-        </div></LanguageProvider>
+              <div className="flex-1 overflow-y-auto p-5 sm:p-8">
+                {children}
+              </div>
+            </main>
+          </div>
+        </LanguageProvider>
       </body>
     </html>
   );

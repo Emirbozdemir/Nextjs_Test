@@ -33,41 +33,36 @@ export default function RecentUsers() {
   return (
     <Card>
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-slate-900">
-          Recent Users
-        </h2>
+        <h2 className="text-lg font-semibold text-slate-900">Recent Users</h2>
 
-        <Link href="/users" className="rounded-lg border border-slate-200 px-3 py-1 text-sm transition hover:bg-slate-100">
+        <Link
+          href="/users"
+          className="rounded-lg border border-slate-200 px-3 py-1 text-sm transition hover:bg-slate-100"
+        >
           View All
         </Link>
       </div>
 
       <div className="space-y-5">
         {users.map((user) => (
-          <div
-            key={user.id}
-            className="flex items-center justify-between"
-          >
+          <div key={user.id} className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Avatar name={user.name} />
 
               <div>
-                <h3 className="font-semibold text-slate-800">
-                  {user.name}
-                </h3>
+                <h3 className="font-semibold text-slate-800">{user.name}</h3>
 
-                <p className="text-sm text-slate-500">
-                  {user.email}
-                </p>
+                <p className="text-sm text-slate-500">{user.email}</p>
               </div>
             </div>
 
             <div className="text-right">
-              <p className="text-sm font-medium text-slate-700">
-                {user.role}
-              </p>
+              <p className="text-sm font-medium text-slate-700">{user.role}</p>
 
-              <Link href="/users" className="mt-1 text-sm text-blue-600 hover:underline">
+              <Link
+                href="/users"
+                className="mt-1 text-sm text-blue-600 hover:underline"
+              >
                 View Profile
               </Link>
             </div>

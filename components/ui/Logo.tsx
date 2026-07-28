@@ -6,13 +6,9 @@ export default function Logo() {
       </div>
 
       <div>
-        <h1 className="text-lg font-bold text-white">
-          Admin Panel
-        </h1>
+        <h1 className="text-lg font-bold text-white">Admin Panel</h1>
 
-        <p className="text-xs text-slate-400">
-          v1.0
-        </p>
+        <p className="text-xs text-slate-400">v1.0</p>
       </div>
     </div>
   );

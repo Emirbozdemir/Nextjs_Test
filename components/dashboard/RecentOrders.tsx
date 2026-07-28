@@ -23,27 +23,18 @@ const users = [
 export default function RecentUsers() {
   return (
     <Card>
-      <h2 className="mb-6 text-lg font-semibold">
-        Recent Users
-      </h2>
+      <h2 className="mb-6 text-lg font-semibold">Recent Users</h2>
 
       <div className="space-y-5">
         {users.map((user) => (
-          <div
-            key={user.email}
-            className="flex items-center justify-between"
-          >
+          <div key={user.email} className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Avatar name={user.name} />
 
               <div>
-                <h3 className="font-medium">
-                  {user.name}
-                </h3>
+                <h3 className="font-medium">{user.name}</h3>
 
-                <p className="text-sm text-slate-500">
-                  {user.email}
-                </p>
+                <p className="text-sm text-slate-500">{user.email}</p>
               </div>
             </div>
 

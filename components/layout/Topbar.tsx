@@ -2,33 +2,239 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Bell, CheckCheck, Package, Search, ShoppingCart, UserCircle2, Users, X } from "lucide-react";
+import {
+  Bell,
+  CheckCheck,
+  Package,
+  Search,
+  ShoppingCart,
+  UserCircle2,
+  Users,
+  X,
+} from "lucide-react";
 
 import { initialOrders } from "@/data/orders";
 import { initialProducts } from "@/data/products";
 import { initialUsers } from "@/data/user";
 
-type SearchResult = { id: string; title: string; description: string; href: string; type: "User" | "Product" | "Order" };
+type SearchResult = {
+  id: string;
+  title: string;
+  description: string;
+  href: string;
+  type: "User" | "Product" | "Order";
+};
 
 const notifications = [
-  { id: 1, title: "New order received", description: "Order #1048 was placed a few minutes ago.", time: "5m ago", color: "bg-blue-500" },
-  { id: 2, title: "Low stock alert", description: "Apple Watch Ultra has only 7 items left.", time: "1h ago", color: "bg-amber-500" },
-  { id: 3, title: "Weekly report ready", description: "Your performance report is ready to view.", time: "3h ago", color: "bg-emerald-500" },
+  {
+    id: 1,
+    title: "New order received",
+    description: "Order #1048 was placed a few minutes ago.",
+    time: "5m ago",
+    color: "bg-blue-500",
+  },
+  {
+    id: 2,
+    title: "Low stock alert",
+    description: "Apple Watch Ultra has only 7 items left.",
+    time: "1h ago",
+    color: "bg-amber-500",
+  },
+  {
+    id: 3,
+    title: "Weekly report ready",
+    description: "Your performance report is ready to view.",
+    time: "3h ago",
+    color: "bg-emerald-500",
+  },
 ];
 
 export default function Topbar() {
   const [query, setQuery] = useState("");
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-  const [unreadNotifications, setUnreadNotifications] = useState(notifications.length);
+  const [unreadNotifications, setUnreadNotifications] = useState(
+    notifications.length,
+  );
   const results = useMemo<SearchResult[]>(() => {
     const value = query.trim().toLowerCase();
     if (!value) return [];
-    const users = initialUsers.filter((user) => [user.name, user.email, user.role].some((item) => item.toLowerCase().includes(value))).map((user) => ({ id: `user-${user.id}`, title: user.name, description: `${user.role} · ${user.email}`, href: "/users", type: "User" as const }));
-    const products = initialProducts.filter((product) => [product.name, product.category].some((item) => item.toLowerCase().includes(value))).map((product) => ({ id: `product-${product.id}`, title: product.name, description: `${product.category} · ${product.stock} in stock`, href: "/products", type: "Product" as const }));
-    const orders = initialOrders.filter((order) => [order.customer, order.email, order.id.toString()].some((item) => item.toLowerCase().includes(value))).map((order) => ({ id: `order-${order.id}`, title: `Order #${order.id}`, description: `${order.customer} · ${order.status}`, href: "/orders", type: "Order" as const }));
+    const users = initialUsers
+      .filter((user) =>
+        [user.name, user.email, user.role].some((item) =>
+          item.toLowerCase().includes(value),
+        ),
+      )
+      .map((user) => ({
+        id: `user-${user.id}`,
+        title: user.name,
+        description: `${user.role} · ${user.email}`,
+        href: "/users",
+        type: "User" as const,
+      }));
+    const products = initialProducts
+      .filter((product) =>
+        [product.name, product.category].some((item) =>
+          item.toLowerCase().includes(value),
+        ),
+      )
+      .map((product) => ({
+        id: `product-${product.id}`,
+        title: product.name,
+        description: `${product.category} · ${product.stock} in stock`,
+        href: "/products",
+        type: "Product" as const,
+      }));
+    const orders = initialOrders
+      .filter((order) =>
+        [order.customer, order.email, order.id.toString()].some((item) =>
+          item.toLowerCase().includes(value),
+        ),
+      )
+      .map((order) => ({
+        id: `order-${order.id}`,
+        title: `Order #${order.id}`,
+        description: `${order.customer} · ${order.status}`,
+        href: "/orders",
+        type: "Order" as const,
+      }));
     return [...users, ...products, ...orders].slice(0, 6);
   }, [query]);
 
-  const iconFor = (type: SearchResult["type"]) => type === "User" ? Users : type === "Product" ? Package : ShoppingCart;
-  return <header className="relative z-40 flex h-20 items-center justify-between border-b border-white/70 bg-white/70 px-4 backdrop-blur-xl sm:px-7"><h2 className="hidden text-xl font-bold tracking-tight text-slate-900 md:block">Dashboard overview</h2><div className="ml-auto flex items-center gap-2 sm:gap-4"><div className="relative"><div className="flex w-44 items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50/80 px-3 py-2.5 transition focus-within:border-indigo-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-indigo-100 sm:w-72"><Search size={18} className="shrink-0 text-slate-500" /><input value={query} onChange={(event) => setQuery(event.target.value)} type="search" placeholder="Search users, products..." className="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />{query && <button type="button" onClick={() => setQuery("")} aria-label="Clear search" className="text-slate-400 transition hover:text-slate-700"><X size={16} /></button>}</div>{query && <div className="absolute right-0 top-14 w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/15"><div className="border-b border-slate-100 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Search results</div>{results.length ? <div className="p-2">{results.map((result) => { const Icon = iconFor(result.type); return <Link key={result.id} href={result.href} onClick={() => setQuery("")} className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-indigo-50"><div className="rounded-lg bg-indigo-50 p-2 text-indigo-600"><Icon size={16} /></div><div className="min-w-0"><p className="truncate text-sm font-semibold text-slate-800">{result.title}</p><p className="truncate text-xs text-slate-500">{result.description}</p></div><span className="ml-auto text-xs text-slate-400">{result.type}</span></Link>; })}</div> : <p className="px-4 py-8 text-center text-sm text-slate-500">No matches found for “{query}”.</p>}</div>}</div><div className="relative"><button type="button" onClick={() => setIsNotificationsOpen((current) => !current)} aria-label="Open notifications" aria-expanded={isNotificationsOpen} className="relative rounded-xl border border-slate-200/80 bg-white p-2.5 text-slate-600 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:text-indigo-600"><Bell size={20} />{unreadNotifications > 0 && <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">{unreadNotifications}</span>}</button>{isNotificationsOpen && <div className="absolute right-0 top-14 w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/15"><div className="flex items-center justify-between border-b border-slate-100 px-4 py-3"><div><p className="font-semibold text-slate-900">Notifications</p><p className="text-xs text-slate-500">{unreadNotifications} unread updates</p></div><button type="button" onClick={() => setUnreadNotifications(0)} className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-700"><CheckCheck size={15} />Mark all read</button></div><div className="divide-y divide-slate-100">{notifications.map((notification) => <div key={notification.id} className="flex gap-3 px-4 py-3"><span className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${notification.color}`} /><div><p className="text-sm font-semibold text-slate-800">{notification.title}</p><p className="mt-0.5 text-xs leading-5 text-slate-500">{notification.description}</p><p className="mt-1 text-xs text-slate-400">{notification.time}</p></div></div>)}</div></div>}</div><div className="hidden items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-2.5 py-1.5 shadow-sm sm:flex"><UserCircle2 size={32} className="text-indigo-600" /><div><p className="font-medium text-slate-800">Emir</p><p className="text-xs text-slate-500">Administrator</p></div></div></div></header>;
+  const iconFor = (type: SearchResult["type"]) =>
+    type === "User" ? Users : type === "Product" ? Package : ShoppingCart;
+  return (
+    <header className="relative z-40 flex h-20 items-center justify-between border-b border-white/70 bg-white/70 px-4 backdrop-blur-xl sm:px-7">
+      <h2 className="hidden text-xl font-bold tracking-tight text-slate-900 md:block">
+        Dashboard overview
+      </h2>
+      <div className="ml-auto flex items-center gap-2 sm:gap-4">
+        <div className="relative">
+          <div className="flex w-44 items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50/80 px-3 py-2.5 transition focus-within:border-indigo-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-indigo-100 sm:w-72">
+            <Search size={18} className="shrink-0 text-slate-500" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              type="search"
+              placeholder="Search users, products..."
+              className="w-full bg-transparent text-sm outline-none placeholder:text-slate-400"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                aria-label="Clear search"
+                className="text-slate-400 transition hover:text-slate-700"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
+          {query && (
+            <div className="absolute right-0 top-14 w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/15">
+              <div className="border-b border-slate-100 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                Search results
+              </div>
+              {results.length ? (
+                <div className="p-2">
+                  {results.map((result) => {
+                    const Icon = iconFor(result.type);
+                    return (
+                      <Link
+                        key={result.id}
+                        href={result.href}
+                        onClick={() => setQuery("")}
+                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-indigo-50"
+                      >
+                        <div className="rounded-lg bg-indigo-50 p-2 text-indigo-600">
+                          <Icon size={16} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-slate-800">
+                            {result.title}
+                          </p>
+                          <p className="truncate text-xs text-slate-500">
+                            {result.description}
+                          </p>
+                        </div>
+                        <span className="ml-auto text-xs text-slate-400">
+                          {result.type}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="px-4 py-8 text-center text-sm text-slate-500">
+                  No matches found for “{query}”.
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setIsNotificationsOpen((current) => !current)}
+            aria-label="Open notifications"
+            aria-expanded={isNotificationsOpen}
+            className="relative rounded-xl border border-slate-200/80 bg-white p-2.5 text-slate-600 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:text-indigo-600"
+          >
+            <Bell size={20} />
+            {unreadNotifications > 0 && (
+              <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
+                {unreadNotifications}
+              </span>
+            )}
+          </button>
+          {isNotificationsOpen && (
+            <div className="absolute right-0 top-14 w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/15">
+              <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+                <div>
+                  <p className="font-semibold text-slate-900">Notifications</p>
+                  <p className="text-xs text-slate-500">
+                    {unreadNotifications} unread updates
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setUnreadNotifications(0)}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-700"
+                >
+                  <CheckCheck size={15} />
+                  Mark all read
+                </button>
+              </div>
+              <div className="divide-y divide-slate-100">
+                {notifications.map((notification) => (
+                  <div key={notification.id} className="flex gap-3 px-4 py-3">
+                    <span
+                      className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${notification.color}`}
+                    />
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">
+                        {notification.title}
+                      </p>
+                      <p className="mt-0.5 text-xs leading-5 text-slate-500">
+                        {notification.description}
+                      </p>
+                      <p className="mt-1 text-xs text-slate-400">
+                        {notification.time}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="hidden items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-2.5 py-1.5 shadow-sm sm:flex">
+          <UserCircle2 size={32} className="text-indigo-600" />
+          <div>
+            <p className="font-medium text-slate-800">Emir</p>
+            <p className="text-xs text-slate-500">Administrator</p>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
 }

@@ -7,11 +7,7 @@ interface NavItemProps {
   icon: LucideIcon;
 }
 
-export default function NavItem({
-  title,
-  href,
-  icon: Icon,
-}: NavItemProps) {
+export default function NavItem({ title, href, icon: Icon }: NavItemProps) {
   return (
     <Link
       href={href}

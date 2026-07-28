@@ -16,13 +16,9 @@ import {
 export default function SalesOverview() {
   return (
     <Card className="h-[350px]">
-      <h2 className="text-lg font-semibold text-slate-900">
-        Sales Overview
-      </h2>
+      <h2 className="text-lg font-semibold text-slate-900">Sales Overview</h2>
 
-      <p className="mb-6 text-sm text-slate-500">
-        Monthly sales performance
-      </p>
+      <p className="mb-6 text-sm text-slate-500">Monthly sales performance</p>
 
       <ResponsiveContainer width="100%" height={250}>
         <AreaChart data={salesData}>

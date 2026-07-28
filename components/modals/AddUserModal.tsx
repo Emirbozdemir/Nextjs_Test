@@ -51,7 +51,9 @@ export default function AddUserModal({
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <h2 className="text-xl font-bold text-slate-900">Add User</h2>
-            <p className="mt-1 text-sm text-slate-500">Create a new dashboard user.</p>
+            <p className="mt-1 text-sm text-slate-500">
+              Create a new dashboard user.
+            </p>
           </div>
 
           <button
@@ -65,18 +67,56 @@ export default function AddUserModal({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input required value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} placeholder="Full Name" className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
-          <input required type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} placeholder="Email" className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
-          <input required value={form.role} onChange={(event) => setForm({ ...form, role: event.target.value })} placeholder="Role" className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
-          <select value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value as User["status"] })} className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+          <input
+            required
+            value={form.name}
+            onChange={(event) => setForm({ ...form, name: event.target.value })}
+            placeholder="Full Name"
+            className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          />
+          <input
+            required
+            type="email"
+            value={form.email}
+            onChange={(event) =>
+              setForm({ ...form, email: event.target.value })
+            }
+            placeholder="Email"
+            className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          />
+          <input
+            required
+            value={form.role}
+            onChange={(event) => setForm({ ...form, role: event.target.value })}
+            placeholder="Role"
+            className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          />
+          <select
+            value={form.status}
+            onChange={(event) =>
+              setForm({ ...form, status: event.target.value as User["status"] })
+            }
+            className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          >
             <option value="Active">Active</option>
             <option value="Pending">Pending</option>
             <option value="Inactive">Inactive</option>
           </select>
 
           <div className="flex justify-end gap-3 pt-3">
-            <button type="button" onClick={handleClose} className="rounded-xl border border-slate-200 px-4 py-2 font-medium text-slate-700 transition hover:bg-slate-50">Cancel</button>
-            <button type="submit" className="rounded-xl bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700">Save User</button>
+            <button
+              type="button"
+              onClick={handleClose}
+              className="rounded-xl border border-slate-200 px-4 py-2 font-medium text-slate-700 transition hover:bg-slate-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="rounded-xl bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
+            >
+              Save User
+            </button>
           </div>
         </form>
       </div>

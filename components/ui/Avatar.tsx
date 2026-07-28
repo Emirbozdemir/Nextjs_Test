@@ -2,9 +2,7 @@ interface AvatarProps {
   name: string;
 }
 
-export default function Avatar({
-  name,
-}: AvatarProps) {
+export default function Avatar({ name }: AvatarProps) {
   const initials = name
     .split(" ")
     .map((word) => word[0])
