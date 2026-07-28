@@ -1,74 +1,60 @@
 "use client";
-import { useState } from "react";
-import AddUserModal from "@/components/users/AddUserModal";
+
+import { useEffect, useState } from "react";
+import { CheckCircle2, Clock3, UserCheck, Users } from "lucide-react";
+
+import AddUserModal from "@/components/modals/AddUserModal";
+import EditUserModal from "@/components/modals/EditUserModal";
 import UsersTable from "@/components/users/UsersTable";
 import UserStatsCard from "@/components/users/UserStatsCard";
-import AddUsermodal from "@/components/modals/AddUserModal";
-import {
-  Users,
-  UserCheck,
-  Clock3,
-} from "lucide-react";
+import { initialUsers } from "@/data/user";
+import { User } from "@/types/user";
+
+type Toast = { message: string; id: number } | null;
 
 export default function UsersPage() {
-    const [openModal, setOpenModal] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [users, setUsers] = useState<User[]>(initialUsers);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [userBeingEdited, setUserBeingEdited] = useState<User | null>(null);
+  const [toast, setToast] = useState<Toast>(null);
 
-    return (
+  useEffect(() => {
+    if (!toast) return;
+    const timeout = window.setTimeout(() => setToast(null), 3000);
+    return () => window.clearTimeout(timeout);
+  }, [toast]);
+
+  const showToast = (message: string) => setToast({ message, id: Date.now() });
+
+  const handleAddUser = (newUser: Omit<User, "id">) => {
+    setUsers((currentUsers) => [...currentUsers, { ...newUser, id: Math.max(0, ...currentUsers.map((user) => user.id)) + 1 }]);
+    showToast("User added successfully.");
+  };
+
+  const handleUpdateUser = (updatedUser: User) => {
+    setUsers((currentUsers) => currentUsers.map((user) => user.id === updatedUser.id ? updatedUser : user));
+    showToast("User details updated.");
+  };
+
+  const handleDeleteUser = (id: number) => {
+    setUsers((currentUsers) => currentUsers.filter((user) => user.id !== id));
+    showToast("User deleted successfully.");
+  };
+
+  const activeUsers = users.filter((user) => user.status === "Active").length;
+  const pendingUsers = users.filter((user) => user.status === "Pending").length;
+
+  return (
     <section className="space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">
-            Users
-          </h1>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><h1 className="text-3xl font-bold text-slate-900">Users</h1><p className="mt-1 text-slate-500">Manage all system users</p></div><button type="button" onClick={() => setIsAddModalOpen(true)} className="rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700">+ Add User</button></div>
 
-          <p className="mt-1 text-slate-500">
-            Manage all system users
-          </p>
-        </div>
+      <div className="grid gap-6 md:grid-cols-3"><UserStatsCard title="Total Users" value={users.length.toString()} color="bg-blue-600" icon={Users} /><UserStatsCard title="Active Users" value={activeUsers.toString()} color="bg-green-600" icon={UserCheck} /><UserStatsCard title="Pending Users" value={pendingUsers.toString()} color="bg-yellow-500" icon={Clock3} /></div>
 
-      <button
-  onClick={() => setOpenModal(true)}
-  className="rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700"
->
-  + Add User
-</button>
-      </div>
+      <UsersTable users={users} onEdit={setUserBeingEdited} onDelete={handleDeleteUser} />
+      <AddUserModal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onAddUser={handleAddUser} />
+      <EditUserModal user={userBeingEdited} onClose={() => setUserBeingEdited(null)} onUpdateUser={handleUpdateUser} />
 
-      {/* Statistics */}
-      <div className="grid gap-6 md:grid-cols-3">
-        <UserStatsCard
-          title="Total Users"
-          value="1,245"
-          color="bg-blue-600"
-          icon={Users}
-        />
-
-        <UserStatsCard
-          title="Active Users"
-          value="1,082"
-          color="bg-green-600"
-          icon={UserCheck}
-        />
-
-        <UserStatsCard
-          title="Pending Users"
-          value="163"
-          color="bg-yellow-500"
-          icon={Clock3}
-        />
-      </div>
-
-      {/* Users Table */}
-      ...
-<UsersTable />
-
-<AddUserModal
-  open={openModal}
-  onClose={() => setOpenModal(false)}
-/>
-
-</section>
+      {toast && <div key={toast.id} role="status" className="fixed bottom-6 right-6 z-[60] flex items-center gap-3 rounded-xl bg-slate-900 px-4 py-3 text-sm font-medium text-white shadow-xl"><CheckCircle2 size={18} className="text-emerald-400" />{toast.message}</div>}
+    </section>
   );
 }

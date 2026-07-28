@@ -1,134 +1,25 @@
 "use client";
 
-import Card from "@/components/ui/Card";
+import { useMemo, useState } from "react";
+import { ArrowDownUp, Pencil, Search, Trash2, TriangleAlert } from "lucide-react";
+
 import Badge from "@/components/ui/Badge";
-import { Pencil, Trash2 } from "lucide-react";
+import Card from "@/components/ui/Card";
+import { Product } from "@/types/product";
 
-const products = [
-  {
-    id: 1,
-    name: "MacBook Pro M4",
-    category: "Laptop",
-    stock: 24,
-    price: "$2,499",
-  },
-  {
-    id: 2,
-    name: "iPhone 16 Pro",
-    category: "Phone",
-    stock: 15,
-    price: "$1,399",
-  },
-  {
-    id: 3,
-    name: "Apple Watch Ultra",
-    category: "Watch",
-    stock: 7,
-    price: "$899",
-  },
-  {
-    id: 4,
-    name: "AirPods Pro",
-    category: "Audio",
-    stock: 42,
-    price: "$249",
-  },
-];
+type ProductsTableProps = { products: Product[]; onEdit: (product: Product) => void; onDelete: (id: number) => void };
 
-export default function ProductsTable() {
-  return (
-    <Card>
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-semibold">
-            Products
-          </h2>
+export default function ProductsTable({ products, onEdit, onDelete }: ProductsTableProps) {
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+  const categories = useMemo(() => [...new Set(products.map((product) => product.category))].sort(), [products]);
+  const visibleProducts = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return products.filter((product) => category === "All" || product.category === category).filter((product) => !query || [product.name, product.category].some((value) => value.toLowerCase().includes(query))).sort((first, second) => (first.stock - second.stock) * (sortDirection === "asc" ? 1 : -1));
+  }, [products, search, category, sortDirection]);
+  const formatPrice = (price: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(price);
 
-          <p className="text-sm text-slate-500">
-            {products.length} products
-          </p>
-        </div>
-
-        <input
-          placeholder="Search product..."
-          className="w-80 rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
-        />
-      </div>
-
-      <table className="w-full">
-        <thead>
-          <tr className="border-b border-slate-200 text-left">
-            <th className="pb-4">Product</th>
-            <th>Category</th>
-            <th>Stock</th>
-            <th>Price</th>
-            <th className="text-right">Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {products.map((product) => (
-            <tr
-              key={product.id}
-              className="border-b border-slate-100 transition hover:bg-slate-50"
-            >
-              <td className="py-5">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-slate-100 text-xl">
-                    📦
-                  </div>
-
-                  <div>
-                    <p className="font-semibold">
-                      {product.name}
-                    </p>
-
-                    <p className="text-sm text-slate-500">
-                      Product #{product.id}
-                    </p>
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <Badge color="blue">
-                  {product.category}
-                </Badge>
-              </td>
-
-              <td>
-                <Badge
-                  color={
-                    product.stock > 20
-                      ? "green"
-                      : product.stock > 10
-                      ? "yellow"
-                      : "red"
-                  }
-                >
-                  {product.stock} pcs
-                </Badge>
-              </td>
-
-              <td className="font-semibold">
-                {product.price}
-              </td>
-
-              <td className="text-right">
-                <div className="flex justify-end gap-2">
-                  <button className="rounded-lg bg-slate-100 p-2 hover:bg-slate-200">
-                    <Pencil size={18} />
-                  </button>
-
-                  <button className="rounded-lg bg-red-100 p-2 text-red-600 hover:bg-red-200">
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </Card>
-  );
+  return <><Card><div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between"><div><h2 className="text-xl font-semibold text-slate-900">Products</h2><p className="mt-1 text-sm text-slate-500">{visibleProducts.length} of {products.length} products</p></div><div className="flex flex-wrap gap-3"><div className="relative"><Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search product..." className="w-full rounded-xl border border-slate-200 py-3 pl-10 pr-4 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:w-60" /></div><select value={category} onChange={(event) => setCategory(event.target.value)} aria-label="Filter products by category" className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-700 outline-none focus:border-blue-500"><option value="All">All categories</option>{categories.map((item) => <option key={item} value={item}>{item}</option>)}</select><button type="button" onClick={() => setSortDirection((current) => current === "asc" ? "desc" : "asc")} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"><ArrowDownUp size={16} />Stock</button></div></div><div className="overflow-x-auto"><table className="w-full min-w-[720px]"><thead><tr className="border-b border-slate-200 text-left text-sm font-semibold text-slate-500"><th className="pb-4">Product</th><th className="pb-4">Category</th><th className="pb-4">Stock</th><th className="pb-4">Price</th><th className="pb-4 text-right">Actions</th></tr></thead><tbody>{visibleProducts.map((product) => <tr key={product.id} className="border-b border-slate-100 transition hover:bg-slate-50"><td className="py-5"><div><p className="font-semibold text-slate-800">{product.name}</p><p className="text-sm text-slate-500">Product #{product.id}</p></div></td><td><Badge color="blue">{product.category}</Badge></td><td><Badge color={product.stock > 20 ? "green" : product.stock > 10 ? "yellow" : "red"}>{product.stock} pcs</Badge></td><td className="font-semibold text-slate-800">{formatPrice(product.price)}</td><td className="text-right"><div className="flex justify-end gap-2"><button type="button" onClick={() => onEdit(product)} aria-label={`Edit ${product.name}`} className="rounded-lg bg-slate-100 p-2 text-slate-700 transition hover:bg-slate-200"><Pencil size={18} /></button><button type="button" onClick={() => setProductToDelete(product)} aria-label={`Delete ${product.name}`} className="rounded-lg bg-red-100 p-2 text-red-600 transition hover:bg-red-200"><Trash2 size={18} /></button></div></td></tr>)}</tbody></table></div>{visibleProducts.length === 0 && <div className="py-14 text-center"><p className="font-semibold text-slate-700">No products found</p><p className="mt-1 text-sm text-slate-500">Try changing your search or category filter.</p></div>}</Card>{productToDelete && <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 p-4"><div role="alertdialog" aria-modal="true" aria-labelledby="delete-product-title" className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"><div className="flex gap-4"><div className="rounded-full bg-red-100 p-3 text-red-600"><TriangleAlert size={22} /></div><div><h2 id="delete-product-title" className="text-lg font-bold text-slate-900">Delete product?</h2><p className="mt-1 text-sm leading-6 text-slate-500">This will permanently remove <span className="font-semibold text-slate-700">{productToDelete.name}</span> from your inventory.</p></div></div><div className="mt-6 flex justify-end gap-3"><button type="button" onClick={() => setProductToDelete(null)} className="rounded-xl border border-slate-200 px-4 py-2 font-medium text-slate-700 transition hover:bg-slate-50">Cancel</button><button type="button" onClick={() => { onDelete(productToDelete.id); setProductToDelete(null); }} className="rounded-xl bg-red-600 px-4 py-2 font-medium text-white transition hover:bg-red-700">Delete Product</button></div></div></div>}</>;
 }
