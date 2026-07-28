@@ -3,7 +3,7 @@ import { useState } from "react";
 import AddUserModal from "@/components/users/AddUserModal";
 import UsersTable from "@/components/users/UsersTable";
 import UserStatsCard from "@/components/users/UserStatsCard";
-
+import AddUsermodal from "@/components/modals/AddUserModal";
 import {
   Users,
   UserCheck,
@@ -11,7 +11,8 @@ import {
 } from "lucide-react";
 
 export default function UsersPage() {
-    const [open, setOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+  const [open, setOpen] = useState(false);
 
     return (
     <section className="space-y-8">
@@ -27,8 +28,8 @@ export default function UsersPage() {
           </p>
         </div>
 
-        <button
-  onClick={() => setOpen(true)}
+      <button
+  onClick={() => setOpenModal(true)}
   className="rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700"
 >
   + Add User
@@ -60,11 +61,14 @@ export default function UsersPage() {
       </div>
 
       {/* Users Table */}
-      <UsersTable />
-      <AddUserModal
-  open={open}
-  onClose={() => setOpen(false)}
+      ...
+<UsersTable />
+
+<AddUserModal
+  open={openModal}
+  onClose={() => setOpenModal(false)}
 />
-    </section>
+
+</section>
   );
 }
