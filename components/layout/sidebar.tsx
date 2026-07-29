@@ -14,39 +14,6 @@ import {
   Settings,
 } from "lucide-react";
 
-const menuItems = [
-  {
-    title: "Dashboard",
-    icon: LayoutDashboard,
-    href: "/",
-  },
-  {
-    title: "Users",
-    icon: Users,
-    href: "/users",
-  },
-  {
-    title: "Products",
-    icon: Package,
-    href: "/products",
-  },
-  {
-    title: "Orders",
-    icon: ShoppingCart,
-    href: "/orders",
-  },
-  {
-    title: "Analytics",
-    icon: ChartNoAxesCombined,
-    href: "/analytics",
-  },
-  {
-    title: "Settings",
-    icon: Settings,
-    href: "/settings",
-  },
-];
-
 export default function Sidebar() {
   const pathname = usePathname();
   const { t } = useLanguage();

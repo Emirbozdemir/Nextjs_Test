@@ -12,10 +12,12 @@ import OrdersTable from "@/components/orders/OrdersTable";
 import UserStatsCard from "@/components/users/UserStatsCard";
 import { initialOrders } from "@/data/orders";
 import { Order, OrderStatus } from "@/types/order";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 type Toast = { message: string; id: number } | null;
 
 export default function OrdersPage() {
+  const { t } = useLanguage();
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [toast, setToast] = useState<Toast>(null);
   useEffect(() => {
@@ -48,24 +50,24 @@ export default function OrdersPage() {
   return (
     <section className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Orders</h1>
-        <p className="mt-1 text-slate-500">Track and manage customer orders</p>
+        <h1 className="text-3xl font-bold text-slate-900">{t("orders")}</h1>
+        <p className="mt-1 text-slate-500">{t("manageOrders")}</p>
       </div>
       <div className="grid gap-6 md:grid-cols-3">
         <UserStatsCard
-          title="Total Orders"
+          title={t("totalOrders")}
           value={orders.length.toString()}
           color="bg-blue-600"
           icon={ShoppingBag}
         />
         <UserStatsCard
-          title="Open Orders"
+          title={t("openOrders")}
           value={pendingOrders.toString()}
           color="bg-yellow-500"
           icon={Clock3}
         />
         <UserStatsCard
-          title="Delivered Revenue"
+          title={t("deliveredRevenue")}
           value={money}
           color="bg-green-600"
           icon={CircleDollarSign}

@@ -15,6 +15,7 @@ import StatsCard from "@/components/ui/StatsCard";
 
 import { initialProducts } from "@/data/products";
 import { Product } from "@/types/product";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 type Toast = {
   message: string;
@@ -22,6 +23,7 @@ type Toast = {
 } | null;
 
 export default function ProductsPage() {
+  const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>(initialProducts);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -120,11 +122,11 @@ export default function ProductsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-slate-900">
-            Products
+            {t("products")}
           </h1>
 
           <p className="mt-1 text-slate-500">
-            Manage your inventory
+            {t("manageProducts")}
           </p>
         </div>
 
@@ -133,27 +135,27 @@ export default function ProductsPage() {
           onClick={() => setIsModalOpen(true)}
           className="rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700"
         >
-          + Add Product
+          + {t("addProduct")}
         </button>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
         <StatsCard
-          title="Products"
+          title={t("products")}
           value={products.length.toString()}
           color="bg-blue-600"
           icon={Package}
         />
 
         <StatsCard
-          title="In Stock"
+          title={t("inStock")}
           value={productsInStock.toString()}
           color="bg-green-600"
           icon={Boxes}
         />
 
         <StatsCard
-          title="Inventory Value"
+          title={t("inventoryValue")}
           value={formattedValue}
           color="bg-yellow-500"
           icon={CircleDollarSign}

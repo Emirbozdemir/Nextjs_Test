@@ -12,6 +12,7 @@ import {
 import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 import { Product } from "@/types/product";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 type ProductsTableProps = {
   products: Product[];
@@ -24,6 +25,7 @@ export default function ProductsTable({
   onEdit,
   onDelete,
 }: ProductsTableProps) {
+  const { t } = useLanguage();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
@@ -60,7 +62,7 @@ export default function ProductsTable({
       <Card>
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-slate-900">Products</h2>
+            <h2 className="text-xl font-semibold text-slate-900">{t("products")}</h2>
             <p className="mt-1 text-sm text-slate-500">
               {visibleProducts.length} of {products.length} products
             </p>
@@ -74,7 +76,7 @@ export default function ProductsTable({
               <input
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                placeholder="Search product..."
+                placeholder={t("searchProducts")}
                 className="w-full rounded-xl border border-slate-200 py-3 pl-10 pr-4 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:w-60"
               />
             </div>
@@ -84,7 +86,7 @@ export default function ProductsTable({
               aria-label="Filter products by category"
               className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-700 outline-none focus:border-blue-500"
             >
-              <option value="All">All categories</option>
+              <option value="All">{t("allCategories")}</option>
               {categories.map((item) => (
                 <option key={item} value={item}>
                   {item}
@@ -101,7 +103,7 @@ export default function ProductsTable({
               className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
             >
               <ArrowDownUp size={16} />
-              Stock
+              {t("stock")}
             </button>
           </div>
         </div>
@@ -109,11 +111,11 @@ export default function ProductsTable({
           <table className="w-full min-w-[720px]">
             <thead>
               <tr className="border-b border-slate-200 text-left text-sm font-semibold text-slate-500">
-                <th className="pb-4">Product</th>
-                <th className="pb-4">Category</th>
-                <th className="pb-4">Stock</th>
-                <th className="pb-4">Price</th>
-                <th className="pb-4 text-right">Actions</th>
+                <th className="pb-4">{t("product")}</th>
+                <th className="pb-4">{t("category")}</th>
+                <th className="pb-4">{t("stock")}</th>
+                <th className="pb-4">{t("price")}</th>
+                <th className="pb-4 text-right">{t("action")}</th>
               </tr>
             </thead>
             <tbody>
@@ -178,7 +180,7 @@ export default function ProductsTable({
         </div>
         {visibleProducts.length === 0 && (
           <div className="py-14 text-center">
-            <p className="font-semibold text-slate-700">No products found</p>
+            <p className="font-semibold text-slate-700">{t("noProducts")}</p>
             <p className="mt-1 text-sm text-slate-500">
               Try changing your search or category filter.
             </p>
@@ -202,7 +204,7 @@ export default function ProductsTable({
                   id="delete-product-title"
                   className="text-lg font-bold text-slate-900"
                 >
-                  Delete product?
+                  {t("deleteProduct")}
                 </h2>
                 <p className="mt-1 text-sm leading-6 text-slate-500">
                   This will permanently remove{" "}
@@ -219,7 +221,7 @@ export default function ProductsTable({
                 onClick={() => setProductToDelete(null)}
                 className="rounded-xl border border-slate-200 px-4 py-2 font-medium text-slate-700 transition hover:bg-slate-50"
               >
-                Cancel
+                {t("cancel")}
               </button>
               <button
                 type="button"
@@ -229,7 +231,7 @@ export default function ProductsTable({
                 }}
                 className="rounded-xl bg-red-600 px-4 py-2 font-medium text-white transition hover:bg-red-700"
               >
-                Delete Product
+                {t("deleteProduct")}
               </button>
             </div>
           </div>

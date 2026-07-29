@@ -12,6 +12,7 @@ import {
 import AnalyticsCharts from "@/components/analytics/AnalyticsCharts";
 import StatCard from "@/components/dashboard/StatCard";
 import { AnalyticsPeriod, getAnalyticsData } from "@/lib/analytics-data";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 const money = (value: number) =>
   new Intl.NumberFormat("en-US", {
@@ -22,15 +23,16 @@ const money = (value: number) =>
   }).format(value);
 
 export default function AnalyticsPage() {
+  const { t } = useLanguage();
   const [period, setPeriod] = useState<AnalyticsPeriod>("7d");
   const analytics = useMemo(() => getAnalyticsData(period), [period]);
   return (
     <section className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Analytics</h1>
+          <h1 className="text-3xl font-bold text-slate-900">{t("analytics")}</h1>
           <p className="mt-1 text-slate-500">
-            Monitor your store&apos;s revenue and customer performance.
+            {t("analyticsDescription")}
           </p>
         </div>
         <select
@@ -46,25 +48,25 @@ export default function AnalyticsPage() {
       </div>
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          title="Revenue"
+          title={t("revenue")}
           value={money(analytics.totalRevenue)}
           change="+12.5%"
           icon={CircleDollarSign}
         />
         <StatCard
-          title="Orders"
+          title={t("orders")}
           value={analytics.totalOrders.toLocaleString()}
           change="+8.2%"
           icon={ShoppingCart}
         />
         <StatCard
-          title="Conversion Rate"
+          title={t("conversionRate")}
           value={`${analytics.conversionRate}%`}
           change="+0.6%"
           icon={Activity}
         />
         <StatCard
-          title="Avg. Order Value"
+          title={t("averageOrderValue")}
           value={money(analytics.averageOrderValue)}
           change="+4.1%"
           icon={Users}

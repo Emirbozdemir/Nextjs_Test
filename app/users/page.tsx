@@ -9,10 +9,12 @@ import UsersTable from "@/components/users/UsersTable";
 import StatsCard from "@/components/ui/StatsCard";
 import { initialUsers } from "@/data/user";
 import { User } from "@/types/user";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 type Toast = { message: string; id: number } | null;
 
 export default function UsersPage() {
+  const { t } = useLanguage();
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [userBeingEdited, setUserBeingEdited] = useState<User | null>(null);
@@ -59,8 +61,8 @@ export default function UsersPage() {
     <section className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Users</h1>
-          <p className="mt-1 text-slate-500">Manage all system users</p>
+          <h1 className="text-3xl font-bold text-slate-900">{t("users")}</h1>
+          <p className="mt-1 text-slate-500">{t("manageUsers")}</p>
         </div>
 
         <button
@@ -68,25 +70,25 @@ export default function UsersPage() {
           onClick={() => setIsAddModalOpen(true)}
           className="rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700"
         >
-          + Add User
+          + {t("addUser")}
         </button>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
         <StatsCard
-          title="Total Users"
+          title={t("totalUsers")}
           value={users.length.toString()}
           color="bg-blue-600"
           icon={Users}
         />
         <StatsCard
-          title="Active Users"
+          title={t("activeUsers")}
           value={activeUsers.toString()}
           color="bg-green-600"
           icon={UserCheck}
         />
         <StatsCard
-          title="Pending Users"
+          title={t("pendingUsers")}
           value={pendingUsers.toString()}
           color="bg-yellow-500"
           icon={Clock3}

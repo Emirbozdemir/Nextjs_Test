@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { X } from "lucide-react";
 
 import { User } from "@/types/user";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 type EditUserModalProps = {
   user: User | null;
@@ -35,6 +36,7 @@ type EditUserFormProps = {
 };
 
 function EditUserForm({ user, onClose, onUpdateUser }: EditUserFormProps) {
+  const { t } = useLanguage();
   const [form, setForm] = useState<User>(user);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -53,9 +55,9 @@ function EditUserForm({ user, onClose, onUpdateUser }: EditUserFormProps) {
       <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-xl font-bold text-slate-900">Edit User</h2>
+            <h2 className="text-xl font-bold text-slate-900">{t("editUser")}</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Update this user&apos;s information.
+              {t("updateUser")}
             </p>
           </div>
           <button
@@ -73,7 +75,7 @@ function EditUserForm({ user, onClose, onUpdateUser }: EditUserFormProps) {
             required
             value={form.name}
             onChange={(event) => setForm({ ...form, name: event.target.value })}
-            placeholder="Full Name"
+            placeholder={t("fullName")}
             className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           />
           <input
@@ -83,14 +85,14 @@ function EditUserForm({ user, onClose, onUpdateUser }: EditUserFormProps) {
             onChange={(event) =>
               setForm({ ...form, email: event.target.value })
             }
-            placeholder="Email"
+            placeholder={t("email")}
             className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           />
           <input
             required
             value={form.role}
             onChange={(event) => setForm({ ...form, role: event.target.value })}
-            placeholder="Role"
+            placeholder={t("role")}
             className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           />
           <select
@@ -100,9 +102,9 @@ function EditUserForm({ user, onClose, onUpdateUser }: EditUserFormProps) {
             }
             className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           >
-            <option value="Active">Active</option>
-            <option value="Pending">Pending</option>
-            <option value="Inactive">Inactive</option>
+            <option value="Active">{t("active")}</option>
+            <option value="Pending">{t("pending")}</option>
+            <option value="Inactive">{t("inactive")}</option>
           </select>
           <div className="flex justify-end gap-3 pt-3">
             <button
@@ -110,13 +112,13 @@ function EditUserForm({ user, onClose, onUpdateUser }: EditUserFormProps) {
               onClick={onClose}
               className="rounded-xl border border-slate-200 px-4 py-2 font-medium text-slate-700 transition hover:bg-slate-50"
             >
-              Cancel
+              {t("cancel")}
             </button>
             <button
               type="submit"
               className="rounded-xl bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
             >
-              Save Changes
+              {t("save")}
             </button>
           </div>
         </form>
