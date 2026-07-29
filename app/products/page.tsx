@@ -2,12 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import {
-  Boxes,
-  CheckCircle2,
-  CircleDollarSign,
-  Package,
-} from "lucide-react";
+import { Boxes, CheckCircle2, CircleDollarSign, Package } from "lucide-react";
 
 import ProductModal from "@/components/modals/ProductModal";
 import ProductsTable from "@/products/ProductsTable";
@@ -28,8 +23,9 @@ export default function ProductsPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [productBeingEdited, setProductBeingEdited] =
-    useState<Product | null>(null);
+  const [productBeingEdited, setProductBeingEdited] = useState<Product | null>(
+    null,
+  );
 
   const [toast, setToast] = useState<Toast>(null);
 
@@ -55,14 +51,10 @@ export default function ProductsPage() {
     setProductBeingEdited(null);
   };
 
-  const handleSaveProduct = (
-    product: Omit<Product, "id"> | Product
-  ) => {
+  const handleSaveProduct = (product: Omit<Product, "id"> | Product) => {
     if ("id" in product) {
       setProducts((current) =>
-        current.map((item) =>
-          item.id === product.id ? product : item
-        )
+        current.map((item) => (item.id === product.id ? product : item)),
       );
 
       showToast("Product updated successfully.");
@@ -73,11 +65,7 @@ export default function ProductsPage() {
       ...current,
       {
         ...product,
-        id:
-          Math.max(
-            0,
-            ...current.map((item) => item.id)
-          ) + 1,
+        id: Math.max(0, ...current.map((item) => item.id)) + 1,
       },
     ]);
 
@@ -90,44 +78,34 @@ export default function ProductsPage() {
   };
 
   const handleDelete = (id: number) => {
-    setProducts((current) =>
-      current.filter((product) => product.id !== id)
-    );
+    setProducts((current) => current.filter((product) => product.id !== id));
 
     showToast("Product deleted successfully.");
   };
 
   const productsInStock = products.filter(
-    (product) => product.stock > 0
+    (product) => product.stock > 0,
   ).length;
 
   const inventoryValue = products.reduce(
-    (total, product) =>
-      total + product.price * product.stock,
-    0
+    (total, product) => total + product.price * product.stock,
+    0,
   );
 
-  const formattedValue = new Intl.NumberFormat(
-    "en-US",
-    {
-      style: "currency",
-      currency: "USD",
-      notation: "compact",
-      maximumFractionDigits: 1,
-    }
-  ).format(inventoryValue);
+  const formattedValue = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(inventoryValue);
 
   return (
     <section className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">
-            {t("products")}
-          </h1>
+          <h1 className="text-3xl font-bold text-slate-900">{t("products")}</h1>
 
-          <p className="mt-1 text-slate-500">
-            {t("manageProducts")}
-          </p>
+          <p className="mt-1 text-slate-500">{t("manageProducts")}</p>
         </div>
 
         <button
@@ -181,10 +159,7 @@ export default function ProductsPage() {
           role="status"
           className="fixed bottom-6 right-6 z-[60] flex items-center gap-3 rounded-xl bg-slate-900 px-4 py-3 text-sm font-medium text-white shadow-xl"
         >
-          <CheckCircle2
-            size={18}
-            className="text-emerald-400"
-          />
+          <CheckCircle2 size={18} className="text-emerald-400" />
 
           {toast.message}
         </div>

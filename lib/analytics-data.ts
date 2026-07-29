@@ -17,7 +17,11 @@ const categoryData = [
   { name: "Wearables", value: 12, color: "#f59e0b" },
 ];
 
-const periodMultiplier: Record<AnalyticsPeriod, number> = { "7d": 1, "30d": 4.4, "90d": 13.2 };
+const periodMultiplier: Record<AnalyticsPeriod, number> = {
+  "7d": 1,
+  "30d": 4.4,
+  "90d": 13.2,
+};
 const periodLabels: Record<AnalyticsPeriod, string[]> = {
   "7d": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
   "30d": ["Week 1", "Week 2", "Week 3", "Week 4"],
@@ -27,10 +31,23 @@ const periodLabels: Record<AnalyticsPeriod, string[]> = {
 export function getAnalyticsData(period: AnalyticsPeriod) {
   const multiplier = periodMultiplier[period];
   const labels = periodLabels[period];
-  const source = period === "7d" ? baseSalesData : baseSalesData.slice(0, labels.length);
-  const sales = source.map((item, index) => ({ ...item, label: labels[index], revenue: Math.round(item.revenue * multiplier / labels.length), orders: Math.round(item.orders * multiplier / labels.length) }));
+  const source =
+    period === "7d" ? baseSalesData : baseSalesData.slice(0, labels.length);
+  const sales = source.map((item, index) => ({
+    ...item,
+    label: labels[index],
+    revenue: Math.round((item.revenue * multiplier) / labels.length),
+    orders: Math.round((item.orders * multiplier) / labels.length),
+  }));
   const totalRevenue = sales.reduce((sum, item) => sum + item.revenue, 0);
   const totalOrders = sales.reduce((sum, item) => sum + item.orders, 0);
 
-  return { sales, categoryData, totalRevenue, totalOrders, conversionRate: 4.8, averageOrderValue: totalRevenue / totalOrders };
+  return {
+    sales,
+    categoryData,
+    totalRevenue,
+    totalOrders,
+    conversionRate: 4.8,
+    averageOrderValue: totalRevenue / totalOrders,
+  };
 }

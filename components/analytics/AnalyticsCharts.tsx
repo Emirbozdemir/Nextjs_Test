@@ -17,9 +17,10 @@ import {
 } from "recharts";
 
 import Card from "@/components/ui/Card";
+import DataState from "@/components/ui/DataState";
 import { AnalyticsPeriod, getAnalyticsData } from "@/lib/analytics-data";
 
-type AnalyticsChartsProps = { period: AnalyticsPeriod };
+type AnalyticsChartsProps = { period: AnalyticsPeriod; isLoading?: boolean };
 const money = (value: number) =>
   new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -28,8 +29,21 @@ const money = (value: number) =>
     maximumFractionDigits: 1,
   }).format(value);
 
-export default function AnalyticsCharts({ period }: AnalyticsChartsProps) {
+export default function AnalyticsCharts({
+  period,
+  isLoading = false,
+}: AnalyticsChartsProps) {
   const { sales, categoryData } = getAnalyticsData(period);
+  if (isLoading || sales.length === 0)
+    return (
+      <Card>
+        <DataState
+          isLoading={isLoading}
+          title="No analytics data"
+          description="Analytics will appear here when data becomes available."
+        />
+      </Card>
+    );
   return (
     <>
       <div className="grid gap-6 xl:grid-cols-3">

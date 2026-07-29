@@ -62,7 +62,9 @@ export default function ProductsTable({
       <Card>
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-slate-900">{t("products")}</h2>
+            <h2 className="text-xl font-semibold text-slate-900">
+              {t("products")}
+            </h2>
             <p className="mt-1 text-sm text-slate-500">
               {visibleProducts.length} of {products.length} products
             </p>

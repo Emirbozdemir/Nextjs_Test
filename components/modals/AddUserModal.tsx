@@ -53,9 +53,7 @@ export default function AddUserModal({
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <h2 className="text-xl font-bold text-slate-900">{t("addUser")}</h2>
-            <p className="mt-1 text-sm text-slate-500">
-              {t("createUser")}
-            </p>
+            <p className="mt-1 text-sm text-slate-500">{t("createUser")}</p>
           </div>
 
           <button

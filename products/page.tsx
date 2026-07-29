@@ -1,5 +1,5 @@
 import ProductsTable from "@/products/ProductsTable";
-import UserStatsCard from "@/components/users/UserStatsCard";
+import StatsCard from "@/components/ui/StatsCard";
 
 import { Package, Boxes, CircleDollarSign } from "lucide-react";
 
@@ -51,21 +51,21 @@ export default function ProductsPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
-        <UserStatsCard
+        <StatsCard
           title="Products"
           value="248"
           color="bg-blue-600"
           icon={Package}
         />
 
-        <UserStatsCard
+        <StatsCard
           title="In Stock"
           value="224"
           color="bg-green-600"
           icon={Boxes}
         />
 
-        <UserStatsCard
+        <StatsCard
           title="Revenue"
           value="$52K"
           color="bg-yellow-500"

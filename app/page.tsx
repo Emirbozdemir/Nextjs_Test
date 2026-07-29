@@ -17,7 +17,9 @@ export default function Home() {
     <section className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">{t("dashboard")}</h1>
+          <h1 className="text-3xl font-bold text-slate-900">
+            {t("dashboard")}
+          </h1>
           <p className="mt-1 text-slate-500">Welcome back, Emir.</p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -43,7 +45,12 @@ export default function Home() {
           change="+8%"
           icon={DollarSign}
         />
-        <StatCard title={t("orders")} value="845" change="+3%" icon={ShoppingCart} />
+        <StatCard
+          title={t("orders")}
+          value="845"
+          change="+3%"
+          icon={ShoppingCart}
+        />
         <StatCard title="Rating" value="4.9" change="+0.2" icon={Star} />
       </div>
       <div className="grid gap-6 lg:grid-cols-3">

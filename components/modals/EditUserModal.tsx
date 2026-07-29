@@ -55,10 +55,10 @@ function EditUserForm({ user, onClose, onUpdateUser }: EditUserFormProps) {
       <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-xl font-bold text-slate-900">{t("editUser")}</h2>
-            <p className="mt-1 text-sm text-slate-500">
-              {t("updateUser")}
-            </p>
+            <h2 className="text-xl font-bold text-slate-900">
+              {t("editUser")}
+            </h2>
+            <p className="mt-1 text-sm text-slate-500">{t("updateUser")}</p>
           </div>
           <button
             type="button"

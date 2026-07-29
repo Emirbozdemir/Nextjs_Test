@@ -19,9 +19,7 @@ export default function StatsCard({
         <div>
           <p className="text-slate-500">{title}</p>
 
-          <h2 className="mt-2 text-3xl font-bold text-slate-900">
-            {value}
-          </h2>
+          <h2 className="mt-2 text-3xl font-bold text-slate-900">{value}</h2>
         </div>
 
         <div
