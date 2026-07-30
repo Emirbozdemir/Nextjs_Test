@@ -72,9 +72,3 @@ Proje, Next.js 16, TypeScript ve Tailwind CSS ile geliştirilen profesyonel bir 
 - Kullanıcı/ürün/sipariş işlemleri için gerçek API hata, yüklenme ve başarı durumları bağlanmalıdır.
 - Üretim ortamında font yükleme stratejisi gözden geçirilmelidir.
 
-## Önerilen Sonraki Sprint
-
-1. Tüm kalan statik metinleri beş dilde çeviri sözlüğüne bağlamak.
-2. API ve veritabanı katmanını eklemek.
-3. Kimlik doğrulama ve rol tabanlı yetkilendirme eklemek.
-4. E2E testleri ve üretim build doğrulamasını tamamlamak.

@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserStatus {
+  ACTIVE
+  PENDING
+  INACTIVE
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  role      String
+  status    UserStatus @default(ACTIVE)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Product {
+  id        Int      @id @default(autoincrement())
+  name      String
+  category  String
+  stock     Int      @default(0)
+  price     Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  customer  String
+  email     String
+  items     Int
+  total     Decimal     @db.Decimal(10, 2)
+  status    OrderStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  DELIVERED
+  CANCELLED
+}
