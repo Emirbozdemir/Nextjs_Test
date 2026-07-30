@@ -2,6 +2,7 @@
 
 import Card from "@/components/ui/Card";
 import { salesData } from "@/lib/dashboard-data";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 import {
   ResponsiveContainer,
@@ -14,11 +15,12 @@ import {
 } from "recharts";
 
 export default function SalesOverview() {
+  const { t } = useLanguage();
   return (
     <Card className="h-[350px]">
-      <h2 className="text-lg font-semibold text-slate-900">Sales Overview</h2>
+      <h2 className="text-lg font-semibold text-slate-900">{t("salesOverview")}</h2>
 
-      <p className="mb-6 text-sm text-slate-500">Monthly sales performance</p>
+      <p className="mb-6 text-sm text-slate-500">{t("monthlySales")}</p>
 
       <ResponsiveContainer width="100%" height={250}>
         <AreaChart data={salesData}>

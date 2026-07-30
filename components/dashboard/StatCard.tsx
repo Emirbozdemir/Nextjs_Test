@@ -1,5 +1,6 @@
 import { LucideIcon, TrendingUp } from "lucide-react";
 import Card from "@/components/ui/Card";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 interface StatCardProps {
   title: string;
@@ -14,6 +15,7 @@ export default function StatCard({
   change,
   icon: Icon,
 }: StatCardProps) {
+  const { t } = useLanguage();
   return (
     <Card>
       <div className="flex items-center justify-between">
@@ -33,7 +35,7 @@ export default function StatCard({
 
         <span className="text-sm font-semibold">{change}</span>
 
-        <span className="text-sm text-slate-400">this month</span>
+        <span className="text-sm text-slate-400">{t("thisMonth")}</span>
       </div>
     </Card>
   );

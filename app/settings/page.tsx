@@ -142,17 +142,17 @@ export default function SettingsPage() {
               </h2>
             </div>
             <Toggle
-              label="Email notifications"
+              label={t("emailNotifications")}
               checked={emailNotifications}
               onChange={setEmailNotifications}
             />
             <Toggle
-              label="Order activity"
+              label={t("orderActivity")}
               checked={orderNotifications}
               onChange={setOrderNotifications}
             />
             <Toggle
-              label="Weekly reports"
+              label={t("weeklyReports")}
               checked={weeklyReports}
               onChange={setWeeklyReports}
             />

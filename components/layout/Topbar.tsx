@@ -16,6 +16,7 @@ import {
 import { initialOrders } from "@/data/orders";
 import { initialProducts } from "@/data/products";
 import { initialUsers } from "@/data/user";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 type SearchResult = {
   id: string;
@@ -28,28 +29,29 @@ type SearchResult = {
 const notifications = [
   {
     id: 1,
-    title: "New order received",
-    description: "Order #1048 was placed a few minutes ago.",
-    time: "5m ago",
+    title: "notificationOrderTitle",
+    description: "notificationOrderDescription",
+    time: "notificationOrderTime",
     color: "bg-blue-500",
   },
   {
     id: 2,
-    title: "Low stock alert",
-    description: "Apple Watch Ultra has only 7 items left.",
-    time: "1h ago",
+    title: "notificationStockTitle",
+    description: "notificationStockDescription",
+    time: "notificationStockTime",
     color: "bg-amber-500",
   },
   {
     id: 3,
-    title: "Weekly report ready",
-    description: "Your performance report is ready to view.",
-    time: "3h ago",
+    title: "notificationReportTitle",
+    description: "notificationReportDescription",
+    time: "notificationReportTime",
     color: "bg-emerald-500",
   },
 ];
 
 export default function Topbar() {
+  const { t } = useLanguage();
   const [query, setQuery] = useState("");
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(
@@ -190,9 +192,9 @@ export default function Topbar() {
             <div className="absolute right-0 top-14 w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/15">
               <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
                 <div>
-                  <p className="font-semibold text-slate-900">Notifications</p>
+                  <p className="font-semibold text-slate-900">{t("notifications")}</p>
                   <p className="text-xs text-slate-500">
-                    {unreadNotifications} unread updates
+                    {unreadNotifications} {t("unreadUpdates")}
                   </p>
                 </div>
                 <button
@@ -201,7 +203,7 @@ export default function Topbar() {
                   className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-700"
                 >
                   <CheckCheck size={15} />
-                  Mark all read
+                  {t("markAllRead")}
                 </button>
               </div>
               <div className="divide-y divide-slate-100">
@@ -212,13 +214,13 @@ export default function Topbar() {
                     />
                     <div>
                       <p className="text-sm font-semibold text-slate-800">
-                        {notification.title}
+                        {t(notification.title)}
                       </p>
                       <p className="mt-0.5 text-xs leading-5 text-slate-500">
-                        {notification.description}
+                        {t(notification.description)}
                       </p>
                       <p className="mt-1 text-xs text-slate-400">
-                        {notification.time}
+                        {t(notification.time)}
                       </p>
                     </div>
                   </div>

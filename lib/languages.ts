@@ -145,6 +145,41 @@ Object.assign(translations.en, {
   edit: "Edit",
   cancel: "Cancel",
 });
+Object.assign(translations.en, { editProduct: "Edit Product", updateProduct: "Update inventory information.", createProduct: "Add an item to your inventory." });
+Object.assign(translations.tr, { editProduct: "Ürünü Düzenle", updateProduct: "Envanter bilgilerini güncelleyin.", createProduct: "Envanterinize yeni bir ürün ekleyin." });
+Object.assign(translations.fr, { editProduct: "Modifier le produit", updateProduct: "Mettez à jour les informations d’inventaire.", createProduct: "Ajoutez un article à votre inventaire." });
+Object.assign(translations.ru, { editProduct: "Изменить товар", updateProduct: "Обновите информацию о запасах.", createProduct: "Добавьте товар в инвентарь." });
+Object.assign(translations.ar, { editProduct: "تعديل المنتج", updateProduct: "حدّث معلومات المخزون.", createProduct: "أضف عنصرًا إلى مخزونك." });
+Object.assign(translations.en, { recentOrders: "Recent Orders", searchOrders: "Search order or customer...", noOrders: "No orders found" });
+Object.assign(translations.tr, { recentOrders: "Son Siparişler", searchOrders: "Sipariş veya müşteri ara...", noOrders: "Sipariş bulunamadı" });
+Object.assign(translations.fr, { recentOrders: "Commandes récentes", searchOrders: "Rechercher une commande ou un client...", noOrders: "Aucune commande trouvée" });
+Object.assign(translations.ru, { recentOrders: "Последние заказы", searchOrders: "Поиск заказа или клиента...", noOrders: "Заказы не найдены" });
+Object.assign(translations.ar, { recentOrders: "الطلبات الأخيرة", searchOrders: "ابحث عن طلب أو عميل...", noOrders: "لم يتم العثور على طلبات" });
+Object.assign(translations.en, { salesOverview: "Sales Overview", monthlySales: "Monthly sales performance", currentMonth: "Current month", totalRevenue: "Total Revenue" });
+Object.assign(translations.tr, { salesOverview: "Satış Özeti", monthlySales: "Aylık satış performansı", currentMonth: "Bu ay", totalRevenue: "Toplam Gelir" });
+Object.assign(translations.fr, { salesOverview: "Aperçu des ventes", monthlySales: "Performances mensuelles des ventes", currentMonth: "Mois en cours", totalRevenue: "Revenus totaux" });
+Object.assign(translations.ru, { salesOverview: "Обзор продаж", monthlySales: "Ежемесячные показатели продаж", currentMonth: "Текущий месяц", totalRevenue: "Общий доход" });
+Object.assign(translations.ar, { salesOverview: "نظرة عامة على المبيعات", monthlySales: "أداء المبيعات الشهري", currentMonth: "الشهر الحالي", totalRevenue: "إجمالي الإيرادات" });
+Object.assign(translations.en, { emailNotifications: "Email notifications", orderActivity: "Order activity", weeklyReports: "Weekly reports" });
+Object.assign(translations.tr, { emailNotifications: "E-posta bildirimleri", orderActivity: "Sipariş hareketleri", weeklyReports: "Haftalık raporlar" });
+Object.assign(translations.fr, { emailNotifications: "Notifications par e-mail", orderActivity: "Activité des commandes", weeklyReports: "Rapports hebdomadaires" });
+Object.assign(translations.ru, { emailNotifications: "Уведомления по электронной почте", orderActivity: "Активность заказов", weeklyReports: "Еженедельные отчёты" });
+Object.assign(translations.ar, { emailNotifications: "إشعارات البريد الإلكتروني", orderActivity: "نشاط الطلبات", weeklyReports: "التقارير الأسبوعية" });
+Object.assign(translations.en, { unreadUpdates: "unread updates", markAllRead: "Mark all read", notificationOrderTitle: "New order received", notificationOrderDescription: "Order #1048 was placed a few minutes ago.", notificationOrderTime: "5m ago", notificationStockTitle: "Low stock alert", notificationStockDescription: "Apple Watch Ultra has only 7 items left.", notificationStockTime: "1h ago", notificationReportTitle: "Weekly report ready", notificationReportDescription: "Your performance report is ready to view.", notificationReportTime: "3h ago" });
+Object.assign(translations.tr, { unreadUpdates: "okunmamış güncelleme", markAllRead: "Tümünü okundu işaretle", notificationOrderTitle: "Yeni sipariş alındı", notificationOrderDescription: "#1048 numaralı sipariş birkaç dakika önce oluşturuldu.", notificationOrderTime: "5 dk önce", notificationStockTitle: "Düşük stok uyarısı", notificationStockDescription: "Apple Watch Ultra için yalnızca 7 ürün kaldı.", notificationStockTime: "1 sa önce", notificationReportTitle: "Haftalık rapor hazır", notificationReportDescription: "Performans raporunuz görüntülemeye hazır.", notificationReportTime: "3 sa önce" });
+Object.assign(translations.fr, { unreadUpdates: "mises à jour non lues", markAllRead: "Tout marquer comme lu", notificationOrderTitle: "Nouvelle commande reçue", notificationOrderDescription: "La commande #1048 vient d’être passée.", notificationOrderTime: "il y a 5 min", notificationStockTitle: "Alerte de stock faible", notificationStockDescription: "Il ne reste que 7 Apple Watch Ultra.", notificationStockTime: "il y a 1 h", notificationReportTitle: "Rapport hebdomadaire prêt", notificationReportDescription: "Votre rapport de performance est prêt.", notificationReportTime: "il y a 3 h" });
+Object.assign(translations.ru, { unreadUpdates: "непрочитанных обновлений", markAllRead: "Прочитать все", notificationOrderTitle: "Получен новый заказ", notificationOrderDescription: "Заказ #1048 был оформлен несколько минут назад.", notificationOrderTime: "5 мин назад", notificationStockTitle: "Предупреждение о низком запасе", notificationStockDescription: "Осталось только 7 Apple Watch Ultra.", notificationStockTime: "1 ч назад", notificationReportTitle: "Еженедельный отчёт готов", notificationReportDescription: "Ваш отчёт о производительности готов.", notificationReportTime: "3 ч назад" });
+Object.assign(translations.ar, { unreadUpdates: "تحديثات غير مقروءة", markAllRead: "وضع علامة الكل كمقروء", notificationOrderTitle: "تم استلام طلب جديد", notificationOrderDescription: "تم إنشاء الطلب #1048 قبل بضع دقائق.", notificationOrderTime: "منذ 5 دقائق", notificationStockTitle: "تنبيه مخزون منخفض", notificationStockDescription: "تبقى 7 قطع فقط من Apple Watch Ultra.", notificationStockTime: "منذ ساعة", notificationReportTitle: "التقرير الأسبوعي جاهز", notificationReportDescription: "تقرير الأداء الخاص بك جاهز للعرض.", notificationReportTime: "منذ 3 ساعات" });
+Object.assign(translations.en, { revenueComparison: "18% compared to last month" });
+Object.assign(translations.tr, { revenueComparison: "geçen aya göre %18 artış" });
+Object.assign(translations.fr, { revenueComparison: "18 % de plus que le mois dernier" });
+Object.assign(translations.ru, { revenueComparison: "на 18 % больше, чем в прошлом месяце" });
+Object.assign(translations.ar, { revenueComparison: "زيادة 18٪ مقارنة بالشهر الماضي" });
+Object.assign(translations.en, { thisMonth: "this month" });
+Object.assign(translations.tr, { thisMonth: "bu ay" });
+Object.assign(translations.fr, { thisMonth: "ce mois-ci" });
+Object.assign(translations.ru, { thisMonth: "в этом месяце" });
+Object.assign(translations.ar, { thisMonth: "هذا الشهر" });
 Object.assign(translations.tr, {
   searchUsers: "Ad, e-posta veya role göre ara...",
   allStatuses: "Tüm durumlar",

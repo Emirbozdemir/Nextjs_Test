@@ -7,6 +7,7 @@ import Avatar from "@/components/ui/Avatar";
 import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 import { Order, OrderStatus } from "@/types/order";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 type OrdersTableProps = {
   orders: Order[];
@@ -29,6 +30,7 @@ export default function OrdersTable({
   orders,
   onStatusChange,
 }: OrdersTableProps) {
+  const { t } = useLanguage();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"All" | OrderStatus>("All");
   const visibleOrders = useMemo(() => {
@@ -62,7 +64,7 @@ export default function OrdersTable({
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-slate-900">
-            Recent Orders
+            {t("recentOrders")}
           </h2>
           <p className="mt-1 text-sm text-slate-500">
             {visibleOrders.length} of {orders.length} orders
@@ -77,7 +79,7 @@ export default function OrdersTable({
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search order or customer..."
+              placeholder={t("searchOrders")}
               className="w-full rounded-xl border border-slate-200 py-3 pl-10 pr-4 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:w-64"
             />
           </div>
@@ -89,7 +91,7 @@ export default function OrdersTable({
             aria-label="Filter orders by status"
             className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500"
           >
-            <option value="All">All statuses</option>
+              <option value="All">{t("allStatuses")}</option>
             {statuses.map((status) => (
               <option key={status} value={status}>
                 {status}
@@ -171,7 +173,7 @@ export default function OrdersTable({
       </div>
       {visibleOrders.length === 0 && (
         <div className="py-14 text-center">
-          <p className="font-semibold text-slate-700">No orders found</p>
+          <p className="font-semibold text-slate-700">{t("noOrders")}</p>
           <p className="mt-1 text-sm text-slate-500">
             Try changing your search or status filter.
           </p>

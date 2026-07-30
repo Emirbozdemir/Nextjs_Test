@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { X } from "lucide-react";
 
 import { Product } from "@/types/product";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 type ProductModalProps = {
   product: Product | null;
@@ -42,6 +43,7 @@ function ProductFormModal({
   onClose,
   onSave,
 }: Omit<ProductModalProps, "open">) {
+  const { t } = useLanguage();
   const [form, setForm] = useState<Product | ProductForm>(
     product ?? emptyProduct,
   );
@@ -59,12 +61,12 @@ function ProductFormModal({
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <h2 className="text-xl font-bold text-slate-900">
-              {isEditing ? "Edit Product" : "Add Product"}
+              {isEditing ? t("editProduct") : t("addProduct")}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
               {isEditing
-                ? "Update inventory information."
-                : "Add an item to your inventory."}
+                ? t("updateProduct")
+                : t("createProduct")}
             </p>
           </div>
           <button
@@ -81,7 +83,7 @@ function ProductFormModal({
             required
             value={form.name}
             onChange={(event) => setForm({ ...form, name: event.target.value })}
-            placeholder="Product name"
+            placeholder={t("product")}
             className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           />
           <input
@@ -90,7 +92,7 @@ function ProductFormModal({
             onChange={(event) =>
               setForm({ ...form, category: event.target.value })
             }
-            placeholder="Category"
+            placeholder={t("category")}
             className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           />
           <div className="grid grid-cols-2 gap-4">
@@ -102,7 +104,7 @@ function ProductFormModal({
               onChange={(event) =>
                 setForm({ ...form, stock: Number(event.target.value) })
               }
-              placeholder="Stock"
+              placeholder={t("stock")}
               className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
             <input
@@ -114,7 +116,7 @@ function ProductFormModal({
               onChange={(event) =>
                 setForm({ ...form, price: Number(event.target.value) })
               }
-              placeholder="Price"
+              placeholder={t("price")}
               className="w-full rounded-xl border border-slate-200 p-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
           </div>
@@ -124,13 +126,13 @@ function ProductFormModal({
               onClick={onClose}
               className="rounded-xl border border-slate-200 px-4 py-2 font-medium text-slate-700 transition hover:bg-slate-50"
             >
-              Cancel
+              {t("cancel")}
             </button>
             <button
               type="submit"
               className="rounded-xl bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
             >
-              {isEditing ? "Save Changes" : "Save Product"}
+              {isEditing ? t("save") : t("addProduct")}
             </button>
           </div>
         </form>
