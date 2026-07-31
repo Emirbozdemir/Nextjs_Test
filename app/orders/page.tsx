@@ -20,15 +20,45 @@ export default function OrdersPage() {
   const { t } = useLanguage();
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [toast, setToast] = useState<Toast>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadOrders() {
+      try {
+        const response = await fetch("/api/orders", { signal: controller.signal });
+        if (!response.ok) throw new Error("Unable to load orders.");
+        setOrders(await response.json());
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) setOrders(initialOrders);
+      } finally {
+        if (!controller.signal.aborted) setIsLoading(false);
+      }
+    }
+
+    void loadOrders();
+    return () => controller.abort();
+  }, []);
   useEffect(() => {
     if (!toast) return;
     const timeout = window.setTimeout(() => setToast(null), 3000);
     return () => window.clearTimeout(timeout);
   }, [toast]);
-  const handleStatusChange = (id: number, status: OrderStatus) => {
-    setOrders((current) =>
-      current.map((order) => (order.id === id ? { ...order, status } : order)),
-    );
+  const handleStatusChange = async (id: number, status: OrderStatus) => {
+    const response = await fetch(`/api/orders/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+
+    if (!response.ok) {
+      setToast({ message: "Unable to update order.", id: Date.now() });
+      return;
+    }
+
+    const savedOrder = await response.json();
+    setOrders((current) => current.map((order) => (order.id === id ? savedOrder : order)));
     setToast({
       message: `Order #${id} marked as ${status.toLowerCase()}.`,
       id: Date.now(),
@@ -73,7 +103,11 @@ export default function OrdersPage() {
           icon={CircleDollarSign}
         />
       </div>
-      <OrdersTable orders={orders} onStatusChange={handleStatusChange} />
+      {isLoading ? (
+        <div className="h-80 animate-pulse rounded-3xl bg-slate-100" />
+      ) : (
+        <OrdersTable orders={orders} onStatusChange={handleStatusChange} />
+      )}
       {toast && (
         <div
           key={toast.id}
