@@ -31,10 +31,8 @@ export default function RootLayout({
       <body>
         <LanguageProvider>
           <div className="flex min-h-screen">
-            {/* Sidebar */}
             <Sidebar />
 
-            {/* Main Content */}
             <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
               <Topbar />
 

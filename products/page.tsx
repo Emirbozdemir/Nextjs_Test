@@ -29,11 +29,9 @@ export default function ProductsPage() {
   ];
 
   const handleEdit = () => {
-    // later: open edit modal
   };
 
   const handleDelete = () => {
-    // later: delete product
   };
 
   return (

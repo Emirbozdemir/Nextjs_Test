@@ -28,7 +28,6 @@ export default function Sidebar() {
 
   return (
     <aside className="flex h-screen w-72 shrink-0 flex-col border-r border-slate-800 bg-slate-950 text-slate-300 shadow-2xl shadow-slate-900/20">
-      {/* Logo */}
       <div className="border-b border-slate-800 p-6">
         <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 text-lg font-black text-white shadow-lg shadow-indigo-500/30">
           A
@@ -40,7 +39,6 @@ export default function Sidebar() {
         <p className="mt-1 text-sm text-slate-400">Management System</p>
       </div>
 
-      {/* Menu */}
       <nav className="flex-1 space-y-1.5 p-4">
         {menuItems.map((item) => {
           const Icon = item.icon;
@@ -69,7 +67,6 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Footer */}
       <div className="border-t border-slate-800 p-5">
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 font-bold text-white shadow-lg shadow-indigo-500/20">
