@@ -28,6 +28,28 @@ export default function ProductsPage() {
   );
 
   const [toast, setToast] = useState<Toast>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadProducts() {
+      try {
+        const response = await fetch("/api/products", { signal: controller.signal });
+        if (!response.ok) throw new Error("Unable to load products.");
+        setProducts(await response.json());
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) {
+          setProducts(initialProducts);
+        }
+      } finally {
+        if (!controller.signal.aborted) setIsLoading(false);
+      }
+    }
+
+    void loadProducts();
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     if (!toast) return;
@@ -51,23 +73,39 @@ export default function ProductsPage() {
     setProductBeingEdited(null);
   };
 
-  const handleSaveProduct = (product: Omit<Product, "id"> | Product) => {
+  const handleSaveProduct = async (product: Omit<Product, "id"> | Product) => {
     if ("id" in product) {
-      setProducts((current) =>
-        current.map((item) => (item.id === product.id ? product : item)),
-      );
+      const response = await fetch(`/api/products/${product.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product),
+      });
+
+      if (!response.ok) {
+        showToast("Unable to update product.");
+        return;
+      }
+
+      const savedProduct = await response.json();
+      setProducts((current) => current.map((item) => (item.id === product.id ? savedProduct : item)));
 
       showToast("Product updated successfully.");
       return;
     }
 
-    setProducts((current) => [
-      ...current,
-      {
-        ...product,
-        id: Math.max(0, ...current.map((item) => item.id)) + 1,
-      },
-    ]);
+    const response = await fetch("/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(product),
+    });
+
+    if (!response.ok) {
+      showToast("Unable to add product.");
+      return;
+    }
+
+    const savedProduct = await response.json();
+    setProducts((current) => [savedProduct, ...current]);
 
     showToast("Product added successfully.");
   };
@@ -77,7 +115,13 @@ export default function ProductsPage() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
+    const response = await fetch(`/api/products/${id}`, { method: "DELETE" });
+    if (!response.ok) {
+      showToast("Unable to delete product.");
+      return;
+    }
+
     setProducts((current) => current.filter((product) => product.id !== id));
 
     showToast("Product deleted successfully.");
@@ -140,11 +184,15 @@ export default function ProductsPage() {
         />
       </div>
 
-      <ProductsTable
-        products={products}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      {isLoading ? (
+        <div className="h-80 animate-pulse rounded-3xl bg-slate-100" />
+      ) : (
+        <ProductsTable
+          products={products}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
 
       <ProductModal
         open={isModalOpen}
