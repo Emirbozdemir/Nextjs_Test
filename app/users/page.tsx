@@ -51,27 +51,51 @@ export default function UsersPage() {
 
   const showToast = (message: string) => setToast({ message, id: Date.now() });
 
-  const handleAddUser = (newUser: Omit<User, "id">) => {
-    setUsers((currentUsers) => [
-      ...currentUsers,
-      {
-        ...newUser,
-        id: Math.max(0, ...currentUsers.map((user) => user.id)) + 1,
-      },
-    ]);
+  const handleAddUser = async (newUser: Omit<User, "id">) => {
+    const response = await fetch("/api/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newUser),
+    });
+
+    if (!response.ok) {
+      showToast("Unable to add user.");
+      return;
+    }
+
+    const savedUser = await response.json();
+    setUsers((currentUsers) => [savedUser, ...currentUsers]);
     showToast("User added successfully.");
   };
 
-  const handleUpdateUser = (updatedUser: User) => {
+  const handleUpdateUser = async (updatedUser: User) => {
+    const response = await fetch(`/api/users/${updatedUser.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedUser),
+    });
+
+    if (!response.ok) {
+      showToast("Unable to update user.");
+      return;
+    }
+
+    const savedUser = await response.json();
     setUsers((currentUsers) =>
-      currentUsers.map((user) =>
-        user.id === updatedUser.id ? updatedUser : user,
+      currentUsers.map((currentUser) =>
+        currentUser.id === updatedUser.id ? savedUser : currentUser,
       ),
     );
     showToast("User details updated.");
   };
 
-  const handleDeleteUser = (id: number) => {
+  const handleDeleteUser = async (id: number) => {
+    const response = await fetch(`/api/users/${id}`, { method: "DELETE" });
+    if (!response.ok) {
+      showToast("Unable to delete user.");
+      return;
+    }
+
     setUsers((currentUsers) => currentUsers.filter((user) => user.id !== id));
     showToast("User deleted successfully.");
   };
