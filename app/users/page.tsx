@@ -19,6 +19,28 @@ export default function UsersPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [userBeingEdited, setUserBeingEdited] = useState<User | null>(null);
   const [toast, setToast] = useState<Toast>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadUsers() {
+      try {
+        const response = await fetch("/api/users", { signal: controller.signal });
+        if (!response.ok) throw new Error("Unable to load users.");
+        setUsers(await response.json());
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) {
+          setUsers(initialUsers);
+        }
+      } finally {
+        if (!controller.signal.aborted) setIsLoading(false);
+      }
+    }
+
+    void loadUsers();
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     if (!toast) return;
@@ -95,11 +117,15 @@ export default function UsersPage() {
         />
       </div>
 
-      <UsersTable
-        users={users}
-        onEdit={setUserBeingEdited}
-        onDelete={handleDeleteUser}
-      />
+      {isLoading ? (
+        <div className="h-80 animate-pulse rounded-3xl bg-slate-100" />
+      ) : (
+        <UsersTable
+          users={users}
+          onEdit={setUserBeingEdited}
+          onDelete={handleDeleteUser}
+        />
+      )}
 
       <AddUserModal
         open={isAddModalOpen}
