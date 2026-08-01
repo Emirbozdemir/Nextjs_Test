@@ -212,6 +212,31 @@ Object.assign(translations.ru, {
   orderCreated: "создан.",
 });
 Object.assign(translations.en, {
+  fromDate: "From date",
+  toDate: "To date",
+  clearFilters: "Clear filters",
+});
+Object.assign(translations.tr, {
+  fromDate: "Başlangıç tarihi",
+  toDate: "Bitiş tarihi",
+  clearFilters: "Filtreleri temizle",
+});
+Object.assign(translations.fr, {
+  fromDate: "Date de début",
+  toDate: "Date de fin",
+  clearFilters: "Effacer les filtres",
+});
+Object.assign(translations.ar, {
+  fromDate: "من تاريخ",
+  toDate: "إلى تاريخ",
+  clearFilters: "مسح الفلاتر",
+});
+Object.assign(translations.ru, {
+  fromDate: "Дата начала",
+  toDate: "Дата окончания",
+  clearFilters: "Очистить фильтры",
+});
+Object.assign(translations.en, {
   editProduct: "Edit Product",
   updateProduct: "Update inventory information.",
   createProduct: "Add an item to your inventory.",

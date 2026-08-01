@@ -36,12 +36,16 @@ export default function OrdersTable({
   const { language, t } = useLanguage();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"All" | OrderStatus>("All");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
   const visibleOrders = useMemo(() => {
     const query = search.trim().toLowerCase();
     return orders
       .filter(
         (order) => statusFilter === "All" || order.status === statusFilter,
       )
+      .filter((order) => !fromDate || order.date >= fromDate)
+      .filter((order) => !toDate || order.date <= toDate)
       .filter(
         (order) =>
           !query ||
@@ -49,7 +53,14 @@ export default function OrdersTable({
             value.toLowerCase().includes(query),
           ),
       );
-  }, [orders, search, statusFilter]);
+  }, [fromDate, orders, search, statusFilter, toDate]);
+  const hasFilters = search || statusFilter !== "All" || fromDate || toDate;
+  const clearFilters = () => {
+    setSearch("");
+    setStatusFilter("All");
+    setFromDate("");
+    setToDate("");
+  };
   const money = (total: number) =>
     new Intl.NumberFormat(languages[language].locale, {
       style: "currency",
@@ -140,6 +151,30 @@ export default function OrdersTable({
               </option>
             ))}
           </select>
+          <input
+            type="date"
+            value={fromDate}
+            onChange={(event) => setFromDate(event.target.value)}
+            aria-label={t("fromDate")}
+            className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500"
+          />
+          <input
+            type="date"
+            value={toDate}
+            min={fromDate || undefined}
+            onChange={(event) => setToDate(event.target.value)}
+            aria-label={t("toDate")}
+            className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500"
+          />
+          {hasFilters && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="rounded-xl px-3 py-3 text-sm font-semibold text-slate-500 transition hover:bg-slate-100 hover:text-slate-800"
+            >
+              {t("clearFilters")}
+            </button>
+          )}
           <button
             type="button"
             onClick={exportOrders}
