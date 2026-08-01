@@ -10,6 +10,8 @@ import {
 
 import OrdersTable from "@/components/orders/OrdersTable";
 import UserStatsCard from "@/components/users/UserStatsCard";
+import AddOrderModal from "@/components/modals/AddOrderModal";
+import OrderDetailsModal from "@/components/modals/OrderDetailsModal";
 import { initialOrders } from "@/data/orders";
 import { Order, OrderStatus } from "@/types/order";
 import { useLanguage } from "@/components/providers/LanguageProvider";
@@ -21,17 +23,22 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [toast, setToast] = useState<Toast>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
 
     async function loadOrders() {
       try {
-        const response = await fetch("/api/orders", { signal: controller.signal });
+        const response = await fetch("/api/orders", {
+          signal: controller.signal,
+        });
         if (!response.ok) throw new Error("Unable to load orders.");
         setOrders(await response.json());
       } catch (error) {
-        if (!(error instanceof DOMException && error.name === "AbortError")) setOrders(initialOrders);
+        if (!(error instanceof DOMException && error.name === "AbortError"))
+          setOrders(initialOrders);
       } finally {
         if (!controller.signal.aborted) setIsLoading(false);
       }
@@ -58,11 +65,30 @@ export default function OrdersPage() {
     }
 
     const savedOrder = await response.json();
-    setOrders((current) => current.map((order) => (order.id === id ? savedOrder : order)));
+    setOrders((current) =>
+      current.map((order) => (order.id === id ? savedOrder : order)),
+    );
     setToast({
       message: `Order #${id} marked as ${status.toLowerCase()}.`,
       id: Date.now(),
     });
+  };
+  const handleCreateOrder = async (order: Omit<Order, "id" | "date">) => {
+    const response = await fetch("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(order),
+    });
+
+    if (!response.ok) {
+      setToast({ message: "Unable to create order.", id: Date.now() });
+      return false;
+    }
+
+    const savedOrder = await response.json();
+    setOrders((current) => [savedOrder, ...current]);
+    setToast({ message: `Order #${savedOrder.id} created.`, id: Date.now() });
+    return true;
   };
   const pendingOrders = orders.filter(
     (order) => order.status === "Pending" || order.status === "Processing",
@@ -79,9 +105,18 @@ export default function OrdersPage() {
 
   return (
     <section className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-slate-900">{t("orders")}</h1>
-        <p className="mt-1 text-slate-500">{t("manageOrders")}</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900">{t("orders")}</h1>
+          <p className="mt-1 text-slate-500">{t("manageOrders")}</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsAddModalOpen(true)}
+          className="rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white transition hover:bg-blue-700"
+        >
+          {t("addOrder")}
+        </button>
       </div>
       <div className="grid gap-6 md:grid-cols-3">
         <UserStatsCard
@@ -106,7 +141,11 @@ export default function OrdersPage() {
       {isLoading ? (
         <div className="h-80 animate-pulse rounded-3xl bg-slate-100" />
       ) : (
-        <OrdersTable orders={orders} onStatusChange={handleStatusChange} />
+        <OrdersTable
+          orders={orders}
+          onStatusChange={handleStatusChange}
+          onView={setSelectedOrder}
+        />
       )}
       {toast && (
         <div
@@ -118,6 +157,15 @@ export default function OrdersPage() {
           {toast.message}
         </div>
       )}
+      <AddOrderModal
+        open={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSave={handleCreateOrder}
+      />
+      <OrderDetailsModal
+        order={selectedOrder}
+        onClose={() => setSelectedOrder(null)}
+      />
     </section>
   );
 }

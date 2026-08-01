@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown, Eye, Search } from "lucide-react";
 
 import Avatar from "@/components/ui/Avatar";
 import Badge from "@/components/ui/Badge";
@@ -12,6 +12,7 @@ import { useLanguage } from "@/components/providers/LanguageProvider";
 type OrdersTableProps = {
   orders: Order[];
   onStatusChange: (id: number, status: OrderStatus) => void;
+  onView: (order: Order) => void;
 };
 const statuses: OrderStatus[] = [
   "Pending",
@@ -29,6 +30,7 @@ const badgeColor: Record<OrderStatus, "yellow" | "blue" | "green" | "red"> = {
 export default function OrdersTable({
   orders,
   onStatusChange,
+  onView,
 }: OrdersTableProps) {
   const { t } = useLanguage();
   const [search, setSearch] = useState("");
@@ -91,7 +93,7 @@ export default function OrdersTable({
             aria-label="Filter orders by status"
             className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500"
           >
-              <option value="All">{t("allStatuses")}</option>
+            <option value="All">{t("allStatuses")}</option>
             {statuses.map((status) => (
               <option key={status} value={status}>
                 {status}
@@ -109,7 +111,7 @@ export default function OrdersTable({
               <th className="pb-4">Items</th>
               <th className="pb-4">Total</th>
               <th className="pb-4">Status</th>
-              <th className="pb-4 text-right">Update</th>
+              <th className="pb-4 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -142,28 +144,38 @@ export default function OrdersTable({
                   <Badge color={badgeColor[order.status]}>{order.status}</Badge>
                 </td>
                 <td className="text-right">
-                  <div className="relative inline-flex">
-                    <select
-                      value={order.status}
-                      onChange={(event) =>
-                        onStatusChange(
-                          order.id,
-                          event.target.value as OrderStatus,
-                        )
-                      }
-                      aria-label={`Update status for order ${order.id}`}
-                      className="appearance-none rounded-lg border border-slate-200 bg-white py-2 pl-3 pr-8 text-sm font-medium text-slate-700 outline-none transition hover:bg-slate-50 focus:border-blue-500"
+                  <div className="inline-flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => onView(order)}
+                      aria-label={`View order ${order.id}`}
+                      className="rounded-lg border border-slate-200 p-2 text-slate-500 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
                     >
-                      {statuses.map((status) => (
-                        <option key={status} value={status}>
-                          {status}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown
-                      size={15}
-                      className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400"
-                    />
+                      <Eye size={17} />
+                    </button>
+                    <div className="relative inline-flex">
+                      <select
+                        value={order.status}
+                        onChange={(event) =>
+                          onStatusChange(
+                            order.id,
+                            event.target.value as OrderStatus,
+                          )
+                        }
+                        aria-label={`Update status for order ${order.id}`}
+                        className="appearance-none rounded-lg border border-slate-200 bg-white py-2 pl-3 pr-8 text-sm font-medium text-slate-700 outline-none transition hover:bg-slate-50 focus:border-blue-500"
+                      >
+                        {statuses.map((status) => (
+                          <option key={status} value={status}>
+                            {status}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown
+                        size={15}
+                        className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400"
+                      />
+                    </div>
                   </div>
                 </td>
               </tr>
