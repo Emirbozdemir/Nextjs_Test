@@ -145,6 +145,72 @@ Object.assign(translations.en, {
   edit: "Edit",
   cancel: "Cancel",
 });
+
+Object.assign(translations.en, {
+  orderStatusPending: "Pending",
+  orderStatusProcessing: "Processing",
+  orderStatusDelivered: "Delivered",
+  orderStatusCancelled: "Cancelled",
+  exportCsv: "Export CSV",
+  viewOrder: "View order",
+  updateOrderStatus: "Update order status",
+  adjustOrderFilters: "Try changing your search or status filter.",
+  orderUpdateFailed: "Unable to update order.",
+  orderCreateFailed: "Unable to create order.",
+  orderCreated: "created.",
+});
+Object.assign(translations.tr, {
+  orderStatusPending: "Bekliyor",
+  orderStatusProcessing: "Hazırlanıyor",
+  orderStatusDelivered: "Teslim edildi",
+  orderStatusCancelled: "İptal edildi",
+  exportCsv: "CSV dışa aktar",
+  viewOrder: "Siparişi görüntüle",
+  updateOrderStatus: "Sipariş durumunu güncelle",
+  adjustOrderFilters: "Aramanızı veya durum filtrenizi değiştirin.",
+  orderUpdateFailed: "Sipariş güncellenemedi.",
+  orderCreateFailed: "Sipariş oluşturulamadı.",
+  orderCreated: "oluşturuldu.",
+});
+Object.assign(translations.fr, {
+  orderStatusPending: "En attente",
+  orderStatusProcessing: "En cours",
+  orderStatusDelivered: "Livrée",
+  orderStatusCancelled: "Annulée",
+  exportCsv: "Exporter en CSV",
+  viewOrder: "Voir la commande",
+  updateOrderStatus: "Mettre à jour le statut",
+  adjustOrderFilters: "Modifiez votre recherche ou votre filtre de statut.",
+  orderUpdateFailed: "Impossible de mettre à jour la commande.",
+  orderCreateFailed: "Impossible de créer la commande.",
+  orderCreated: "créée.",
+});
+Object.assign(translations.ar, {
+  orderStatusPending: "قيد الانتظار",
+  orderStatusProcessing: "قيد المعالجة",
+  orderStatusDelivered: "تم التسليم",
+  orderStatusCancelled: "ملغى",
+  exportCsv: "تصدير CSV",
+  viewOrder: "عرض الطلب",
+  updateOrderStatus: "تحديث حالة الطلب",
+  adjustOrderFilters: "غيّر البحث أو فلتر الحالة.",
+  orderUpdateFailed: "تعذر تحديث الطلب.",
+  orderCreateFailed: "تعذر إنشاء الطلب.",
+  orderCreated: "تم إنشاؤه.",
+});
+Object.assign(translations.ru, {
+  orderStatusPending: "Ожидает",
+  orderStatusProcessing: "В обработке",
+  orderStatusDelivered: "Доставлен",
+  orderStatusCancelled: "Отменён",
+  exportCsv: "Экспорт CSV",
+  viewOrder: "Просмотреть заказ",
+  updateOrderStatus: "Обновить статус заказа",
+  adjustOrderFilters: "Измените поиск или фильтр статуса.",
+  orderUpdateFailed: "Не удалось обновить заказ.",
+  orderCreateFailed: "Не удалось создать заказ.",
+  orderCreated: "создан.",
+});
 Object.assign(translations.en, {
   editProduct: "Edit Product",
   updateProduct: "Update inventory information.",

@@ -1,13 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown, Eye, Search } from "lucide-react";
+import { ChevronDown, Download, Eye, Search } from "lucide-react";
 
 import Avatar from "@/components/ui/Avatar";
 import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 import { Order, OrderStatus } from "@/types/order";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { languages } from "@/lib/languages";
 
 type OrdersTableProps = {
   orders: Order[];
@@ -32,7 +33,7 @@ export default function OrdersTable({
   onStatusChange,
   onView,
 }: OrdersTableProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"All" | OrderStatus>("All");
   const visibleOrders = useMemo(() => {
@@ -50,16 +51,55 @@ export default function OrdersTable({
       );
   }, [orders, search, statusFilter]);
   const money = (total: number) =>
-    new Intl.NumberFormat("en-US", {
+    new Intl.NumberFormat(languages[language].locale, {
       style: "currency",
       currency: "USD",
     }).format(total);
   const date = (value: string) =>
-    new Intl.DateTimeFormat("en-US", {
+    new Intl.DateTimeFormat(languages[language].locale, {
       month: "short",
       day: "numeric",
       year: "numeric",
     }).format(new Date(`${value}T00:00:00`));
+  const statusLabel = (status: OrderStatus) => t(`orderStatus${status}`);
+  const exportOrders = () => {
+    const header = [
+      "Order ID",
+      "Customer",
+      "Email",
+      "Date",
+      "Items",
+      "Total",
+      "Status",
+    ];
+    const escape = (value: string | number) =>
+      `"${String(value).replaceAll('"', '""')}"`;
+    const rows = visibleOrders.map((order) =>
+      [
+        order.id,
+        order.customer,
+        order.email,
+        order.date,
+        order.items,
+        order.total,
+        statusLabel(order.status),
+      ]
+        .map(escape)
+        .join(","),
+    );
+    const file = new Blob(
+      [[header.map(escape).join(","), ...rows].join("\n")],
+      {
+        type: "text/csv;charset=utf-8",
+      },
+    );
+    const url = URL.createObjectURL(file);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "orders.csv";
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <Card>
@@ -69,7 +109,7 @@ export default function OrdersTable({
             {t("recentOrders")}
           </h2>
           <p className="mt-1 text-sm text-slate-500">
-            {visibleOrders.length} of {orders.length} orders
+            {visibleOrders.length} / {orders.length}
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -90,28 +130,36 @@ export default function OrdersTable({
             onChange={(event) =>
               setStatusFilter(event.target.value as "All" | OrderStatus)
             }
-            aria-label="Filter orders by status"
+            aria-label={t("status")}
             className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500"
           >
             <option value="All">{t("allStatuses")}</option>
             {statuses.map((status) => (
               <option key={status} value={status}>
-                {status}
+                {statusLabel(status)}
               </option>
             ))}
           </select>
+          <button
+            type="button"
+            onClick={exportOrders}
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+          >
+            <Download size={17} />
+            {t("exportCsv")}
+          </button>
         </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[760px]">
           <thead>
             <tr className="border-b border-slate-200 text-left text-sm font-semibold text-slate-500">
-              <th className="pb-4">Order</th>
-              <th className="pb-4">Date</th>
-              <th className="pb-4">Items</th>
-              <th className="pb-4">Total</th>
-              <th className="pb-4">Status</th>
-              <th className="pb-4 text-right">Actions</th>
+              <th className="pb-4">{t("order")}</th>
+              <th className="pb-4">{t("date")}</th>
+              <th className="pb-4">{t("items")}</th>
+              <th className="pb-4">{t("total")}</th>
+              <th className="pb-4">{t("status")}</th>
+              <th className="pb-4 text-right">{t("action")}</th>
             </tr>
           </thead>
           <tbody>
@@ -141,14 +189,16 @@ export default function OrdersTable({
                   {money(order.total)}
                 </td>
                 <td>
-                  <Badge color={badgeColor[order.status]}>{order.status}</Badge>
+                  <Badge color={badgeColor[order.status]}>
+                    {statusLabel(order.status)}
+                  </Badge>
                 </td>
                 <td className="text-right">
                   <div className="inline-flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => onView(order)}
-                      aria-label={`View order ${order.id}`}
+                      aria-label={`${t("viewOrder")} ${order.id}`}
                       className="rounded-lg border border-slate-200 p-2 text-slate-500 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
                     >
                       <Eye size={17} />
@@ -162,12 +212,12 @@ export default function OrdersTable({
                             event.target.value as OrderStatus,
                           )
                         }
-                        aria-label={`Update status for order ${order.id}`}
+                        aria-label={`${t("updateOrderStatus")} ${order.id}`}
                         className="appearance-none rounded-lg border border-slate-200 bg-white py-2 pl-3 pr-8 text-sm font-medium text-slate-700 outline-none transition hover:bg-slate-50 focus:border-blue-500"
                       >
                         {statuses.map((status) => (
                           <option key={status} value={status}>
-                            {status}
+                            {statusLabel(status)}
                           </option>
                         ))}
                       </select>
@@ -187,7 +237,7 @@ export default function OrdersTable({
         <div className="py-14 text-center">
           <p className="font-semibold text-slate-700">{t("noOrders")}</p>
           <p className="mt-1 text-sm text-slate-500">
-            Try changing your search or status filter.
+            {t("adjustOrderFilters")}
           </p>
         </div>
       )}

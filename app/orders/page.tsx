@@ -9,17 +9,18 @@ import {
 } from "lucide-react";
 
 import OrdersTable from "@/components/orders/OrdersTable";
-import UserStatsCard from "@/components/users/UserStatsCard";
+import OrderStatsCard from "@/components/orders/OrderStatsCard";
 import AddOrderModal from "@/components/modals/AddOrderModal";
 import OrderDetailsModal from "@/components/modals/OrderDetailsModal";
 import { initialOrders } from "@/data/orders";
 import { Order, OrderStatus } from "@/types/order";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { languages } from "@/lib/languages";
 
 type Toast = { message: string; id: number } | null;
 
 export default function OrdersPage() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [toast, setToast] = useState<Toast>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,7 +61,7 @@ export default function OrdersPage() {
     });
 
     if (!response.ok) {
-      setToast({ message: "Unable to update order.", id: Date.now() });
+      setToast({ message: t("orderUpdateFailed"), id: Date.now() });
       return;
     }
 
@@ -69,7 +70,7 @@ export default function OrdersPage() {
       current.map((order) => (order.id === id ? savedOrder : order)),
     );
     setToast({
-      message: `Order #${id} marked as ${status.toLowerCase()}.`,
+      message: `${t("order")} #${id}: ${t(`orderStatus${status}`)}.`,
       id: Date.now(),
     });
   };
@@ -81,13 +82,16 @@ export default function OrdersPage() {
     });
 
     if (!response.ok) {
-      setToast({ message: "Unable to create order.", id: Date.now() });
+      setToast({ message: t("orderCreateFailed"), id: Date.now() });
       return false;
     }
 
     const savedOrder = await response.json();
     setOrders((current) => [savedOrder, ...current]);
-    setToast({ message: `Order #${savedOrder.id} created.`, id: Date.now() });
+    setToast({
+      message: `${t("order")} #${savedOrder.id} ${t("orderCreated")}`,
+      id: Date.now(),
+    });
     return true;
   };
   const pendingOrders = orders.filter(
@@ -96,7 +100,7 @@ export default function OrdersPage() {
   const deliveredRevenue = orders
     .filter((order) => order.status === "Delivered")
     .reduce((total, order) => total + order.total, 0);
-  const money = new Intl.NumberFormat("en-US", {
+  const money = new Intl.NumberFormat(languages[language].locale, {
     style: "currency",
     currency: "USD",
     notation: "compact",
@@ -119,19 +123,19 @@ export default function OrdersPage() {
         </button>
       </div>
       <div className="grid gap-6 md:grid-cols-3">
-        <UserStatsCard
+        <OrderStatsCard
           title={t("totalOrders")}
           value={orders.length.toString()}
           color="bg-blue-600"
           icon={ShoppingBag}
         />
-        <UserStatsCard
+        <OrderStatsCard
           title={t("openOrders")}
           value={pendingOrders.toString()}
           color="bg-yellow-500"
           icon={Clock3}
         />
-        <UserStatsCard
+        <OrderStatsCard
           title={t("deliveredRevenue")}
           value={money}
           color="bg-green-600"
