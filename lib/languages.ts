@@ -212,6 +212,26 @@ Object.assign(translations.ru, {
   orderCreated: "создан.",
 });
 Object.assign(translations.en, {
+  deleteUserDescription:
+    "This will permanently remove the selected user from the dashboard.",
+});
+Object.assign(translations.tr, {
+  deleteUserDescription:
+    "Bu işlem seçili kullanıcıyı panelden kalıcı olarak kaldırır.",
+});
+Object.assign(translations.fr, {
+  deleteUserDescription:
+    "Cette action supprimera définitivement l’utilisateur sélectionné du tableau de bord.",
+});
+Object.assign(translations.ar, {
+  deleteUserDescription:
+    "سيؤدي هذا إلى إزالة المستخدم المحدد نهائيًا من لوحة التحكم.",
+});
+Object.assign(translations.ru, {
+  deleteUserDescription:
+    "Выбранный пользователь будет безвозвратно удалён из панели управления.",
+});
+Object.assign(translations.en, {
   userCreateFailed: "Unable to add user.",
   userCreated: "User added successfully.",
   userUpdateFailed: "Unable to update user.",

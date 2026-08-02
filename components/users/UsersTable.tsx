@@ -42,6 +42,12 @@ export default function UsersTable({ users, onEdit, onDelete }: Props) {
   );
   const statusColor = (value: User["status"]) =>
     value === "Active" ? "green" : value === "Pending" ? "yellow" : "red";
+  const statusLabel = (value: User["status"]) =>
+    value === "Active"
+      ? t("active")
+      : value === "Pending"
+        ? t("pending")
+        : t("inactive");
   return (
     <>
       <Card>
@@ -64,6 +70,7 @@ export default function UsersTable({ users, onEdit, onDelete }: Props) {
               onChange={(event) =>
                 setStatus(event.target.value as "All" | User["status"])
               }
+              aria-label={t("status")}
               className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm"
             >
               <option value="All">{t("allStatuses")}</option>
@@ -113,14 +120,14 @@ export default function UsersTable({ users, onEdit, onDelete }: Props) {
                   </td>
                   <td>
                     <Badge color={statusColor(user.status)}>
-                      {user.status}
+                      {statusLabel(user.status)}
                     </Badge>
                   </td>
                   <td className="text-right">
                     <button
                       type="button"
                       onClick={() => onEdit(user)}
-                      aria-label={t("edit")}
+                      aria-label={`${t("edit")} ${user.name}`}
                       className="mr-2 rounded-lg bg-slate-100 p-2"
                     >
                       <Pencil size={18} />
@@ -128,7 +135,7 @@ export default function UsersTable({ users, onEdit, onDelete }: Props) {
                     <button
                       type="button"
                       onClick={() => setSelected(user)}
-                      aria-label={t("delete")}
+                      aria-label={`${t("deleteUser")} ${user.name}`}
                       className="rounded-lg bg-red-100 p-2 text-red-600"
                     >
                       <Trash2 size={18} />
@@ -152,7 +159,12 @@ export default function UsersTable({ users, onEdit, onDelete }: Props) {
               </div>
               <div>
                 <h2 className="text-lg font-bold">{t("deleteUser")}</h2>
-                <p className="mt-1 text-sm text-slate-500">{selected.name}</p>
+                <p className="mt-1 text-sm text-slate-500">
+                  {t("deleteUserDescription")}
+                </p>
+                <p className="mt-2 text-sm font-semibold text-slate-700">
+                  {selected.name}
+                </p>
               </div>
             </div>
             <div className="mt-6 flex justify-end gap-3">
