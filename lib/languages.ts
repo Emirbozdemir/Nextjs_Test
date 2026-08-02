@@ -212,6 +212,36 @@ Object.assign(translations.ru, {
   orderCreated: "создан.",
 });
 Object.assign(translations.en, {
+  orderStatusOverview: "Order status overview",
+  orderStatusOverviewDescription: "Current order distribution",
+  deliveryRate: "Delivery rate",
+  cancellationRate: "Cancellation rate",
+});
+Object.assign(translations.tr, {
+  orderStatusOverview: "Sipariş durum özeti",
+  orderStatusOverviewDescription: "Mevcut sipariş dağılımı",
+  deliveryRate: "Teslimat oranı",
+  cancellationRate: "İptal oranı",
+});
+Object.assign(translations.fr, {
+  orderStatusOverview: "Aperçu des statuts de commande",
+  orderStatusOverviewDescription: "Répartition actuelle des commandes",
+  deliveryRate: "Taux de livraison",
+  cancellationRate: "Taux d’annulation",
+});
+Object.assign(translations.ar, {
+  orderStatusOverview: "نظرة عامة على حالة الطلبات",
+  orderStatusOverviewDescription: "توزيع الطلبات الحالي",
+  deliveryRate: "معدل التسليم",
+  cancellationRate: "معدل الإلغاء",
+});
+Object.assign(translations.ru, {
+  orderStatusOverview: "Обзор статусов заказов",
+  orderStatusOverviewDescription: "Текущее распределение заказов",
+  deliveryRate: "Доля доставок",
+  cancellationRate: "Доля отмен",
+});
+Object.assign(translations.en, {
   selectAllOrders: "Select all orders on this page",
   selectOrder: "Select order",
   ordersSelected: "orders selected",

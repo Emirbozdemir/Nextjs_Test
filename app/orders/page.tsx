@@ -10,6 +10,7 @@ import {
 
 import OrdersTable from "@/components/orders/OrdersTable";
 import OrderStatsCard from "@/components/orders/OrderStatsCard";
+import OrderStatusOverview from "@/components/orders/OrderStatusOverview";
 import AddOrderModal from "@/components/modals/AddOrderModal";
 import OrderDetailsModal from "@/components/modals/OrderDetailsModal";
 import { initialOrders } from "@/data/orders";
@@ -166,12 +167,15 @@ export default function OrdersPage() {
       {isLoading ? (
         <div className="h-80 animate-pulse rounded-3xl bg-slate-100" />
       ) : (
-        <OrdersTable
-          orders={orders}
-          onStatusChange={handleStatusChange}
-          onBulkStatusChange={handleBulkStatusChange}
-          onView={setSelectedOrder}
-        />
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+          <OrdersTable
+            orders={orders}
+            onStatusChange={handleStatusChange}
+            onBulkStatusChange={handleBulkStatusChange}
+            onView={setSelectedOrder}
+          />
+          <OrderStatusOverview orders={orders} />
+        </div>
       )}
       {toast && (
         <div
