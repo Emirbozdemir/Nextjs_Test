@@ -212,6 +212,37 @@ Object.assign(translations.ru, {
   orderCreated: "создан.",
 });
 Object.assign(translations.en, {
+  pieces: "pcs",
+  adjustProductFilters: "Try changing your search or category filter.",
+  deleteProductDescription:
+    "This will permanently remove the selected product from your inventory.",
+});
+Object.assign(translations.tr, {
+  pieces: "adet",
+  adjustProductFilters: "Aramanızı veya kategori filtrenizi değiştirin.",
+  deleteProductDescription:
+    "Bu işlem seçili ürünü envanterinizden kalıcı olarak kaldırır.",
+});
+Object.assign(translations.fr, {
+  pieces: "unités",
+  adjustProductFilters:
+    "Modifiez votre recherche ou votre filtre de catégorie.",
+  deleteProductDescription:
+    "Cette action supprimera définitivement le produit sélectionné de votre inventaire.",
+});
+Object.assign(translations.ar, {
+  pieces: "قطعة",
+  adjustProductFilters: "غيّر البحث أو فلتر الفئة.",
+  deleteProductDescription:
+    "سيؤدي هذا إلى إزالة المنتج المحدد نهائيًا من مخزونك.",
+});
+Object.assign(translations.ru, {
+  pieces: "шт.",
+  adjustProductFilters: "Измените поиск или фильтр категории.",
+  deleteProductDescription:
+    "Выбранный товар будет безвозвратно удалён из инвентаря.",
+});
+Object.assign(translations.en, {
   productUpdateFailed: "Unable to update product.",
   productUpdated: "Product updated successfully.",
   productCreateFailed: "Unable to add product.",

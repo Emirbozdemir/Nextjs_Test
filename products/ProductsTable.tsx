@@ -13,6 +13,7 @@ import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 import { Product } from "@/types/product";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { languages } from "@/lib/languages";
 
 type ProductsTableProps = {
   products: Product[];
@@ -25,7 +26,7 @@ export default function ProductsTable({
   onEdit,
   onDelete,
 }: ProductsTableProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
@@ -51,7 +52,7 @@ export default function ProductsTable({
       );
   }, [products, search, category, sortDirection]);
   const formatPrice = (price: number) =>
-    new Intl.NumberFormat("en-US", {
+    new Intl.NumberFormat(languages[language].locale, {
       style: "currency",
       currency: "USD",
       maximumFractionDigits: 0,
@@ -66,7 +67,7 @@ export default function ProductsTable({
               {t("products")}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              {visibleProducts.length} of {products.length} products
+              {visibleProducts.length} / {products.length}
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -85,7 +86,7 @@ export default function ProductsTable({
             <select
               value={category}
               onChange={(event) => setCategory(event.target.value)}
-              aria-label="Filter products by category"
+              aria-label={t("category")}
               className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-700 outline-none focus:border-blue-500"
             >
               <option value="All">{t("allCategories")}</option>
@@ -132,7 +133,7 @@ export default function ProductsTable({
                         {product.name}
                       </p>
                       <p className="text-sm text-slate-500">
-                        Product #{product.id}
+                        {t("product")} #{product.id}
                       </p>
                     </div>
                   </td>
@@ -149,7 +150,7 @@ export default function ProductsTable({
                             : "red"
                       }
                     >
-                      {product.stock} pcs
+                      {product.stock} {t("pieces")}
                     </Badge>
                   </td>
                   <td className="font-semibold text-slate-800">
@@ -160,7 +161,7 @@ export default function ProductsTable({
                       <button
                         type="button"
                         onClick={() => onEdit(product)}
-                        aria-label={`Edit ${product.name}`}
+                        aria-label={`${t("edit")} ${product.name}`}
                         className="rounded-lg bg-slate-100 p-2 text-slate-700 transition hover:bg-slate-200"
                       >
                         <Pencil size={18} />
@@ -168,7 +169,7 @@ export default function ProductsTable({
                       <button
                         type="button"
                         onClick={() => setProductToDelete(product)}
-                        aria-label={`Delete ${product.name}`}
+                        aria-label={`${t("deleteProduct")} ${product.name}`}
                         className="rounded-lg bg-red-100 p-2 text-red-600 transition hover:bg-red-200"
                       >
                         <Trash2 size={18} />
@@ -184,7 +185,7 @@ export default function ProductsTable({
           <div className="py-14 text-center">
             <p className="font-semibold text-slate-700">{t("noProducts")}</p>
             <p className="mt-1 text-sm text-slate-500">
-              Try changing your search or category filter.
+              {t("adjustProductFilters")}
             </p>
           </div>
         )}
@@ -209,11 +210,10 @@ export default function ProductsTable({
                   {t("deleteProduct")}
                 </h2>
                 <p className="mt-1 text-sm leading-6 text-slate-500">
-                  This will permanently remove{" "}
-                  <span className="font-semibold text-slate-700">
-                    {productToDelete.name}
-                  </span>{" "}
-                  from your inventory.
+                  {t("deleteProductDescription")}
+                </p>
+                <p className="mt-2 text-sm font-semibold text-slate-700">
+                  {productToDelete.name}
                 </p>
               </div>
             </div>
