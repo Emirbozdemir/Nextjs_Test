@@ -212,6 +212,51 @@ Object.assign(translations.ru, {
   orderCreated: "создан.",
 });
 Object.assign(translations.en, {
+  selectAllOrders: "Select all orders on this page",
+  selectOrder: "Select order",
+  ordersSelected: "orders selected",
+  changeStatus: "Change status",
+  apply: "Apply",
+  updating: "Updating...",
+  ordersUpdated: "orders updated.",
+});
+Object.assign(translations.tr, {
+  selectAllOrders: "Bu sayfadaki tüm siparişleri seç",
+  selectOrder: "Siparişi seç",
+  ordersSelected: "sipariş seçildi",
+  changeStatus: "Durumu değiştir",
+  apply: "Uygula",
+  updating: "Güncelleniyor...",
+  ordersUpdated: "sipariş güncellendi.",
+});
+Object.assign(translations.fr, {
+  selectAllOrders: "Sélectionner toutes les commandes de cette page",
+  selectOrder: "Sélectionner la commande",
+  ordersSelected: "commandes sélectionnées",
+  changeStatus: "Modifier le statut",
+  apply: "Appliquer",
+  updating: "Mise à jour...",
+  ordersUpdated: "commandes mises à jour.",
+});
+Object.assign(translations.ar, {
+  selectAllOrders: "تحديد كل طلبات هذه الصفحة",
+  selectOrder: "تحديد الطلب",
+  ordersSelected: "طلبات محددة",
+  changeStatus: "تغيير الحالة",
+  apply: "تطبيق",
+  updating: "جارٍ التحديث...",
+  ordersUpdated: "طلبات تم تحديثها.",
+});
+Object.assign(translations.ru, {
+  selectAllOrders: "Выбрать все заказы на этой странице",
+  selectOrder: "Выбрать заказ",
+  ordersSelected: "заказов выбрано",
+  changeStatus: "Изменить статус",
+  apply: "Применить",
+  updating: "Обновление...",
+  ordersUpdated: "заказов обновлено.",
+});
+Object.assign(translations.en, {
   sortOrders: "Sort orders",
   newestFirst: "Newest first",
   oldestFirst: "Oldest first",

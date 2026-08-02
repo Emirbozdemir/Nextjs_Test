@@ -12,7 +12,8 @@ import { languages } from "@/lib/languages";
 
 type OrdersTableProps = {
   orders: Order[];
-  onStatusChange: (id: number, status: OrderStatus) => void;
+  onStatusChange: (id: number, status: OrderStatus) => Promise<boolean>;
+  onBulkStatusChange: (ids: number[], status: OrderStatus) => Promise<void>;
   onView: (order: Order) => void;
 };
 type SortOption = "newest" | "oldest" | "totalHigh" | "totalLow";
@@ -32,6 +33,7 @@ const badgeColor: Record<OrderStatus, "yellow" | "blue" | "green" | "red"> = {
 export default function OrdersTable({
   orders,
   onStatusChange,
+  onBulkStatusChange,
   onView,
 }: OrdersTableProps) {
   const { language, t } = useLanguage();
@@ -42,6 +44,9 @@ export default function OrdersTable({
   const [sortOption, setSortOption] = useState<SortOption>("newest");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [bulkStatus, setBulkStatus] = useState<OrderStatus | "">("");
+  const [isBulkUpdating, setIsBulkUpdating] = useState(false);
   const visibleOrders = useMemo(() => {
     const query = search.trim().toLowerCase();
     const filteredOrders = orders
@@ -71,6 +76,32 @@ export default function OrdersTable({
     currentPage * pageSize,
   );
   const hasFilters = search || statusFilter !== "All" || fromDate || toDate;
+  const allCurrentPageSelected =
+    pageOrders.length > 0 &&
+    pageOrders.every((order) => selectedIds.includes(order.id));
+  const toggleOrder = (id: number) => {
+    setSelectedIds((current) =>
+      current.includes(id)
+        ? current.filter((selectedId) => selectedId !== id)
+        : [...current, id],
+    );
+  };
+  const toggleCurrentPage = () => {
+    const pageIds = pageOrders.map((order) => order.id);
+    setSelectedIds((current) =>
+      allCurrentPageSelected
+        ? current.filter((id) => !pageIds.includes(id))
+        : [...new Set([...current, ...pageIds])],
+    );
+  };
+  const applyBulkStatus = async () => {
+    if (!bulkStatus || selectedIds.length === 0) return;
+    setIsBulkUpdating(true);
+    await onBulkStatusChange(selectedIds, bulkStatus);
+    setSelectedIds([]);
+    setBulkStatus("");
+    setIsBulkUpdating(false);
+  };
   const clearFilters = () => {
     setSearch("");
     setStatusFilter("All");
@@ -228,6 +259,15 @@ export default function OrdersTable({
         <table className="w-full min-w-[760px]">
           <thead>
             <tr className="border-b border-slate-200 text-left text-sm font-semibold text-slate-500">
+              <th className="w-10 pb-4">
+                <input
+                  type="checkbox"
+                  checked={allCurrentPageSelected}
+                  onChange={toggleCurrentPage}
+                  aria-label={t("selectAllOrders")}
+                  className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                />
+              </th>
               <th className="pb-4">{t("order")}</th>
               <th className="pb-4">{t("date")}</th>
               <th className="pb-4">{t("items")}</th>
@@ -242,6 +282,15 @@ export default function OrdersTable({
                 key={order.id}
                 className="border-b border-slate-100 transition hover:bg-slate-50"
               >
+                <td className="py-5">
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.includes(order.id)}
+                    onChange={() => toggleOrder(order.id)}
+                    aria-label={`${t("selectOrder")} ${order.id}`}
+                    className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  />
+                </td>
                 <td className="py-5">
                   <div className="flex items-center gap-3">
                     <Avatar name={order.customer} />
@@ -307,6 +356,38 @@ export default function OrdersTable({
           </tbody>
         </table>
       </div>
+      {selectedIds.length > 0 && (
+        <div className="mt-5 flex flex-col gap-3 rounded-xl border border-blue-100 bg-blue-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm font-semibold text-blue-800">
+            {selectedIds.length} {t("ordersSelected")}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <select
+              value={bulkStatus}
+              onChange={(event) =>
+                setBulkStatus(event.target.value as OrderStatus)
+              }
+              aria-label={t("changeStatus")}
+              className="rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 outline-none focus:border-blue-500"
+            >
+              <option value="">{t("changeStatus")}</option>
+              {statuses.map((status) => (
+                <option key={status} value={status}>
+                  {statusLabel(status)}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              onClick={applyBulkStatus}
+              disabled={!bulkStatus || isBulkUpdating}
+              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isBulkUpdating ? t("updating") : t("apply")}
+            </button>
+          </div>
+        </div>
+      )}
       {visibleOrders.length > 0 && (
         <div className="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-slate-500">

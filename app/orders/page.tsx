@@ -53,7 +53,11 @@ export default function OrdersPage() {
     const timeout = window.setTimeout(() => setToast(null), 3000);
     return () => window.clearTimeout(timeout);
   }, [toast]);
-  const handleStatusChange = async (id: number, status: OrderStatus) => {
+  const handleStatusChange = async (
+    id: number,
+    status: OrderStatus,
+    showToast = true,
+  ) => {
     const response = await fetch(`/api/orders/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -61,16 +65,33 @@ export default function OrdersPage() {
     });
 
     if (!response.ok) {
-      setToast({ message: t("orderUpdateFailed"), id: Date.now() });
-      return;
+      if (showToast)
+        setToast({ message: t("orderUpdateFailed"), id: Date.now() });
+      return false;
     }
 
     const savedOrder = await response.json();
     setOrders((current) =>
       current.map((order) => (order.id === id ? savedOrder : order)),
     );
+    if (showToast) {
+      setToast({
+        message: `${t("order")} #${id}: ${t(`orderStatus${status}`)}.`,
+        id: Date.now(),
+      });
+    }
+    return true;
+  };
+  const handleBulkStatusChange = async (ids: number[], status: OrderStatus) => {
+    const results = await Promise.all(
+      ids.map((id) => handleStatusChange(id, status, false)),
+    );
+    const updatedCount = results.filter(Boolean).length;
     setToast({
-      message: `${t("order")} #${id}: ${t(`orderStatus${status}`)}.`,
+      message:
+        updatedCount > 0
+          ? `${updatedCount} ${t("ordersUpdated")}`
+          : t("orderUpdateFailed"),
       id: Date.now(),
     });
   };
@@ -148,6 +169,7 @@ export default function OrdersPage() {
         <OrdersTable
           orders={orders}
           onStatusChange={handleStatusChange}
+          onBulkStatusChange={handleBulkStatusChange}
           onView={setSelectedOrder}
         />
       )}
