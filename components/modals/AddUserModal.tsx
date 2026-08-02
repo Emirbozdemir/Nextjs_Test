@@ -9,7 +9,7 @@ import { useLanguage } from "@/components/providers/LanguageProvider";
 type AddUserModalProps = {
   open: boolean;
   onClose: () => void;
-  onAddUser: (user: Omit<User, "id">) => void;
+  onAddUser: (user: Omit<User, "id">) => Promise<boolean>;
 };
 
 const emptyForm = {
@@ -26,23 +26,24 @@ export default function AddUserModal({
 }: AddUserModalProps) {
   const { t } = useLanguage();
   const [form, setForm] = useState(emptyForm);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleClose = () => {
     setForm(emptyForm);
     onClose();
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    onAddUser({
+    setIsSaving(true);
+    const isSaved = await onAddUser({
       ...form,
       name: form.name.trim(),
       email: form.email.trim(),
       role: form.role.trim(),
     });
-
-    handleClose();
+    setIsSaving(false);
+    if (isSaved) handleClose();
   };
 
   if (!open) return null;
@@ -59,7 +60,7 @@ export default function AddUserModal({
           <button
             type="button"
             onClick={handleClose}
-            aria-label="Close add user modal"
+            aria-label={t("close")}
             className="rounded-lg p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
           >
             <X size={20} />
@@ -113,9 +114,10 @@ export default function AddUserModal({
             </button>
             <button
               type="submit"
-              className="rounded-xl bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
+              disabled={isSaving}
+              className="rounded-xl bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {t("saveUser")}
+              {isSaving ? t("saving") : t("saveUser")}
             </button>
           </div>
         </form>

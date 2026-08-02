@@ -9,7 +9,7 @@ import { useLanguage } from "@/components/providers/LanguageProvider";
 type EditUserModalProps = {
   user: User | null;
   onClose: () => void;
-  onUpdateUser: (user: User) => void;
+  onUpdateUser: (user: User) => Promise<boolean>;
 };
 
 export default function EditUserModal({
@@ -32,22 +32,25 @@ export default function EditUserModal({
 type EditUserFormProps = {
   user: User;
   onClose: () => void;
-  onUpdateUser: (user: User) => void;
+  onUpdateUser: (user: User) => Promise<boolean>;
 };
 
 function EditUserForm({ user, onClose, onUpdateUser }: EditUserFormProps) {
   const { t } = useLanguage();
   const [form, setForm] = useState<User>(user);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onUpdateUser({
+    setIsSaving(true);
+    const isSaved = await onUpdateUser({
       ...form,
       name: form.name.trim(),
       email: form.email.trim(),
       role: form.role.trim(),
     });
-    onClose();
+    setIsSaving(false);
+    if (isSaved) onClose();
   };
 
   return (
@@ -63,7 +66,7 @@ function EditUserForm({ user, onClose, onUpdateUser }: EditUserFormProps) {
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close edit user modal"
+            aria-label={t("close")}
             className="rounded-lg p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
           >
             <X size={20} />
@@ -116,9 +119,10 @@ function EditUserForm({ user, onClose, onUpdateUser }: EditUserFormProps) {
             </button>
             <button
               type="submit"
-              className="rounded-xl bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
+              disabled={isSaving}
+              className="rounded-xl bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {t("save")}
+              {isSaving ? t("saving") : t("save")}
             </button>
           </div>
         </form>

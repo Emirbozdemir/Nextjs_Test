@@ -212,6 +212,46 @@ Object.assign(translations.ru, {
   orderCreated: "создан.",
 });
 Object.assign(translations.en, {
+  userCreateFailed: "Unable to add user.",
+  userCreated: "User added successfully.",
+  userUpdateFailed: "Unable to update user.",
+  userUpdated: "User details updated.",
+  userDeleteFailed: "Unable to delete user.",
+  userDeleted: "User deleted successfully.",
+});
+Object.assign(translations.tr, {
+  userCreateFailed: "Kullanıcı eklenemedi.",
+  userCreated: "Kullanıcı başarıyla eklendi.",
+  userUpdateFailed: "Kullanıcı güncellenemedi.",
+  userUpdated: "Kullanıcı bilgileri güncellendi.",
+  userDeleteFailed: "Kullanıcı silinemedi.",
+  userDeleted: "Kullanıcı başarıyla silindi.",
+});
+Object.assign(translations.fr, {
+  userCreateFailed: "Impossible d’ajouter l’utilisateur.",
+  userCreated: "Utilisateur ajouté.",
+  userUpdateFailed: "Impossible de mettre à jour l’utilisateur.",
+  userUpdated: "Informations utilisateur mises à jour.",
+  userDeleteFailed: "Impossible de supprimer l’utilisateur.",
+  userDeleted: "Utilisateur supprimé.",
+});
+Object.assign(translations.ar, {
+  userCreateFailed: "تعذر إضافة المستخدم.",
+  userCreated: "تمت إضافة المستخدم بنجاح.",
+  userUpdateFailed: "تعذر تحديث المستخدم.",
+  userUpdated: "تم تحديث بيانات المستخدم.",
+  userDeleteFailed: "تعذر حذف المستخدم.",
+  userDeleted: "تم حذف المستخدم بنجاح.",
+});
+Object.assign(translations.ru, {
+  userCreateFailed: "Не удалось добавить пользователя.",
+  userCreated: "Пользователь успешно добавлен.",
+  userUpdateFailed: "Не удалось обновить пользователя.",
+  userUpdated: "Данные пользователя обновлены.",
+  userDeleteFailed: "Не удалось удалить пользователя.",
+  userDeleted: "Пользователь успешно удалён.",
+});
+Object.assign(translations.en, {
   pieces: "pcs",
   adjustProductFilters: "Try changing your search or category filter.",
   deleteProductDescription:

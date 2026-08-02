@@ -26,7 +26,9 @@ export default function UsersPage() {
 
     async function loadUsers() {
       try {
-        const response = await fetch("/api/users", { signal: controller.signal });
+        const response = await fetch("/api/users", {
+          signal: controller.signal,
+        });
         if (!response.ok) throw new Error("Unable to load users.");
         setUsers(await response.json());
       } catch (error) {
@@ -59,13 +61,14 @@ export default function UsersPage() {
     });
 
     if (!response.ok) {
-      showToast("Unable to add user.");
-      return;
+      showToast(t("userCreateFailed"));
+      return false;
     }
 
     const savedUser = await response.json();
     setUsers((currentUsers) => [savedUser, ...currentUsers]);
-    showToast("User added successfully.");
+    showToast(t("userCreated"));
+    return true;
   };
 
   const handleUpdateUser = async (updatedUser: User) => {
@@ -76,8 +79,8 @@ export default function UsersPage() {
     });
 
     if (!response.ok) {
-      showToast("Unable to update user.");
-      return;
+      showToast(t("userUpdateFailed"));
+      return false;
     }
 
     const savedUser = await response.json();
@@ -86,18 +89,19 @@ export default function UsersPage() {
         currentUser.id === updatedUser.id ? savedUser : currentUser,
       ),
     );
-    showToast("User details updated.");
+    showToast(t("userUpdated"));
+    return true;
   };
 
   const handleDeleteUser = async (id: number) => {
     const response = await fetch(`/api/users/${id}`, { method: "DELETE" });
     if (!response.ok) {
-      showToast("Unable to delete user.");
+      showToast(t("userDeleteFailed"));
       return;
     }
 
     setUsers((currentUsers) => currentUsers.filter((user) => user.id !== id));
-    showToast("User deleted successfully.");
+    showToast(t("userDeleted"));
   };
 
   const activeUsers = users.filter((user) => user.status === "Active").length;
