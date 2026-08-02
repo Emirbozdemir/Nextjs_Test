@@ -11,6 +11,7 @@ import StatsCard from "@/components/ui/StatsCard";
 import { initialProducts } from "@/data/products";
 import { Product } from "@/types/product";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { languages } from "@/lib/languages";
 
 type Toast = {
   message: string;
@@ -18,7 +19,7 @@ type Toast = {
 } | null;
 
 export default function ProductsPage() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [products, setProducts] = useState<Product[]>(initialProducts);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +36,9 @@ export default function ProductsPage() {
 
     async function loadProducts() {
       try {
-        const response = await fetch("/api/products", { signal: controller.signal });
+        const response = await fetch("/api/products", {
+          signal: controller.signal,
+        });
         if (!response.ok) throw new Error("Unable to load products.");
         setProducts(await response.json());
       } catch (error) {
@@ -82,15 +85,17 @@ export default function ProductsPage() {
       });
 
       if (!response.ok) {
-        showToast("Unable to update product.");
-        return;
+        showToast(t("productUpdateFailed"));
+        return false;
       }
 
       const savedProduct = await response.json();
-      setProducts((current) => current.map((item) => (item.id === product.id ? savedProduct : item)));
+      setProducts((current) =>
+        current.map((item) => (item.id === product.id ? savedProduct : item)),
+      );
 
-      showToast("Product updated successfully.");
-      return;
+      showToast(t("productUpdated"));
+      return true;
     }
 
     const response = await fetch("/api/products", {
@@ -100,14 +105,15 @@ export default function ProductsPage() {
     });
 
     if (!response.ok) {
-      showToast("Unable to add product.");
-      return;
+      showToast(t("productCreateFailed"));
+      return false;
     }
 
     const savedProduct = await response.json();
     setProducts((current) => [savedProduct, ...current]);
 
-    showToast("Product added successfully.");
+    showToast(t("productCreated"));
+    return true;
   };
 
   const handleEdit = (product: Product) => {
@@ -118,13 +124,13 @@ export default function ProductsPage() {
   const handleDelete = async (id: number) => {
     const response = await fetch(`/api/products/${id}`, { method: "DELETE" });
     if (!response.ok) {
-      showToast("Unable to delete product.");
+      showToast(t("productDeleteFailed"));
       return;
     }
 
     setProducts((current) => current.filter((product) => product.id !== id));
 
-    showToast("Product deleted successfully.");
+    showToast(t("productDeleted"));
   };
 
   const productsInStock = products.filter(
@@ -136,7 +142,7 @@ export default function ProductsPage() {
     0,
   );
 
-  const formattedValue = new Intl.NumberFormat("en-US", {
+  const formattedValue = new Intl.NumberFormat(languages[language].locale, {
     style: "currency",
     currency: "USD",
     notation: "compact",

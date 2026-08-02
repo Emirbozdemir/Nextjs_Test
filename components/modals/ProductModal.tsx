@@ -10,7 +10,7 @@ type ProductModalProps = {
   product: Product | null;
   open: boolean;
   onClose: () => void;
-  onSave: (product: Omit<Product, "id"> | Product) => void;
+  onSave: (product: Omit<Product, "id"> | Product) => Promise<boolean>;
 };
 
 type ProductForm = Omit<Product, "id">;
@@ -48,11 +48,18 @@ function ProductFormModal({
     product ?? emptyProduct,
   );
   const isEditing = Boolean(product);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSave({ ...form, name: form.name.trim(), category: form.category.trim() });
-    onClose();
+    setIsSaving(true);
+    const isSaved = await onSave({
+      ...form,
+      name: form.name.trim(),
+      category: form.category.trim(),
+    });
+    setIsSaving(false);
+    if (isSaved) onClose();
   };
 
   return (
@@ -64,9 +71,7 @@ function ProductFormModal({
               {isEditing ? t("editProduct") : t("addProduct")}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              {isEditing
-                ? t("updateProduct")
-                : t("createProduct")}
+              {isEditing ? t("updateProduct") : t("createProduct")}
             </p>
           </div>
           <button
@@ -130,9 +135,10 @@ function ProductFormModal({
             </button>
             <button
               type="submit"
-              className="rounded-xl bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
+              disabled={isSaving}
+              className="rounded-xl bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {isEditing ? t("save") : t("addProduct")}
+              {isSaving ? t("saving") : isEditing ? t("save") : t("addProduct")}
             </button>
           </div>
         </form>

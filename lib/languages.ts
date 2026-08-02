@@ -212,6 +212,46 @@ Object.assign(translations.ru, {
   orderCreated: "создан.",
 });
 Object.assign(translations.en, {
+  productUpdateFailed: "Unable to update product.",
+  productUpdated: "Product updated successfully.",
+  productCreateFailed: "Unable to add product.",
+  productCreated: "Product added successfully.",
+  productDeleteFailed: "Unable to delete product.",
+  productDeleted: "Product deleted successfully.",
+});
+Object.assign(translations.tr, {
+  productUpdateFailed: "Ürün güncellenemedi.",
+  productUpdated: "Ürün başarıyla güncellendi.",
+  productCreateFailed: "Ürün eklenemedi.",
+  productCreated: "Ürün başarıyla eklendi.",
+  productDeleteFailed: "Ürün silinemedi.",
+  productDeleted: "Ürün başarıyla silindi.",
+});
+Object.assign(translations.fr, {
+  productUpdateFailed: "Impossible de mettre à jour le produit.",
+  productUpdated: "Produit mis à jour.",
+  productCreateFailed: "Impossible d’ajouter le produit.",
+  productCreated: "Produit ajouté.",
+  productDeleteFailed: "Impossible de supprimer le produit.",
+  productDeleted: "Produit supprimé.",
+});
+Object.assign(translations.ar, {
+  productUpdateFailed: "تعذر تحديث المنتج.",
+  productUpdated: "تم تحديث المنتج بنجاح.",
+  productCreateFailed: "تعذر إضافة المنتج.",
+  productCreated: "تمت إضافة المنتج بنجاح.",
+  productDeleteFailed: "تعذر حذف المنتج.",
+  productDeleted: "تم حذف المنتج بنجاح.",
+});
+Object.assign(translations.ru, {
+  productUpdateFailed: "Не удалось обновить товар.",
+  productUpdated: "Товар успешно обновлён.",
+  productCreateFailed: "Не удалось добавить товар.",
+  productCreated: "Товар успешно добавлен.",
+  productDeleteFailed: "Не удалось удалить товар.",
+  productDeleted: "Товар успешно удалён.",
+});
+Object.assign(translations.en, {
   orderStatusOverview: "Order status overview",
   orderStatusOverviewDescription: "Current order distribution",
   deliveryRate: "Delivery rate",
