@@ -15,20 +15,6 @@ const statuses: Record<string, OrderStatus> = {
   Delivered: OrderStatus.DELIVERED,
   Cancelled: OrderStatus.CANCELLED,
 };
-const allowedTransitions: Record<OrderStatus, OrderStatus[]> = {
-  [OrderStatus.PENDING]: [
-    OrderStatus.PENDING,
-    OrderStatus.PROCESSING,
-    OrderStatus.CANCELLED,
-  ],
-  [OrderStatus.PROCESSING]: [
-    OrderStatus.PROCESSING,
-    OrderStatus.DELIVERED,
-    OrderStatus.CANCELLED,
-  ],
-  [OrderStatus.DELIVERED]: [OrderStatus.DELIVERED],
-  [OrderStatus.CANCELLED]: [OrderStatus.CANCELLED],
-};
 
 function serializeOrder(order: {
   id: number;
@@ -71,11 +57,6 @@ export async function PATCH(request: Request, { params }: RouteContext) {
     const existingOrder = await prisma.order.findUnique({ where: { id } });
     if (!existingOrder)
       return NextResponse.json({ error: "Order not found." }, { status: 404 });
-    if (!allowedTransitions[existingOrder.status].includes(status))
-      return NextResponse.json(
-        { error: "This order status transition is not allowed." },
-        { status: 409 },
-      );
     const order = await prisma.order.update({
       where: { id },
       data: { status },

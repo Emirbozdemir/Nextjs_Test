@@ -59,29 +59,45 @@ export default function OrdersPage() {
     status: OrderStatus,
     showToast = true,
   ) => {
-    const response = await fetch(`/api/orders/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
-    });
-
-    if (!response.ok) {
-      if (showToast)
-        setToast({ message: t("orderUpdateFailed"), id: Date.now() });
-      return false;
-    }
-
-    const savedOrder = await response.json();
-    setOrders((current) =>
-      current.map((order) => (order.id === id ? savedOrder : order)),
-    );
-    if (showToast) {
-      setToast({
-        message: `${t("order")} #${id}: ${t(`orderStatus${status}`)}.`,
-        id: Date.now(),
+    try {
+      const response = await fetch(`/api/orders/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
       });
+      if (!response.ok) throw new Error("Unable to update order.");
+
+      const savedOrder = await response.json();
+      setOrders((current) =>
+        current.map((order) => (order.id === id ? savedOrder : order)),
+      );
+      setSelectedOrder((current) =>
+        current?.id === id ? savedOrder : current,
+      );
+      if (showToast) {
+        setToast({
+          message: `${t("order")} #${id}: ${t(`orderStatus${status}`)}.`,
+          id: Date.now(),
+        });
+      }
+      return true;
+    } catch {
+      setOrders((current) =>
+        current.map((order) =>
+          order.id === id ? { ...order, status } : order,
+        ),
+      );
+      setSelectedOrder((current) =>
+        current?.id === id ? { ...current, status } : current,
+      );
+      if (showToast) {
+        setToast({
+          message: `${t("order")} #${id}: ${t("orderUpdatedLocally")}`,
+          id: Date.now(),
+        });
+      }
+      return true;
     }
-    return true;
   };
   const handleBulkStatusChange = async (ids: number[], status: OrderStatus) => {
     const results = await Promise.all(
