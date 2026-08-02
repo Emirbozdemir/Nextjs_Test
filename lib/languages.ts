@@ -212,6 +212,56 @@ Object.assign(translations.ru, {
   orderCreated: "создан.",
 });
 Object.assign(translations.en, {
+  sortOrders: "Sort orders",
+  newestFirst: "Newest first",
+  oldestFirst: "Oldest first",
+  totalHighToLow: "Total: high to low",
+  totalLowToHigh: "Total: low to high",
+  rowsPerPage: "Rows per page",
+  previous: "Previous",
+  next: "Next",
+});
+Object.assign(translations.tr, {
+  sortOrders: "Siparişleri sırala",
+  newestFirst: "En yeni önce",
+  oldestFirst: "En eski önce",
+  totalHighToLow: "Toplam: yüksekten düşüğe",
+  totalLowToHigh: "Toplam: düşükten yükseğe",
+  rowsPerPage: "Sayfa başına satır",
+  previous: "Önceki",
+  next: "Sonraki",
+});
+Object.assign(translations.fr, {
+  sortOrders: "Trier les commandes",
+  newestFirst: "Plus récentes d’abord",
+  oldestFirst: "Plus anciennes d’abord",
+  totalHighToLow: "Total : décroissant",
+  totalLowToHigh: "Total : croissant",
+  rowsPerPage: "Lignes par page",
+  previous: "Précédent",
+  next: "Suivant",
+});
+Object.assign(translations.ar, {
+  sortOrders: "فرز الطلبات",
+  newestFirst: "الأحدث أولاً",
+  oldestFirst: "الأقدم أولاً",
+  totalHighToLow: "الإجمالي: من الأعلى للأقل",
+  totalLowToHigh: "الإجمالي: من الأقل للأعلى",
+  rowsPerPage: "الصفوف لكل صفحة",
+  previous: "السابق",
+  next: "التالي",
+});
+Object.assign(translations.ru, {
+  sortOrders: "Сортировать заказы",
+  newestFirst: "Сначала новые",
+  oldestFirst: "Сначала старые",
+  totalHighToLow: "Итого: по убыванию",
+  totalLowToHigh: "Итого: по возрастанию",
+  rowsPerPage: "Строк на странице",
+  previous: "Назад",
+  next: "Далее",
+});
+Object.assign(translations.en, {
   fromDate: "From date",
   toDate: "To date",
   clearFilters: "Clear filters",

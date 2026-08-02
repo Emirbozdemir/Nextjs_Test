@@ -15,6 +15,7 @@ type OrdersTableProps = {
   onStatusChange: (id: number, status: OrderStatus) => void;
   onView: (order: Order) => void;
 };
+type SortOption = "newest" | "oldest" | "totalHigh" | "totalLow";
 const statuses: OrderStatus[] = [
   "Pending",
   "Processing",
@@ -38,9 +39,12 @@ export default function OrdersTable({
   const [statusFilter, setStatusFilter] = useState<"All" | OrderStatus>("All");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [sortOption, setSortOption] = useState<SortOption>("newest");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
   const visibleOrders = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return orders
+    const filteredOrders = orders
       .filter(
         (order) => statusFilter === "All" || order.status === statusFilter,
       )
@@ -53,13 +57,26 @@ export default function OrdersTable({
             value.toLowerCase().includes(query),
           ),
       );
-  }, [fromDate, orders, search, statusFilter, toDate]);
+    return [...filteredOrders].sort((first, second) => {
+      if (sortOption === "oldest") return first.date.localeCompare(second.date);
+      if (sortOption === "totalHigh") return second.total - first.total;
+      if (sortOption === "totalLow") return first.total - second.total;
+      return second.date.localeCompare(first.date) || second.id - first.id;
+    });
+  }, [fromDate, orders, search, sortOption, statusFilter, toDate]);
+  const totalPages = Math.max(1, Math.ceil(visibleOrders.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const pageOrders = visibleOrders.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
+  );
   const hasFilters = search || statusFilter !== "All" || fromDate || toDate;
   const clearFilters = () => {
     setSearch("");
     setStatusFilter("All");
     setFromDate("");
     setToDate("");
+    setPage(1);
   };
   const money = (total: number) =>
     new Intl.NumberFormat(languages[language].locale, {
@@ -133,14 +150,16 @@ export default function OrdersTable({
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t("searchOrders")}
+              onInput={() => setPage(1)}
               className="w-full rounded-xl border border-slate-200 py-3 pl-10 pr-4 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:w-64"
             />
           </div>
           <select
             value={statusFilter}
-            onChange={(event) =>
-              setStatusFilter(event.target.value as "All" | OrderStatus)
-            }
+            onChange={(event) => {
+              setStatusFilter(event.target.value as "All" | OrderStatus);
+              setPage(1);
+            }}
             aria-label={t("status")}
             className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500"
           >
@@ -154,7 +173,10 @@ export default function OrdersTable({
           <input
             type="date"
             value={fromDate}
-            onChange={(event) => setFromDate(event.target.value)}
+            onChange={(event) => {
+              setFromDate(event.target.value);
+              setPage(1);
+            }}
             aria-label={t("fromDate")}
             className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500"
           />
@@ -162,10 +184,27 @@ export default function OrdersTable({
             type="date"
             value={toDate}
             min={fromDate || undefined}
-            onChange={(event) => setToDate(event.target.value)}
+            onChange={(event) => {
+              setToDate(event.target.value);
+              setPage(1);
+            }}
             aria-label={t("toDate")}
             className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500"
           />
+          <select
+            value={sortOption}
+            onChange={(event) => {
+              setSortOption(event.target.value as SortOption);
+              setPage(1);
+            }}
+            aria-label={t("sortOrders")}
+            className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-700 outline-none focus:border-blue-500"
+          >
+            <option value="newest">{t("newestFirst")}</option>
+            <option value="oldest">{t("oldestFirst")}</option>
+            <option value="totalHigh">{t("totalHighToLow")}</option>
+            <option value="totalLow">{t("totalLowToHigh")}</option>
+          </select>
           {hasFilters && (
             <button
               type="button"
@@ -198,7 +237,7 @@ export default function OrdersTable({
             </tr>
           </thead>
           <tbody>
-            {visibleOrders.map((order) => (
+            {pageOrders.map((order) => (
               <tr
                 key={order.id}
                 className="border-b border-slate-100 transition hover:bg-slate-50"
@@ -268,6 +307,46 @@ export default function OrdersTable({
           </tbody>
         </table>
       </div>
+      {visibleOrders.length > 0 && (
+        <div className="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-slate-500">
+            {currentPage} / {totalPages}
+          </p>
+          <div className="flex items-center gap-2">
+            <select
+              value={pageSize}
+              onChange={(event) => {
+                setPageSize(Number(event.target.value));
+                setPage(1);
+              }}
+              aria-label={t("rowsPerPage")}
+              className="rounded-lg border border-slate-200 bg-white px-2 py-2 text-sm text-slate-700 outline-none focus:border-blue-500"
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+            </select>
+            <button
+              type="button"
+              onClick={() => setPage((current) => Math.max(1, current - 1))}
+              disabled={currentPage === 1}
+              className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {t("previous")}
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                setPage((current) => Math.min(totalPages, current + 1))
+              }
+              disabled={currentPage === totalPages}
+              className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {t("next")}
+            </button>
+          </div>
+        </div>
+      )}
       {visibleOrders.length === 0 && (
         <div className="py-14 text-center">
           <p className="font-semibold text-slate-700">{t("noOrders")}</p>
