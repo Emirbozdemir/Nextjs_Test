@@ -29,6 +29,12 @@ const badgeColor: Record<OrderStatus, "yellow" | "blue" | "green" | "red"> = {
   Delivered: "green",
   Cancelled: "red",
 };
+const allowedTransitions: Record<OrderStatus, OrderStatus[]> = {
+  Pending: ["Pending", "Processing", "Cancelled"],
+  Processing: ["Processing", "Delivered", "Cancelled"],
+  Delivered: ["Delivered"],
+  Cancelled: ["Cancelled"],
+};
 
 export default function OrdersTable({
   orders,
@@ -79,6 +85,16 @@ export default function OrdersTable({
   const allCurrentPageSelected =
     pageOrders.length > 0 &&
     pageOrders.every((order) => selectedIds.includes(order.id));
+  const selectedOrders = orders.filter((order) =>
+    selectedIds.includes(order.id),
+  );
+  const bulkStatuses = statuses.filter(
+    (status) =>
+      selectedOrders.some((order) => order.status !== status) &&
+      selectedOrders.every((order) =>
+        allowedTransitions[order.status].includes(status),
+      ),
+  );
   const toggleOrder = (id: number) => {
     setSelectedIds((current) =>
       current.includes(id)
@@ -336,9 +352,10 @@ export default function OrdersTable({
                           )
                         }
                         aria-label={`${t("updateOrderStatus")} ${order.id}`}
+                        disabled={allowedTransitions[order.status].length === 1}
                         className="appearance-none rounded-lg border border-slate-200 bg-white py-2 pl-3 pr-8 text-sm font-medium text-slate-700 outline-none transition hover:bg-slate-50 focus:border-blue-500"
                       >
-                        {statuses.map((status) => (
+                        {allowedTransitions[order.status].map((status) => (
                           <option key={status} value={status}>
                             {statusLabel(status)}
                           </option>
@@ -371,7 +388,7 @@ export default function OrdersTable({
               className="rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 outline-none focus:border-blue-500"
             >
               <option value="">{t("changeStatus")}</option>
-              {statuses.map((status) => (
+              {bulkStatuses.map((status) => (
                 <option key={status} value={status}>
                   {statusLabel(status)}
                 </option>
