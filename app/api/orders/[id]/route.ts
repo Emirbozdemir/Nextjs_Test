@@ -5,6 +5,10 @@ import { prisma } from "@/lib/prisma";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 const statuses: Record<string, OrderStatus> = {
   Pending: OrderStatus.PENDING,
   Processing: OrderStatus.PROCESSING,
@@ -48,8 +52,14 @@ function serializeOrder(order: {
 
 export async function PATCH(request: Request, { params }: RouteContext) {
   const id = Number((await params).id);
-  const body = await request.json();
-  const status = statuses[body.status];
+  const body: unknown = await request.json().catch(() => null);
+  if (!isRecord(body))
+    return NextResponse.json(
+      { error: "A valid JSON body is required." },
+      { status: 400 },
+    );
+  const status =
+    typeof body.status === "string" ? statuses[body.status] : undefined;
 
   if (!Number.isInteger(id) || !status)
     return NextResponse.json(
