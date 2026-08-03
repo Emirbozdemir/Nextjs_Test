@@ -113,24 +113,34 @@ export default function OrdersPage() {
     });
   };
   const handleCreateOrder = async (order: Omit<Order, "id" | "date">) => {
-    const response = await fetch("/api/orders", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(order),
-    });
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(order),
+      });
+      if (!response.ok) throw new Error("Unable to create order.");
 
-    if (!response.ok) {
-      setToast({ message: t("orderCreateFailed"), id: Date.now() });
-      return false;
+      const savedOrder = await response.json();
+      setOrders((current) => [savedOrder, ...current]);
+      setToast({
+        message: `${t("order")} #${savedOrder.id} ${t("orderCreated")}`,
+        id: Date.now(),
+      });
+      return true;
+    } catch {
+      const localOrder: Order = {
+        ...order,
+        id: Math.max(0, ...orders.map((item) => item.id)) + 1,
+        date: new Date().toISOString().slice(0, 10),
+      };
+      setOrders((current) => [localOrder, ...current]);
+      setToast({
+        message: `${t("order")} #${localOrder.id} ${t("orderCreatedLocally")}`,
+        id: Date.now(),
+      });
+      return true;
     }
-
-    const savedOrder = await response.json();
-    setOrders((current) => [savedOrder, ...current]);
-    setToast({
-      message: `${t("order")} #${savedOrder.id} ${t("orderCreated")}`,
-      id: Date.now(),
-    });
-    return true;
   };
   const pendingOrders = orders.filter(
     (order) => order.status === "Pending" || order.status === "Processing",

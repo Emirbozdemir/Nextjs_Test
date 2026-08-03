@@ -130,6 +130,21 @@ export const translations: Record<LanguageCode, Record<string, string>> = {
 };
 
 Object.assign(translations.en, {
+  orderCreatedLocally: "created locally.",
+});
+Object.assign(translations.tr, {
+  orderCreatedLocally: "yerel olarak oluşturuldu.",
+});
+Object.assign(translations.fr, {
+  orderCreatedLocally: "créée localement.",
+});
+Object.assign(translations.ar, {
+  orderCreatedLocally: "تم إنشاؤه محليًا.",
+});
+Object.assign(translations.ru, {
+  orderCreatedLocally: "создан локально.",
+});
+Object.assign(translations.en, {
   orderUpdatedLocally: "updated locally.",
 });
 Object.assign(translations.tr, {
