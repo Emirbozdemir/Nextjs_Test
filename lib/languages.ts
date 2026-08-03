@@ -160,6 +160,36 @@ Object.assign(translations.ru, {
   orderUpdatedLocally: "обновлён локально.",
 });
 Object.assign(translations.en, {
+  topCategory: "Top category",
+  peakSalesPeriod: "Peak sales period",
+  averageOrderPace: "Average order pace",
+  ordersPerPeriod: "orders per period",
+});
+Object.assign(translations.tr, {
+  topCategory: "En iyi kategori",
+  peakSalesPeriod: "Zirve satış dönemi",
+  averageOrderPace: "Ortalama sipariş temposu",
+  ordersPerPeriod: "dönem başına sipariş",
+});
+Object.assign(translations.fr, {
+  topCategory: "Meilleure catégorie",
+  peakSalesPeriod: "Pic des ventes",
+  averageOrderPace: "Rythme moyen des commandes",
+  ordersPerPeriod: "commandes par période",
+});
+Object.assign(translations.ar, {
+  topCategory: "أفضل فئة",
+  peakSalesPeriod: "ذروة المبيعات",
+  averageOrderPace: "متوسط وتيرة الطلبات",
+  ordersPerPeriod: "طلبات لكل فترة",
+});
+Object.assign(translations.ru, {
+  topCategory: "Лучшая категория",
+  peakSalesPeriod: "Пиковый период продаж",
+  averageOrderPace: "Средний темп заказов",
+  ordersPerPeriod: "заказов за период",
+});
+Object.assign(translations.en, {
   analyticsPeriod: "Analytics period",
   period7d: "Last 7 days",
   period30d: "Last 30 days",

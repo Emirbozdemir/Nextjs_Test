@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import AnalyticsCharts from "@/components/analytics/AnalyticsCharts";
+import AnalyticsHighlights from "@/components/analytics/AnalyticsHighlights";
 import StatCard from "@/components/dashboard/StatCard";
 import { AnalyticsPeriod, getAnalyticsData } from "@/lib/analytics-data";
 import { useLanguage } from "@/components/providers/LanguageProvider";
@@ -88,6 +89,10 @@ export default function AnalyticsPage() {
           {money(strongestPeriod.revenue, languages[language].locale)}.
         </p>
       </div>
+      <AnalyticsHighlights
+        sales={analytics.sales}
+        categoryData={analytics.categoryData}
+      />
       <AnalyticsCharts period={period} />
     </section>
   );

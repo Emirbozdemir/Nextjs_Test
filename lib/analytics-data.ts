@@ -10,11 +10,11 @@ const baseSalesData = [
   { label: "Sun", revenue: 8400, orders: 67 },
 ];
 
-const categoryData = [
-  { name: "Laptops", value: 42, color: "#2563eb" },
-  { name: "Phones", value: 28, color: "#7c3aed" },
-  { name: "Audio", value: 18, color: "#0d9488" },
-  { name: "Wearables", value: 12, color: "#f59e0b" },
+const categoryMix = [
+  { name: "Laptops", share: 42, color: "#2563eb" },
+  { name: "Phones", share: 28, color: "#7c3aed" },
+  { name: "Audio", share: 18, color: "#0d9488" },
+  { name: "Wearables", share: 12, color: "#f59e0b" },
 ];
 
 const periodMultiplier: Record<AnalyticsPeriod, number> = {
@@ -41,6 +41,10 @@ export function getAnalyticsData(period: AnalyticsPeriod) {
   }));
   const totalRevenue = sales.reduce((sum, item) => sum + item.revenue, 0);
   const totalOrders = sales.reduce((sum, item) => sum + item.orders, 0);
+  const categoryData = categoryMix.map((category) => ({
+    ...category,
+    revenue: Math.round((totalRevenue * category.share) / 100),
+  }));
 
   return {
     sales,

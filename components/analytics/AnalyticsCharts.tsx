@@ -120,7 +120,7 @@ export default function AnalyticsCharts({
             <PieChart>
               <Pie
                 data={categoryData}
-                dataKey="value"
+                dataKey="revenue"
                 nameKey="name"
                 innerRadius={65}
                 outerRadius={95}
@@ -130,7 +130,11 @@ export default function AnalyticsCharts({
                   <Cell key={item.name} fill={item.color} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => `${value}%`} />
+              <Tooltip
+                formatter={(value) =>
+                  money(Number(value), languages[language].locale)
+                }
+              />
               <Legend
                 iconType="circle"
                 iconSize={8}
