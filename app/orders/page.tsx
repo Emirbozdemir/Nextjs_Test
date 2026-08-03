@@ -20,6 +20,18 @@ import { languages } from "@/lib/languages";
 
 type Toast = { message: string; id: number } | null;
 
+const demoOrdersStorageKey = "adminpro-demo-orders";
+
+function getStoredOrders() {
+  try {
+    const saved = window.localStorage.getItem(demoOrdersStorageKey);
+    const parsed: unknown = saved ? JSON.parse(saved) : null;
+    return Array.isArray(parsed) ? (parsed as Order[]) : initialOrders;
+  } catch {
+    return initialOrders;
+  }
+}
+
 export default function OrdersPage() {
   const { language, t } = useLanguage();
   const [orders, setOrders] = useState<Order[]>(initialOrders);
@@ -40,7 +52,7 @@ export default function OrdersPage() {
         setOrders(await response.json());
       } catch (error) {
         if (!(error instanceof DOMException && error.name === "AbortError"))
-          setOrders(initialOrders);
+          setOrders(getStoredOrders());
       } finally {
         if (!controller.signal.aborted) setIsLoading(false);
       }
@@ -54,6 +66,13 @@ export default function OrdersPage() {
     const timeout = window.setTimeout(() => setToast(null), 3000);
     return () => window.clearTimeout(timeout);
   }, [toast]);
+  const saveDemoOrders = (nextOrders: Order[]) => {
+    window.localStorage.setItem(
+      demoOrdersStorageKey,
+      JSON.stringify(nextOrders),
+    );
+    return nextOrders;
+  };
   const handleStatusChange = async (
     id: number,
     status: OrderStatus,
@@ -83,8 +102,10 @@ export default function OrdersPage() {
       return true;
     } catch {
       setOrders((current) =>
-        current.map((order) =>
-          order.id === id ? { ...order, status } : order,
+        saveDemoOrders(
+          current.map((order) =>
+            order.id === id ? { ...order, status } : order,
+          ),
         ),
       );
       setSelectedOrder((current) =>
@@ -134,7 +155,7 @@ export default function OrdersPage() {
         id: Math.max(0, ...orders.map((item) => item.id)) + 1,
         date: new Date().toISOString().slice(0, 10),
       };
-      setOrders((current) => [localOrder, ...current]);
+      setOrders((current) => saveDemoOrders([localOrder, ...current]));
       setToast({
         message: `${t("order")} #${localOrder.id} ${t("orderCreatedLocally")}`,
         id: Date.now(),
