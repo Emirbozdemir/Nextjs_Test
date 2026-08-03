@@ -105,13 +105,13 @@ export default function Topbar() {
   const iconFor = (type: SearchResult["type"]) =>
     type === "User" ? Users : type === "Product" ? Package : ShoppingCart;
   return (
-    <header className="relative z-40 flex h-20 items-center justify-between border-b border-white/70 bg-white/70 px-4 backdrop-blur-xl sm:px-7">
+    <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-stone-200/80 bg-[#fffefb]/70 px-4 shadow-[0_8px_30px_-24px_rgba(41,54,47,0.2)] backdrop-blur-2xl sm:px-7">
       <h2 className="hidden text-xl font-bold tracking-tight text-slate-900 md:block">
         Dashboard overview
       </h2>
       <div className="ml-auto flex items-center gap-2 sm:gap-4">
         <div className="relative">
-          <div className="flex w-44 items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50/80 px-3 py-2.5 transition focus-within:border-indigo-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-indigo-100 sm:w-72">
+          <div className="flex w-44 items-center gap-2 rounded-2xl border border-stone-200/80 bg-white/75 px-3 py-2.5 shadow-sm shadow-stone-200/50 transition focus-within:border-emerald-400 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-100 sm:w-72">
             <Search size={18} className="shrink-0 text-slate-500" />
             <input
               value={query}
@@ -179,7 +179,7 @@ export default function Topbar() {
             onClick={() => setIsNotificationsOpen((current) => !current)}
             aria-label="Open notifications"
             aria-expanded={isNotificationsOpen}
-            className="relative rounded-xl border border-slate-200/80 bg-white p-2.5 text-slate-600 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:text-indigo-600"
+            className="relative rounded-2xl border border-stone-200/80 bg-white/90 p-2.5 text-slate-600 shadow-sm shadow-stone-200/70 transition hover:-translate-y-0.5 hover:scale-105 hover:bg-emerald-50 hover:text-emerald-700"
           >
             <Bell size={20} />
             {unreadNotifications > 0 && (
@@ -192,7 +192,9 @@ export default function Topbar() {
             <div className="absolute right-0 top-14 w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/15">
               <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
                 <div>
-                  <p className="font-semibold text-slate-900">{t("notifications")}</p>
+                  <p className="font-semibold text-slate-900">
+                    {t("notifications")}
+                  </p>
                   <p className="text-xs text-slate-500">
                     {unreadNotifications} {t("unreadUpdates")}
                   </p>
@@ -229,8 +231,8 @@ export default function Topbar() {
             </div>
           )}
         </div>
-        <div className="hidden items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-2.5 py-1.5 shadow-sm sm:flex">
-          <UserCircle2 size={32} className="text-indigo-600" />
+        <div className="hidden items-center gap-2 rounded-2xl border border-stone-200/80 bg-white/85 px-2.5 py-1.5 shadow-sm shadow-stone-200/70 sm:flex">
+          <UserCircle2 size={32} className="text-emerald-700 drop-shadow-sm" />
           <div>
             <p className="font-medium text-slate-800">Emir</p>
             <p className="text-xs text-slate-500">Administrator</p>

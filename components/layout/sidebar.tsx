@@ -27,19 +27,21 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="flex h-screen w-72 shrink-0 flex-col border-r border-slate-800 bg-slate-950 text-slate-300 shadow-2xl shadow-slate-900/20">
-      <div className="border-b border-slate-800 p-6">
-        <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 text-lg font-black text-white shadow-lg shadow-indigo-500/30">
+    <aside className="relative flex h-screen w-72 shrink-0 flex-col overflow-hidden border-r border-emerald-950/20 bg-[#17352e] text-emerald-50 shadow-2xl shadow-emerald-950/25">
+      <div className="pointer-events-none absolute -left-24 -top-20 h-56 w-56 rounded-full bg-emerald-300/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-20 -right-20 h-56 w-56 rounded-full bg-orange-300/15 blur-3xl" />
+      <div className="relative border-b border-white/10 p-6">
+        <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 via-teal-400 to-orange-300 text-lg font-black text-emerald-950 shadow-lg shadow-emerald-950/30 ring-1 ring-white/30">
           A
         </div>
         <h1 className="text-2xl font-bold tracking-tight text-white">
-          Admin<span className="text-cyan-400">Pro</span>
+          Admin<span className="text-orange-300">Pro</span>
         </h1>
 
-        <p className="mt-1 text-sm text-slate-400">Management System</p>
+        <p className="mt-1 text-sm text-slate-400">{t("managementSystem")}</p>
       </div>
 
-      <nav className="flex-1 space-y-1.5 p-4">
+      <nav className="relative flex-1 space-y-1.5 p-4">
         {menuItems.map((item) => {
           const Icon = item.icon;
 
@@ -53,13 +55,21 @@ export default function Sidebar() {
               key={item.title}
               href={item.href}
               className={clsx(
-                "flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200",
+                "group flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200",
                 isActive
-                  ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-950/50"
-                  : "text-slate-400 hover:bg-slate-800 hover:text-white",
+                  ? "bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-emerald-950 shadow-lg shadow-emerald-950/30 ring-1 ring-white/20"
+                  : "text-emerald-100/65 hover:bg-white/10 hover:text-white",
               )}
             >
-              <Icon size={20} />
+              <Icon
+                size={20}
+                className={clsx(
+                  "transition duration-200 group-hover:scale-110",
+                  isActive
+                    ? "text-emerald-950"
+                    : "text-emerald-200/60 group-hover:text-orange-200",
+                )}
+              />
 
               <span className="font-medium">{item.title}</span>
             </Link>
@@ -67,9 +77,9 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="border-t border-slate-800 p-5">
-        <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 font-bold text-white shadow-lg shadow-indigo-500/20">
+      <div className="relative border-t border-white/10 p-5">
+        <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-orange-300 font-bold text-emerald-950 shadow-lg shadow-emerald-950/20">
             EB
           </div>
 

@@ -13,6 +13,18 @@ import { useLanguage } from "@/components/providers/LanguageProvider";
 
 type Toast = { message: string; id: number } | null;
 
+const demoUsersStorageKey = "adminpro-demo-users";
+
+function getStoredUsers() {
+  try {
+    const saved = window.localStorage.getItem(demoUsersStorageKey);
+    const parsed: unknown = saved ? JSON.parse(saved) : null;
+    return Array.isArray(parsed) ? (parsed as User[]) : initialUsers;
+  } catch {
+    return initialUsers;
+  }
+}
+
 export default function UsersPage() {
   const { t } = useLanguage();
   const [users, setUsers] = useState<User[]>(initialUsers);
@@ -33,7 +45,7 @@ export default function UsersPage() {
         setUsers(await response.json());
       } catch (error) {
         if (!(error instanceof DOMException && error.name === "AbortError")) {
-          setUsers(initialUsers);
+          setUsers(getStoredUsers());
         }
       } finally {
         if (!controller.signal.aborted) setIsLoading(false);
@@ -52,56 +64,78 @@ export default function UsersPage() {
   }, [toast]);
 
   const showToast = (message: string) => setToast({ message, id: Date.now() });
+  const saveDemoUsers = (nextUsers: User[]) => {
+    window.localStorage.setItem(demoUsersStorageKey, JSON.stringify(nextUsers));
+    return nextUsers;
+  };
 
   const handleAddUser = async (newUser: Omit<User, "id">) => {
-    const response = await fetch("/api/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newUser),
-    });
+    try {
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUser),
+      });
+      if (!response.ok) throw new Error("Unable to create user.");
 
-    if (!response.ok) {
-      showToast(t("userCreateFailed"));
-      return false;
+      const savedUser = await response.json();
+      setUsers((currentUsers) => [savedUser, ...currentUsers]);
+      showToast(t("userCreated"));
+      return true;
+    } catch {
+      const localUser: User = {
+        ...newUser,
+        id: Math.max(0, ...users.map((user) => user.id)) + 1,
+      };
+      setUsers((currentUsers) => saveDemoUsers([localUser, ...currentUsers]));
+      showToast(t("userCreated"));
+      return true;
     }
-
-    const savedUser = await response.json();
-    setUsers((currentUsers) => [savedUser, ...currentUsers]);
-    showToast(t("userCreated"));
-    return true;
   };
 
   const handleUpdateUser = async (updatedUser: User) => {
-    const response = await fetch(`/api/users/${updatedUser.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedUser),
-    });
+    try {
+      const response = await fetch(`/api/users/${updatedUser.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedUser),
+      });
+      if (!response.ok) throw new Error("Unable to update user.");
 
-    if (!response.ok) {
-      showToast(t("userUpdateFailed"));
-      return false;
+      const savedUser = await response.json();
+      setUsers((currentUsers) =>
+        currentUsers.map((currentUser) =>
+          currentUser.id === updatedUser.id ? savedUser : currentUser,
+        ),
+      );
+      showToast(t("userUpdated"));
+      return true;
+    } catch {
+      setUsers((currentUsers) =>
+        saveDemoUsers(
+          currentUsers.map((currentUser) =>
+            currentUser.id === updatedUser.id ? updatedUser : currentUser,
+          ),
+        ),
+      );
+      showToast(t("userUpdated"));
+      return true;
     }
-
-    const savedUser = await response.json();
-    setUsers((currentUsers) =>
-      currentUsers.map((currentUser) =>
-        currentUser.id === updatedUser.id ? savedUser : currentUser,
-      ),
-    );
-    showToast(t("userUpdated"));
-    return true;
   };
 
   const handleDeleteUser = async (id: number) => {
-    const response = await fetch(`/api/users/${id}`, { method: "DELETE" });
-    if (!response.ok) {
-      showToast(t("userDeleteFailed"));
-      return;
-    }
+    try {
+      const response = await fetch(`/api/users/${id}`, { method: "DELETE" });
+      if (!response.ok) throw new Error("Unable to delete user.");
 
-    setUsers((currentUsers) => currentUsers.filter((user) => user.id !== id));
-    showToast(t("userDeleted"));
+      setUsers((currentUsers) => currentUsers.filter((user) => user.id !== id));
+      showToast(t("userDeleted"));
+    } catch {
+      setUsers((currentUsers) =>
+        saveDemoUsers(currentUsers.filter((user) => user.id !== id)),
+      );
+      showToast(t("userDeleted"));
+    }
   };
 
   const activeUsers = users.filter((user) => user.status === "Active").length;

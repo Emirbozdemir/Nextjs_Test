@@ -18,6 +18,18 @@ type Toast = {
   id: number;
 } | null;
 
+const demoProductsStorageKey = "adminpro-demo-products";
+
+function getStoredProducts() {
+  try {
+    const saved = window.localStorage.getItem(demoProductsStorageKey);
+    const parsed: unknown = saved ? JSON.parse(saved) : null;
+    return Array.isArray(parsed) ? (parsed as Product[]) : initialProducts;
+  } catch {
+    return initialProducts;
+  }
+}
+
 export default function ProductsPage() {
   const { language, t } = useLanguage();
   const [products, setProducts] = useState<Product[]>(initialProducts);
@@ -43,7 +55,7 @@ export default function ProductsPage() {
         setProducts(await response.json());
       } catch (error) {
         if (!(error instanceof DOMException && error.name === "AbortError")) {
-          setProducts(initialProducts);
+          setProducts(getStoredProducts());
         }
       } finally {
         if (!controller.signal.aborted) setIsLoading(false);
@@ -70,6 +82,13 @@ export default function ProductsPage() {
       id: Date.now(),
     });
   };
+  const saveDemoProducts = (nextProducts: Product[]) => {
+    window.localStorage.setItem(
+      demoProductsStorageKey,
+      JSON.stringify(nextProducts),
+    );
+    return nextProducts;
+  };
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -78,42 +97,52 @@ export default function ProductsPage() {
 
   const handleSaveProduct = async (product: Omit<Product, "id"> | Product) => {
     if ("id" in product) {
-      const response = await fetch(`/api/products/${product.id}`, {
-        method: "PATCH",
+      try {
+        const response = await fetch(`/api/products/${product.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(product),
+        });
+        if (!response.ok) throw new Error("Unable to update product.");
+
+        const savedProduct = await response.json();
+        setProducts((current) =>
+          current.map((item) => (item.id === product.id ? savedProduct : item)),
+        );
+        showToast(t("productUpdated"));
+        return true;
+      } catch {
+        setProducts((current) =>
+          saveDemoProducts(
+            current.map((item) => (item.id === product.id ? product : item)),
+          ),
+        );
+        showToast(t("productUpdated"));
+        return true;
+      }
+    }
+
+    try {
+      const response = await fetch("/api/products", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(product),
       });
-
-      if (!response.ok) {
-        showToast(t("productUpdateFailed"));
-        return false;
-      }
+      if (!response.ok) throw new Error("Unable to create product.");
 
       const savedProduct = await response.json();
-      setProducts((current) =>
-        current.map((item) => (item.id === product.id ? savedProduct : item)),
-      );
-
-      showToast(t("productUpdated"));
+      setProducts((current) => [savedProduct, ...current]);
+      showToast(t("productCreated"));
+      return true;
+    } catch {
+      const localProduct: Product = {
+        ...product,
+        id: Math.max(0, ...products.map((item) => item.id)) + 1,
+      };
+      setProducts((current) => saveDemoProducts([localProduct, ...current]));
+      showToast(t("productCreated"));
       return true;
     }
-
-    const response = await fetch("/api/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product),
-    });
-
-    if (!response.ok) {
-      showToast(t("productCreateFailed"));
-      return false;
-    }
-
-    const savedProduct = await response.json();
-    setProducts((current) => [savedProduct, ...current]);
-
-    showToast(t("productCreated"));
-    return true;
   };
 
   const handleEdit = (product: Product) => {
@@ -122,15 +151,20 @@ export default function ProductsPage() {
   };
 
   const handleDelete = async (id: number) => {
-    const response = await fetch(`/api/products/${id}`, { method: "DELETE" });
-    if (!response.ok) {
-      showToast(t("productDeleteFailed"));
-      return;
+    try {
+      const response = await fetch(`/api/products/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Unable to delete product.");
+
+      setProducts((current) => current.filter((product) => product.id !== id));
+      showToast(t("productDeleted"));
+    } catch {
+      setProducts((current) =>
+        saveDemoProducts(current.filter((product) => product.id !== id)),
+      );
+      showToast(t("productDeleted"));
     }
-
-    setProducts((current) => current.filter((product) => product.id !== id));
-
-    showToast(t("productDeleted"));
   };
 
   const productsInStock = products.filter(
