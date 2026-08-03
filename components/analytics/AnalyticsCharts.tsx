@@ -19,10 +19,12 @@ import {
 import Card from "@/components/ui/Card";
 import DataState from "@/components/ui/DataState";
 import { AnalyticsPeriod, getAnalyticsData } from "@/lib/analytics-data";
+import { useLanguage } from "@/components/providers/LanguageProvider";
+import { languages } from "@/lib/languages";
 
 type AnalyticsChartsProps = { period: AnalyticsPeriod; isLoading?: boolean };
-const money = (value: number) =>
-  new Intl.NumberFormat("en-US", {
+const money = (value: number, locale: string) =>
+  new Intl.NumberFormat(locale, {
     style: "currency",
     currency: "USD",
     notation: "compact",
@@ -33,14 +35,15 @@ export default function AnalyticsCharts({
   period,
   isLoading = false,
 }: AnalyticsChartsProps) {
+  const { language, t } = useLanguage();
   const { sales, categoryData } = getAnalyticsData(period);
   if (isLoading || sales.length === 0)
     return (
       <Card>
         <DataState
           isLoading={isLoading}
-          title="No analytics data"
-          description="Analytics will appear here when data becomes available."
+          title={t("noAnalyticsData")}
+          description={t("analyticsDataDescription")}
         />
       </Card>
     );
@@ -49,10 +52,10 @@ export default function AnalyticsCharts({
       <div className="grid gap-6 xl:grid-cols-3">
         <Card className="h-[380px] xl:col-span-2">
           <h2 className="text-lg font-semibold text-slate-900">
-            Revenue Trend
+            {t("revenueTrend")}
           </h2>
           <p className="mb-5 text-sm text-slate-500">
-            Revenue performance for the selected period
+            {t("revenueTrendDescription")}
           </p>
           <ResponsiveContainer width="100%" height={275}>
             <AreaChart
@@ -83,13 +86,17 @@ export default function AnalyticsCharts({
                 tick={{ fill: "#64748b", fontSize: 12 }}
               />
               <YAxis
-                tickFormatter={(value) => `$${value / 1000}k`}
+                tickFormatter={(value) =>
+                  money(Number(value), languages[language].locale)
+                }
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: "#64748b", fontSize: 12 }}
               />
               <Tooltip
-                formatter={(value) => money(Number(value))}
+                formatter={(value) =>
+                  money(Number(value), languages[language].locale)
+                }
                 cursor={{ stroke: "#94a3b8", strokeDasharray: "3 3" }}
               />
               <Area
@@ -104,9 +111,11 @@ export default function AnalyticsCharts({
         </Card>
         <Card className="h-[380px]">
           <h2 className="text-lg font-semibold text-slate-900">
-            Sales by Category
+            {t("salesByCategory")}
           </h2>
-          <p className="mb-2 text-sm text-slate-500">Revenue contribution</p>
+          <p className="mb-2 text-sm text-slate-500">
+            {t("revenueContribution")}
+          </p>
           <ResponsiveContainer width="100%" height={285}>
             <PieChart>
               <Pie
@@ -132,9 +141,11 @@ export default function AnalyticsCharts({
         </Card>
       </div>
       <Card className="h-[360px]">
-        <h2 className="text-lg font-semibold text-slate-900">Order Volume</h2>
+        <h2 className="text-lg font-semibold text-slate-900">
+          {t("orderVolume")}
+        </h2>
         <p className="mb-5 text-sm text-slate-500">
-          Number of orders completed in the selected period
+          {t("orderVolumeDescription")}
         </p>
         <ResponsiveContainer width="100%" height={245}>
           <BarChart
@@ -160,7 +171,7 @@ export default function AnalyticsCharts({
             <Tooltip cursor={{ fill: "#f8fafc" }} />
             <Bar
               dataKey="orders"
-              name="Orders"
+              name={t("orders")}
               fill="#0d9488"
               radius={[6, 6, 0, 0]}
             />

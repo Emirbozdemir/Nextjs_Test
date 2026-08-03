@@ -160,6 +160,91 @@ Object.assign(translations.ru, {
   orderUpdatedLocally: "обновлён локально.",
 });
 Object.assign(translations.en, {
+  analyticsPeriod: "Analytics period",
+  period7d: "Last 7 days",
+  period30d: "Last 30 days",
+  period90d: "Last 90 days",
+  performanceInsight: "Performance insight",
+  strongestSalesPeriod: "Strongest sales period:",
+  noAnalyticsData: "No analytics data",
+  analyticsDataDescription:
+    "Analytics will appear here when data becomes available.",
+  revenueTrend: "Revenue trend",
+  revenueTrendDescription: "Revenue performance for the selected period",
+  salesByCategory: "Sales by category",
+  revenueContribution: "Revenue contribution",
+  orderVolume: "Order volume",
+  orderVolumeDescription: "Number of orders completed in the selected period",
+});
+Object.assign(translations.tr, {
+  analyticsPeriod: "Analiz dönemi",
+  period7d: "Son 7 gün",
+  period30d: "Son 30 gün",
+  period90d: "Son 90 gün",
+  performanceInsight: "Performans içgörüsü",
+  strongestSalesPeriod: "En güçlü satış dönemi:",
+  noAnalyticsData: "Analiz verisi yok",
+  analyticsDataDescription: "Veri hazır olduğunda analizler burada görünür.",
+  revenueTrend: "Gelir trendi",
+  revenueTrendDescription: "Seçili dönemin gelir performansı",
+  salesByCategory: "Kategoriye göre satışlar",
+  revenueContribution: "Gelir katkısı",
+  orderVolume: "Sipariş hacmi",
+  orderVolumeDescription: "Seçili dönemde tamamlanan sipariş sayısı",
+});
+Object.assign(translations.fr, {
+  analyticsPeriod: "Période d’analyse",
+  period7d: "7 derniers jours",
+  period30d: "30 derniers jours",
+  period90d: "90 derniers jours",
+  performanceInsight: "Aperçu des performances",
+  strongestSalesPeriod: "Période de ventes la plus forte :",
+  noAnalyticsData: "Aucune donnée analytique",
+  analyticsDataDescription:
+    "Les analyses apparaîtront ici lorsque les données seront disponibles.",
+  revenueTrend: "Tendance des revenus",
+  revenueTrendDescription:
+    "Performance des revenus pour la période sélectionnée",
+  salesByCategory: "Ventes par catégorie",
+  revenueContribution: "Contribution aux revenus",
+  orderVolume: "Volume de commandes",
+  orderVolumeDescription:
+    "Nombre de commandes terminées pendant la période sélectionnée",
+});
+Object.assign(translations.ar, {
+  analyticsPeriod: "فترة التحليلات",
+  period7d: "آخر 7 أيام",
+  period30d: "آخر 30 يومًا",
+  period90d: "آخر 90 يومًا",
+  performanceInsight: "رؤية الأداء",
+  strongestSalesPeriod: "أقوى فترة مبيعات:",
+  noAnalyticsData: "لا توجد بيانات تحليلية",
+  analyticsDataDescription: "ستظهر التحليلات هنا عند توفر البيانات.",
+  revenueTrend: "اتجاه الإيرادات",
+  revenueTrendDescription: "أداء الإيرادات للفترة المحددة",
+  salesByCategory: "المبيعات حسب الفئة",
+  revenueContribution: "مساهمة الإيرادات",
+  orderVolume: "حجم الطلبات",
+  orderVolumeDescription: "عدد الطلبات المكتملة خلال الفترة المحددة",
+});
+Object.assign(translations.ru, {
+  analyticsPeriod: "Период аналитики",
+  period7d: "Последние 7 дней",
+  period30d: "Последние 30 дней",
+  period90d: "Последние 90 дней",
+  performanceInsight: "Анализ производительности",
+  strongestSalesPeriod: "Самый сильный период продаж:",
+  noAnalyticsData: "Нет аналитических данных",
+  analyticsDataDescription:
+    "Аналитика появится здесь, когда данные станут доступны.",
+  revenueTrend: "Динамика дохода",
+  revenueTrendDescription: "Доход за выбранный период",
+  salesByCategory: "Продажи по категориям",
+  revenueContribution: "Вклад в доход",
+  orderVolume: "Объём заказов",
+  orderVolumeDescription: "Количество завершённых заказов за выбранный период",
+});
+Object.assign(translations.en, {
   searchUsers: "Search by name, email or role...",
   allStatuses: "All statuses",
   active: "Active",
