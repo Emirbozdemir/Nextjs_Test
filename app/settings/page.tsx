@@ -64,10 +64,12 @@ export default function SettingsPage() {
   return (
     <section className="mx-auto max-w-5xl space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">{t("settings")}</h1>
-        <p className="mt-1 text-slate-500">
-          Manage your profile, notifications, and workspace preferences.
-        </p>
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900">{t("settings")}</h1>
+          <p className="mt-1 text-slate-500">
+            Manage your profile, notifications, and workspace preferences.
+          </p>
+        </div>
       </div>
       <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
         <aside className="hidden lg:block">

@@ -5,6 +5,7 @@ import "./globals.css";
 import Sidebar from "@/components/layout/Sidebar";
 import Topbar from "@/components/layout/Topbar";
 import LanguageProvider from "@/components/providers/LanguageProvider";
+import ThemeProvider from "@/components/providers/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,21 +28,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable}`}
+    >
       <body>
-        <LanguageProvider>
-          <div className="flex min-h-screen">
-            <Sidebar />
+        <ThemeProvider>
+          <LanguageProvider>
+            <div className="flex min-h-screen">
+              <Sidebar />
 
-            <main className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
-              <Topbar />
+              <main className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
+                <Topbar />
 
-              <div className="relative flex-1 overflow-y-auto p-5 sm:p-8">
-                {children}
-              </div>
-            </main>
-          </div>
-        </LanguageProvider>
+                <div className="relative flex-1 overflow-y-auto p-5 sm:p-8">
+                  {children}
+                </div>
+              </main>
+            </div>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

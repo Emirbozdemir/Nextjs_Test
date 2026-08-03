@@ -11,6 +11,7 @@ import {
   Package,
   ShoppingCart,
   ChartNoAxesCombined,
+  ChevronRight,
   Settings,
 } from "lucide-react";
 
@@ -78,17 +79,24 @@ export default function Sidebar() {
       </nav>
 
       <div className="relative border-t border-white/10 p-5">
-        <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3">
+        <Link
+          href="/settings"
+          className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3 transition hover:-translate-y-0.5 hover:border-orange-200/30 hover:bg-white/10"
+        >
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-orange-300 font-bold text-emerald-950 shadow-lg shadow-emerald-950/20">
             EB
           </div>
 
-          <div>
+          <div className="min-w-0 flex-1">
             <p className="font-semibold text-white">Emir</p>
 
             <p className="text-sm text-slate-400">Administrator</p>
           </div>
-        </div>
+          <ChevronRight
+            size={18}
+            className="text-emerald-100/50 transition group-hover:translate-x-0.5 group-hover:text-orange-200"
+          />
+        </Link>
       </div>
     </aside>
   );

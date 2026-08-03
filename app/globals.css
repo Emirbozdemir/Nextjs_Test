@@ -32,3 +32,53 @@ body {
   background: #99f6e4;
   color: #1f2c27;
 }
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark,
+html.dark body,
+body.dark {
+  --background: #101916;
+  --foreground: #e5f4ee;
+  background:
+    radial-gradient(circle at 92% 4%, rgb(251 146 60 / 0.1), transparent 30rem),
+    radial-gradient(circle at 8% 28%, rgb(45 212 191 / 0.1), transparent 27rem),
+    var(--background) !important;
+}
+
+html.dark main,
+body.dark main {
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+html.dark [class*="bg-white"],
+html.dark [class*="bg-\[\#fffefb\]"],
+html.dark [class*="bg-slate-50"] {
+  background-color: rgb(23 35 30 / 0.92) !important;
+}
+
+html.dark [class*="border-slate-"],
+html.dark [class*="border-stone-"] {
+  border-color: rgb(110 143 130 / 0.25) !important;
+}
+
+html.dark [class*="text-slate-900"],
+html.dark [class*="text-slate-800"],
+html.dark [class*="text-slate-700"] {
+  color: #e5f4ee !important;
+}
+
+html.dark [class*="text-slate-600"],
+html.dark [class*="text-slate-500"],
+html.dark [class*="text-slate-400"] {
+  color: #9eb6aa !important;
+}
+
+html.dark input,
+html.dark select {
+  color: #e5f4ee;
+  background-color: #182720 !important;
+}

@@ -160,6 +160,47 @@ Object.assign(translations.ru, {
   orderUpdatedLocally: "обновлён локально.",
 });
 Object.assign(translations.en, {
+  appearance: "Appearance",
+  appearanceDescription: "Choose the workspace look that suits you.",
+  lightMode: "Light mode",
+  lightModeDescription: "A bright, warm workspace.",
+  darkMode: "Dark mode",
+  darkModeDescription: "A calmer interface for low-light work.",
+});
+Object.assign(translations.tr, {
+  appearance: "Görünüm",
+  appearanceDescription: "Size uygun çalışma alanı görünümünü seçin.",
+  lightMode: "Açık mod",
+  lightModeDescription: "Aydınlık ve sıcak bir çalışma alanı.",
+  darkMode: "Karanlık mod",
+  darkModeDescription: "Düşük ışıkta çalışmak için daha sakin bir arayüz.",
+});
+Object.assign(translations.fr, {
+  appearance: "Apparence",
+  appearanceDescription:
+    "Choisissez l’apparence de l’espace de travail qui vous convient.",
+  lightMode: "Mode clair",
+  lightModeDescription: "Un espace de travail lumineux et chaleureux.",
+  darkMode: "Mode sombre",
+  darkModeDescription: "Une interface plus douce en faible luminosité.",
+});
+Object.assign(translations.ar, {
+  appearance: "المظهر",
+  appearanceDescription: "اختر مظهر مساحة العمل المناسب لك.",
+  lightMode: "الوضع الفاتح",
+  lightModeDescription: "مساحة عمل مشرقة ودافئة.",
+  darkMode: "الوضع الداكن",
+  darkModeDescription: "واجهة أكثر هدوءًا للعمل في الإضاءة المنخفضة.",
+});
+Object.assign(translations.ru, {
+  appearance: "Оформление",
+  appearanceDescription: "Выберите подходящий вид рабочего пространства.",
+  lightMode: "Светлая тема",
+  lightModeDescription: "Светлое и тёплое рабочее пространство.",
+  darkMode: "Тёмная тема",
+  darkModeDescription: "Более спокойный интерфейс для слабого освещения.",
+});
+Object.assign(translations.en, {
   topCategory: "Top category",
   peakSalesPeriod: "Peak sales period",
   averageOrderPace: "Average order pace",

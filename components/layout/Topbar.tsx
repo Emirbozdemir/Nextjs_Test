@@ -5,9 +5,13 @@ import { useMemo, useState } from "react";
 import {
   Bell,
   CheckCheck,
+  ChevronDown,
+  Moon,
   Package,
   Search,
   ShoppingCart,
+  Settings,
+  Sun,
   UserCircle2,
   Users,
   X,
@@ -17,6 +21,7 @@ import { initialOrders } from "@/data/orders";
 import { initialProducts } from "@/data/products";
 import { initialUsers } from "@/data/user";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { useTheme } from "@/components/providers/ThemeProvider";
 
 type SearchResult = {
   id: string;
@@ -52,8 +57,10 @@ const notifications = [
 
 export default function Topbar() {
   const { t } = useLanguage();
+  const { theme, setTheme } = useTheme();
   const [query, setQuery] = useState("");
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(
     notifications.length,
   );
@@ -176,7 +183,10 @@ export default function Topbar() {
         <div className="relative">
           <button
             type="button"
-            onClick={() => setIsNotificationsOpen((current) => !current)}
+            onClick={() => {
+              setIsNotificationsOpen((current) => !current);
+              setIsProfileOpen(false);
+            }}
             aria-label="Open notifications"
             aria-expanded={isNotificationsOpen}
             className="relative rounded-2xl border border-stone-200/80 bg-white/90 p-2.5 text-slate-600 shadow-sm shadow-stone-200/70 transition hover:-translate-y-0.5 hover:scale-105 hover:bg-emerald-50 hover:text-emerald-700"
@@ -231,12 +241,63 @@ export default function Topbar() {
             </div>
           )}
         </div>
-        <div className="hidden items-center gap-2 rounded-2xl border border-stone-200/80 bg-white/85 px-2.5 py-1.5 shadow-sm shadow-stone-200/70 sm:flex">
-          <UserCircle2 size={32} className="text-emerald-700 drop-shadow-sm" />
-          <div>
-            <p className="font-medium text-slate-800">Emir</p>
-            <p className="text-xs text-slate-500">Administrator</p>
-          </div>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={theme === "dark"}
+          aria-label={t("darkMode")}
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className="inline-flex items-center gap-2 rounded-2xl border border-stone-200/80 bg-white/90 p-2.5 text-slate-600 shadow-sm shadow-stone-200/70 transition hover:-translate-y-0.5 hover:scale-105 hover:bg-emerald-50 hover:text-emerald-700"
+        >
+          {theme === "dark" ? <Moon size={19} /> : <Sun size={19} />}
+          <span
+            className={`relative hidden h-5 w-9 rounded-full transition sm:block ${theme === "dark" ? "bg-emerald-600" : "bg-slate-200"}`}
+          >
+            <span
+              className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition ${theme === "dark" ? "left-4" : "left-0.5"}`}
+            />
+          </span>
+        </button>
+        <div className="relative hidden sm:block">
+          <button
+            type="button"
+            onClick={() => {
+              setIsProfileOpen((current) => !current);
+              setIsNotificationsOpen(false);
+            }}
+            aria-expanded={isProfileOpen}
+            aria-label={t("profile")}
+            className="flex items-center gap-2 rounded-2xl border border-stone-200/80 bg-white/85 px-2.5 py-1.5 text-left shadow-sm shadow-stone-200/70 transition hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-emerald-50/50"
+          >
+            <UserCircle2
+              size={32}
+              className="text-emerald-700 drop-shadow-sm"
+            />
+            <div>
+              <p className="font-medium text-slate-800">Emir</p>
+              <p className="text-xs text-slate-500">{t("administrator")}</p>
+            </div>
+            <ChevronDown
+              size={16}
+              className={`text-slate-400 transition ${isProfileOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+          {isProfileOpen && (
+            <div className="absolute right-0 top-14 w-60 overflow-hidden rounded-2xl border border-stone-200 bg-white p-2 shadow-2xl shadow-stone-900/15">
+              <div className="border-b border-stone-100 px-3 py-2.5">
+                <p className="text-sm font-semibold text-slate-800">Emir</p>
+                <p className="text-xs text-slate-500">Administrator</p>
+              </div>
+              <Link
+                href="/settings"
+                onClick={() => setIsProfileOpen(false)}
+                className="mt-2 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-emerald-50 hover:text-emerald-800"
+              >
+                <Settings size={17} />
+                {t("settings")}
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>
