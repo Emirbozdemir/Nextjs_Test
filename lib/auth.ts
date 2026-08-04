@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 
 export const sessionCookieName = "adminpro_session";
 const sessionDurationInSeconds = 60 * 60 * 24 * 7;
+const passwordResetDurationInSeconds = 60 * 60;
 
 export type AuthUser = {
   id: number;
@@ -53,7 +54,11 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     },
   });
 
-  if (!session || session.expiresAt <= new Date() || session.user.status !== "ACTIVE") {
+  if (
+    !session ||
+    session.expiresAt <= new Date() ||
+    session.user.status !== "ACTIVE"
+  ) {
     return null;
   }
 
@@ -71,4 +76,42 @@ export async function deleteCurrentSession() {
   await prisma.session.deleteMany({
     where: { tokenHash: hashSessionToken(token) },
   });
+}
+
+export async function createPasswordResetToken(userId: number) {
+  const token = randomBytes(32).toString("base64url");
+  const expiresAt = new Date(
+    Date.now() + passwordResetDurationInSeconds * 1000,
+  );
+
+  await prisma.$transaction([
+    prisma.passwordResetToken.deleteMany({ where: { userId } }),
+    prisma.passwordResetToken.create({
+      data: { userId, tokenHash: hashSessionToken(token), expiresAt },
+    }),
+  ]);
+
+  return token;
+}
+
+export async function resetPassword(token: string, passwordHash: string) {
+  const resetToken = await prisma.passwordResetToken.findUnique({
+    where: { tokenHash: hashSessionToken(token) },
+    select: { id: true, userId: true, expiresAt: true },
+  });
+
+  if (!resetToken || resetToken.expiresAt <= new Date()) return false;
+
+  await prisma.$transaction([
+    prisma.user.update({
+      where: { id: resetToken.userId },
+      data: { passwordHash },
+    }),
+    prisma.passwordResetToken.deleteMany({
+      where: { userId: resetToken.userId },
+    }),
+    prisma.session.deleteMany({ where: { userId: resetToken.userId } }),
+  ]);
+
+  return true;
 }
