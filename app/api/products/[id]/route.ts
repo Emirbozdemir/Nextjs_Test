@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
+import { requireApiUser } from "@/lib/auth";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -9,6 +10,7 @@ function serializeProduct(product: { id: number; name: string; category: string;
 }
 
 export async function PATCH(request: Request, { params }: RouteContext) {
+  if (!(await requireApiUser())) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   const id = Number((await params).id);
   if (!Number.isInteger(id)) return NextResponse.json({ error: "Invalid product id." }, { status: 400 });
 
@@ -32,6 +34,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
 }
 
 export async function DELETE(_: Request, { params }: RouteContext) {
+  if (!(await requireApiUser())) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   const id = Number((await params).id);
   if (!Number.isInteger(id)) return NextResponse.json({ error: "Invalid product id." }, { status: 400 });
 

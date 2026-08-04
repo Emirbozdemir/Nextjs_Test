@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { OrderStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { requireApiUser } from "@/lib/auth";
 
 const statuses: Record<string, OrderStatus> = {
   Pending: OrderStatus.PENDING,
@@ -42,6 +43,7 @@ function serializeOrder(order: {
 }
 
 export async function GET() {
+  if (!(await requireApiUser())) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   const orders = await prisma.order.findMany({
     orderBy: { createdAt: "desc" },
   });
@@ -49,6 +51,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (!(await requireApiUser())) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   const body: unknown = await request.json().catch(() => null);
   if (!isRecord(body))
     return NextResponse.json(

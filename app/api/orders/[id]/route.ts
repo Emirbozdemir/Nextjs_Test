@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { OrderStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { requireApiUser } from "@/lib/auth";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -37,6 +38,7 @@ function serializeOrder(order: {
 }
 
 export async function PATCH(request: Request, { params }: RouteContext) {
+  if (!(await requireApiUser())) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   const id = Number((await params).id);
   const body: unknown = await request.json().catch(() => null);
   if (!isRecord(body))

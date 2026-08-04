@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Bell,
   CheckCheck,
   ChevronDown,
   Moon,
   Package,
+  LogOut,
   Search,
   ShoppingCart,
   Settings,
@@ -22,6 +24,7 @@ import { initialProducts } from "@/data/products";
 import { initialUsers } from "@/data/user";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { useTheme } from "@/components/providers/ThemeProvider";
+import type { AuthUser } from "@/lib/auth";
 
 type SearchResult = {
   id: string;
@@ -55,9 +58,10 @@ const notifications = [
   },
 ];
 
-export default function Topbar() {
+export default function Topbar({ user }: { user: AuthUser }) {
   const { t } = useLanguage();
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -111,6 +115,12 @@ export default function Topbar() {
 
   const iconFor = (type: SearchResult["type"]) =>
     type === "User" ? Users : type === "Product" ? Package : ShoppingCart;
+
+  async function handleLogout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.replace("/login");
+    router.refresh();
+  }
   return (
     <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-stone-200/80 bg-[#fffefb]/70 px-4 shadow-[0_8px_30px_-24px_rgba(41,54,47,0.2)] backdrop-blur-2xl sm:px-7">
       <h2 className="hidden text-xl font-bold tracking-tight text-slate-900 md:block">
@@ -274,8 +284,8 @@ export default function Topbar() {
               className="text-emerald-700 drop-shadow-sm"
             />
             <div>
-              <p className="font-medium text-slate-800">Emir</p>
-              <p className="text-xs text-slate-500">{t("administrator")}</p>
+              <p className="max-w-28 truncate font-medium text-slate-800">{user.name}</p>
+              <p className="max-w-28 truncate text-xs text-slate-500">{user.role}</p>
             </div>
             <ChevronDown
               size={16}
@@ -285,8 +295,8 @@ export default function Topbar() {
           {isProfileOpen && (
             <div className="absolute right-0 top-14 w-60 overflow-hidden rounded-2xl border border-stone-200 bg-white p-2 shadow-2xl shadow-stone-900/15">
               <div className="border-b border-stone-100 px-3 py-2.5">
-                <p className="text-sm font-semibold text-slate-800">Emir</p>
-                <p className="text-xs text-slate-500">Administrator</p>
+                <p className="truncate text-sm font-semibold text-slate-800">{user.name}</p>
+                <p className="truncate text-xs text-slate-500">{user.email}</p>
               </div>
               <Link
                 href="/settings"
@@ -296,6 +306,14 @@ export default function Topbar() {
                 <Settings size={17} />
                 {t("settings")}
               </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-rose-600 transition hover:bg-rose-50"
+              >
+                <LogOut size={17} />
+                Sign out
+              </button>
             </div>
           )}
         </div>

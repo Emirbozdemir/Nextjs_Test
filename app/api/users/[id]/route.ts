@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { UserStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { requireApiUser } from "@/lib/auth";
 
 const statuses: Record<string, UserStatus> = {
   Active: UserStatus.ACTIVE,
@@ -16,6 +17,7 @@ function serializeUser(user: { id: number; name: string; email: string; role: st
 }
 
 export async function PATCH(request: Request, { params }: RouteContext) {
+  if (!(await requireApiUser())) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   const id = Number((await params).id);
   if (!Number.isInteger(id)) return NextResponse.json({ error: "Invalid user id." }, { status: 400 });
 
@@ -28,7 +30,19 @@ export async function PATCH(request: Request, { params }: RouteContext) {
   if (!name || !email || !role) return NextResponse.json({ error: "Name, email, and role are required." }, { status: 400 });
 
   try {
-    const user = await prisma.user.update({ where: { id }, data: { name, email, role, status } });
+    const user = await prisma.user.update({
+      where: { id },
+      data: { name, email, role, status },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
     return NextResponse.json(serializeUser(user));
   } catch (error) {
     if (typeof error === "object" && error !== null && "code" in error) {
@@ -40,6 +54,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
 }
 
 export async function DELETE(_: Request, { params }: RouteContext) {
+  if (!(await requireApiUser())) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   const id = Number((await params).id);
   if (!Number.isInteger(id)) return NextResponse.json({ error: "Invalid user id." }, { status: 400 });
 

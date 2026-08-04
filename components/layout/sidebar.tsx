@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import type { AuthUser } from "@/lib/auth";
 
 import {
   LayoutDashboard,
@@ -15,7 +16,7 @@ import {
   Settings,
 } from "lucide-react";
 
-export default function Sidebar() {
+export default function Sidebar({ user }: { user: AuthUser }) {
   const pathname = usePathname();
   const { t } = useLanguage();
   const menuItems = [
@@ -88,9 +89,9 @@ export default function Sidebar() {
           </div>
 
           <div className="min-w-0 flex-1">
-            <p className="font-semibold text-white">Emir</p>
+            <p className="truncate font-semibold text-white">{user.name}</p>
 
-            <p className="text-sm text-slate-400">Administrator</p>
+            <p className="truncate text-sm text-slate-400">{user.role}</p>
           </div>
           <ChevronRight
             size={18}

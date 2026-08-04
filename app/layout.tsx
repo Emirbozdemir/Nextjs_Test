@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import Sidebar from "@/components/layout/Sidebar";
-import Topbar from "@/components/layout/Topbar";
 import LanguageProvider from "@/components/providers/LanguageProvider";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 
@@ -36,17 +34,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <LanguageProvider>
-            <div className="flex min-h-screen">
-              <Sidebar />
-
-              <main className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
-                <Topbar />
-
-                <div className="relative flex-1 overflow-y-auto p-5 sm:p-8">
-                  {children}
-                </div>
-              </main>
-            </div>
+            {children}
           </LanguageProvider>
         </ThemeProvider>
       </body>
