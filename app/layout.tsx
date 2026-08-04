@@ -4,6 +4,7 @@ import "./globals.css";
 
 import LanguageProvider from "@/components/providers/LanguageProvider";
 import ThemeProvider from "@/components/providers/ThemeProvider";
+import { getCurrentUser } from "@/lib/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,11 +21,13 @@ export const metadata: Metadata = {
   description: "Professional Admin Panel",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getCurrentUser();
+
   return (
     <html
       lang="en"
@@ -32,8 +35,8 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body>
-        <ThemeProvider>
-          <LanguageProvider>
+        <ThemeProvider userId={user?.id} initialTheme={user?.theme}>
+          <LanguageProvider userId={user?.id} initialLanguage={user?.language}>
             {children}
           </LanguageProvider>
         </ThemeProvider>

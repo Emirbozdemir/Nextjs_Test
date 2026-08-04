@@ -41,6 +41,12 @@ export type UserMinAggregateOutputType = {
   passwordHash: string | null
   role: string | null
   status: $Enums.UserStatus | null
+  language: string | null
+  theme: string | null
+  timeZone: string | null
+  emailNotifications: boolean | null
+  orderNotifications: boolean | null
+  weeklyReports: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -52,6 +58,12 @@ export type UserMaxAggregateOutputType = {
   passwordHash: string | null
   role: string | null
   status: $Enums.UserStatus | null
+  language: string | null
+  theme: string | null
+  timeZone: string | null
+  emailNotifications: boolean | null
+  orderNotifications: boolean | null
+  weeklyReports: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -63,6 +75,12 @@ export type UserCountAggregateOutputType = {
   passwordHash: number
   role: number
   status: number
+  language: number
+  theme: number
+  timeZone: number
+  emailNotifications: number
+  orderNotifications: number
+  weeklyReports: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -84,6 +102,12 @@ export type UserMinAggregateInputType = {
   passwordHash?: true
   role?: true
   status?: true
+  language?: true
+  theme?: true
+  timeZone?: true
+  emailNotifications?: true
+  orderNotifications?: true
+  weeklyReports?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -95,6 +119,12 @@ export type UserMaxAggregateInputType = {
   passwordHash?: true
   role?: true
   status?: true
+  language?: true
+  theme?: true
+  timeZone?: true
+  emailNotifications?: true
+  orderNotifications?: true
+  weeklyReports?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,6 +136,12 @@ export type UserCountAggregateInputType = {
   passwordHash?: true
   role?: true
   status?: true
+  language?: true
+  theme?: true
+  timeZone?: true
+  emailNotifications?: true
+  orderNotifications?: true
+  weeklyReports?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -204,6 +240,12 @@ export type UserGroupByOutputType = {
   passwordHash: string | null
   role: string
   status: $Enums.UserStatus
+  language: string
+  theme: string
+  timeZone: string
+  emailNotifications: boolean
+  orderNotifications: boolean
+  weeklyReports: boolean
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -238,6 +280,12 @@ export type UserWhereInput = {
   passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.StringFilter<"User"> | string
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  language?: Prisma.StringFilter<"User"> | string
+  theme?: Prisma.StringFilter<"User"> | string
+  timeZone?: Prisma.StringFilter<"User"> | string
+  emailNotifications?: Prisma.BoolFilter<"User"> | boolean
+  orderNotifications?: Prisma.BoolFilter<"User"> | boolean
+  weeklyReports?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sessions?: Prisma.SessionListRelationFilter
@@ -251,6 +299,12 @@ export type UserOrderByWithRelationInput = {
   passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  language?: Prisma.SortOrder
+  theme?: Prisma.SortOrder
+  timeZone?: Prisma.SortOrder
+  emailNotifications?: Prisma.SortOrder
+  orderNotifications?: Prisma.SortOrder
+  weeklyReports?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
@@ -267,6 +321,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.StringFilter<"User"> | string
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  language?: Prisma.StringFilter<"User"> | string
+  theme?: Prisma.StringFilter<"User"> | string
+  timeZone?: Prisma.StringFilter<"User"> | string
+  emailNotifications?: Prisma.BoolFilter<"User"> | boolean
+  orderNotifications?: Prisma.BoolFilter<"User"> | boolean
+  weeklyReports?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sessions?: Prisma.SessionListRelationFilter
@@ -280,6 +340,12 @@ export type UserOrderByWithAggregationInput = {
   passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  language?: Prisma.SortOrder
+  theme?: Prisma.SortOrder
+  timeZone?: Prisma.SortOrder
+  emailNotifications?: Prisma.SortOrder
+  orderNotifications?: Prisma.SortOrder
+  weeklyReports?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -299,6 +365,12 @@ export type UserScalarWhereWithAggregatesInput = {
   passwordHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.StringWithAggregatesFilter<"User"> | string
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
+  language?: Prisma.StringWithAggregatesFilter<"User"> | string
+  theme?: Prisma.StringWithAggregatesFilter<"User"> | string
+  timeZone?: Prisma.StringWithAggregatesFilter<"User"> | string
+  emailNotifications?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  orderNotifications?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  weeklyReports?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -309,6 +381,12 @@ export type UserCreateInput = {
   passwordHash?: string | null
   role: string
   status?: $Enums.UserStatus
+  language?: string
+  theme?: string
+  timeZone?: string
+  emailNotifications?: boolean
+  orderNotifications?: boolean
+  weeklyReports?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -322,6 +400,12 @@ export type UserUncheckedCreateInput = {
   passwordHash?: string | null
   role: string
   status?: $Enums.UserStatus
+  language?: string
+  theme?: string
+  timeZone?: string
+  emailNotifications?: boolean
+  orderNotifications?: boolean
+  weeklyReports?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -334,6 +418,12 @@ export type UserUpdateInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.StringFieldUpdateOperationsInput | string
+  timeZone?: Prisma.StringFieldUpdateOperationsInput | string
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -347,6 +437,12 @@ export type UserUncheckedUpdateInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.StringFieldUpdateOperationsInput | string
+  timeZone?: Prisma.StringFieldUpdateOperationsInput | string
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -360,6 +456,12 @@ export type UserCreateManyInput = {
   passwordHash?: string | null
   role: string
   status?: $Enums.UserStatus
+  language?: string
+  theme?: string
+  timeZone?: string
+  emailNotifications?: boolean
+  orderNotifications?: boolean
+  weeklyReports?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -370,6 +472,12 @@ export type UserUpdateManyMutationInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.StringFieldUpdateOperationsInput | string
+  timeZone?: Prisma.StringFieldUpdateOperationsInput | string
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -381,6 +489,12 @@ export type UserUncheckedUpdateManyInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.StringFieldUpdateOperationsInput | string
+  timeZone?: Prisma.StringFieldUpdateOperationsInput | string
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -392,6 +506,12 @@ export type UserCountOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  language?: Prisma.SortOrder
+  theme?: Prisma.SortOrder
+  timeZone?: Prisma.SortOrder
+  emailNotifications?: Prisma.SortOrder
+  orderNotifications?: Prisma.SortOrder
+  weeklyReports?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -407,6 +527,12 @@ export type UserMaxOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  language?: Prisma.SortOrder
+  theme?: Prisma.SortOrder
+  timeZone?: Prisma.SortOrder
+  emailNotifications?: Prisma.SortOrder
+  orderNotifications?: Prisma.SortOrder
+  weeklyReports?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -418,6 +544,12 @@ export type UserMinOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  language?: Prisma.SortOrder
+  theme?: Prisma.SortOrder
+  timeZone?: Prisma.SortOrder
+  emailNotifications?: Prisma.SortOrder
+  orderNotifications?: Prisma.SortOrder
+  weeklyReports?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -441,6 +573,10 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type EnumUserStatusFieldUpdateOperationsInput = {
   set?: $Enums.UserStatus
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -489,6 +625,12 @@ export type UserCreateWithoutPasswordResetTokensInput = {
   passwordHash?: string | null
   role: string
   status?: $Enums.UserStatus
+  language?: string
+  theme?: string
+  timeZone?: string
+  emailNotifications?: boolean
+  orderNotifications?: boolean
+  weeklyReports?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -501,6 +643,12 @@ export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
   passwordHash?: string | null
   role: string
   status?: $Enums.UserStatus
+  language?: string
+  theme?: string
+  timeZone?: string
+  emailNotifications?: boolean
+  orderNotifications?: boolean
+  weeklyReports?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -528,6 +676,12 @@ export type UserUpdateWithoutPasswordResetTokensInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.StringFieldUpdateOperationsInput | string
+  timeZone?: Prisma.StringFieldUpdateOperationsInput | string
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -540,6 +694,12 @@ export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.StringFieldUpdateOperationsInput | string
+  timeZone?: Prisma.StringFieldUpdateOperationsInput | string
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -551,6 +711,12 @@ export type UserCreateWithoutSessionsInput = {
   passwordHash?: string | null
   role: string
   status?: $Enums.UserStatus
+  language?: string
+  theme?: string
+  timeZone?: string
+  emailNotifications?: boolean
+  orderNotifications?: boolean
+  weeklyReports?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -563,6 +729,12 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   passwordHash?: string | null
   role: string
   status?: $Enums.UserStatus
+  language?: string
+  theme?: string
+  timeZone?: string
+  emailNotifications?: boolean
+  orderNotifications?: boolean
+  weeklyReports?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -590,6 +762,12 @@ export type UserUpdateWithoutSessionsInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.StringFieldUpdateOperationsInput | string
+  timeZone?: Prisma.StringFieldUpdateOperationsInput | string
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -602,6 +780,12 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.StringFieldUpdateOperationsInput | string
+  timeZone?: Prisma.StringFieldUpdateOperationsInput | string
+  emailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  weeklyReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -654,6 +838,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   passwordHash?: boolean
   role?: boolean
   status?: boolean
+  language?: boolean
+  theme?: boolean
+  timeZone?: boolean
+  emailNotifications?: boolean
+  orderNotifications?: boolean
+  weeklyReports?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -668,6 +858,12 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   passwordHash?: boolean
   role?: boolean
   status?: boolean
+  language?: boolean
+  theme?: boolean
+  timeZone?: boolean
+  emailNotifications?: boolean
+  orderNotifications?: boolean
+  weeklyReports?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -679,6 +875,12 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   passwordHash?: boolean
   role?: boolean
   status?: boolean
+  language?: boolean
+  theme?: boolean
+  timeZone?: boolean
+  emailNotifications?: boolean
+  orderNotifications?: boolean
+  weeklyReports?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -690,11 +892,17 @@ export type UserSelectScalar = {
   passwordHash?: boolean
   role?: boolean
   status?: boolean
+  language?: boolean
+  theme?: boolean
+  timeZone?: boolean
+  emailNotifications?: boolean
+  orderNotifications?: boolean
+  weeklyReports?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "role" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "role" | "status" | "language" | "theme" | "timeZone" | "emailNotifications" | "orderNotifications" | "weeklyReports" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
@@ -716,6 +924,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     passwordHash: string | null
     role: string
     status: $Enums.UserStatus
+    language: string
+    theme: string
+    timeZone: string
+    emailNotifications: boolean
+    orderNotifications: boolean
+    weeklyReports: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1149,6 +1363,12 @@ export interface UserFieldRefs {
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'String'>
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
+  readonly language: Prisma.FieldRef<"User", 'String'>
+  readonly theme: Prisma.FieldRef<"User", 'String'>
+  readonly timeZone: Prisma.FieldRef<"User", 'String'>
+  readonly emailNotifications: Prisma.FieldRef<"User", 'Boolean'>
+  readonly orderNotifications: Prisma.FieldRef<"User", 'Boolean'>
+  readonly weeklyReports: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

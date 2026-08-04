@@ -15,20 +15,21 @@ type Value = {
   t: (key: string) => string;
 };
 const LanguageContext = createContext<Value | null>(null);
-const storageKey = "adminpro-language";
 
 export default function LanguageProvider({
   children,
+  userId,
+  initialLanguage,
 }: {
   children: ReactNode;
+  userId?: number;
+  initialLanguage?: string;
 }) {
-  const [language, setLanguageState] = useState<LanguageCode>(() => {
-    if (typeof window === "undefined") return "en";
-    const saved = window.localStorage.getItem(
-      storageKey,
-    ) as LanguageCode | null;
-    return saved && saved in languages ? saved : "en";
-  });
+  const defaultLanguage =
+    initialLanguage && initialLanguage in languages
+      ? (initialLanguage as LanguageCode)
+      : "en";
+  const [language, setLanguageState] = useState<LanguageCode>(defaultLanguage);
   useEffect(() => {
     document.documentElement.lang = languages[language].locale;
     document.documentElement.dir = languages[language].direction;
@@ -44,8 +45,13 @@ export default function LanguageProvider({
       );
   }, []);
   const setLanguage = (value: LanguageCode) => {
-    window.localStorage.setItem(storageKey, value);
     setLanguageState(value);
+    if (userId)
+      void fetch("/api/auth/preferences", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: value }),
+      });
   };
   return (
     <LanguageContext.Provider

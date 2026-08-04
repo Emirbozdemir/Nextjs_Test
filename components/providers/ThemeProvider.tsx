@@ -16,26 +16,39 @@ type ThemeContextValue = {
 };
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
-const storageKey = "adminpro-theme";
 
-export default function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window === "undefined") return "light";
-    return window.localStorage.getItem(storageKey) === "dark"
-      ? "dark"
-      : "light";
-  });
+export default function ThemeProvider({
+  children,
+  userId,
+  initialTheme,
+}: {
+  children: ReactNode;
+  userId?: number;
+  initialTheme?: string;
+}) {
+  const [theme, setThemeState] = useState<Theme>(
+    initialTheme === "dark" ? "dark" : "light",
+  );
 
   useEffect(() => {
     const isDark = theme === "dark";
     document.documentElement.classList.toggle("dark", isDark);
     document.body.classList.toggle("dark", isDark);
     document.documentElement.dataset.theme = theme;
-    window.localStorage.setItem(storageKey, theme);
   }, [theme]);
 
+  const setTheme = (value: Theme) => {
+    setThemeState(value);
+    if (userId)
+      void fetch("/api/auth/preferences", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ theme: value }),
+      });
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme: setThemeState }}>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

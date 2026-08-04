@@ -20,6 +20,12 @@ model User {
   passwordHash String?
   role         String
   status       UserStatus @default(ACTIVE)
+  language     String     @default("en")
+  theme        String     @default("light")
+  timeZone     String     @default("Europe/Istanbul")
+  emailNotifications Boolean @default(true)
+  orderNotifications Boolean @default(true)
+  weeklyReports Boolean @default(false)
   sessions     Session[]
   passwordResetTokens PasswordResetToken[]
   createdAt    DateTime  @default(now())

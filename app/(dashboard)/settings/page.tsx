@@ -14,6 +14,14 @@ import { useLanguage } from "@/components/providers/LanguageProvider";
 import { LanguageCode, languages } from "@/lib/languages";
 
 type Toast = { message: string; id: number } | null;
+type Preferences = {
+  name: string;
+  email: string;
+  timeZone: string;
+  emailNotifications: boolean;
+  orderNotifications: boolean;
+  weeklyReports: boolean;
+};
 
 function Toggle({
   label,
@@ -51,16 +59,67 @@ export default function SettingsPage() {
   const [orderNotifications, setOrderNotifications] = useState(true);
   const [weeklyReports, setWeeklyReports] = useState(false);
   const [toast, setToast] = useState<Toast>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadPreferences() {
+      const response = await fetch("/api/auth/preferences");
+      if (response.ok) {
+        const preferences = (await response.json()) as Preferences;
+        setName(preferences.name);
+        setEmail(preferences.email);
+        setTimeZone(preferences.timeZone);
+        setEmailNotifications(preferences.emailNotifications);
+        setOrderNotifications(preferences.orderNotifications);
+        setWeeklyReports(preferences.weeklyReports);
+      }
+      setIsLoading(false);
+    }
+    void loadPreferences();
+  }, []);
 
   useEffect(() => {
     if (!toast) return;
     const timer = window.setTimeout(() => setToast(null), 3000);
     return () => window.clearTimeout(timer);
   }, [toast]);
-  const save = (event: FormEvent<HTMLFormElement>) => {
+  const save = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setToast({ message: t("saved"), id: Date.now() });
+    setIsSaving(true);
+    try {
+      const response = await fetch("/api/auth/preferences", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          timeZone,
+          emailNotifications,
+          orderNotifications,
+          weeklyReports,
+        }),
+      });
+      const result: { error?: string } = await response.json();
+      setToast({
+        message: response.ok
+          ? t("saved")
+          : (result.error ?? "Unable to save preferences."),
+        id: Date.now(),
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
+  if (isLoading) {
+    return (
+      <section className="mx-auto max-w-5xl">
+        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-sm font-medium text-slate-500 shadow-sm">
+          Loading account preferences...
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="mx-auto max-w-5xl space-y-8">
       <div>
@@ -130,8 +189,11 @@ export default function SettingsPage() {
                 </label>
               </div>
               <div className="mt-5 flex justify-end">
-                <button className="rounded-xl bg-indigo-600 px-4 py-2.5 font-medium text-white hover:bg-indigo-700">
-                  {t("save")}
+                <button
+                  disabled={isSaving}
+                  className="rounded-xl bg-indigo-600 px-4 py-2.5 font-medium text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {isSaving ? t("saving") : t("save")}
                 </button>
               </div>
             </form>
@@ -198,8 +260,11 @@ export default function SettingsPage() {
                 </label>
               </div>
               <div className="mt-5 flex justify-end">
-                <button className="rounded-xl bg-indigo-600 px-4 py-2.5 font-medium text-white hover:bg-indigo-700">
-                  {t("save")}
+                <button
+                  disabled={isSaving}
+                  className="rounded-xl bg-indigo-600 px-4 py-2.5 font-medium text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {isSaving ? t("saving") : t("save")}
                 </button>
               </div>
             </form>

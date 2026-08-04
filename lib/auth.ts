@@ -14,6 +14,8 @@ export type AuthUser = {
   name: string;
   email: string;
   role: string;
+  language: string;
+  theme: string;
 };
 
 function hashSessionToken(token: string) {
@@ -49,7 +51,15 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     where: { tokenHash: hashSessionToken(token) },
     include: {
       user: {
-        select: { id: true, name: true, email: true, role: true, status: true },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          status: true,
+          language: true,
+          theme: true,
+        },
       },
     },
   });
